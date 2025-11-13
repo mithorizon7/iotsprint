@@ -8,7 +8,10 @@ interface OnboardingScreenProps {
 }
 
 export function OnboardingScreen({ onStart }: OnboardingScreenProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  
+  // Debug: Log when component renders and what language it's using
+  console.log('[OnboardingScreen] Rendering with language:', i18n.language, 'title:', t('game.title'));
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">

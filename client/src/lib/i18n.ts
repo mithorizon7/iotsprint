@@ -40,7 +40,7 @@ i18n
   .use(initReactI18next)
   .init({
     lng: initialLanguage,
-    fallbackLng: 'en',
+    fallbackLng: 'en', // Re-enable fallback so page works
     supportedLngs: Object.keys(SUPPORTED_LANGUAGES),
     interpolation: {
       escapeValue: false, // React already escapes
@@ -84,8 +84,9 @@ async function loadLanguageResources(lng: SupportedLanguage): Promise<void> {
       throw new Error(`Failed to load ${lng} translations: ${response.statusText}`);
     }
     const resources = await response.json();
-    // Use deep merge to properly add resources
-    i18n.addResourceBundle(lng, 'translation', resources, true, true);
+    // Replace the entire bundle (not deep merge) to avoid fallback issues
+    i18n.removeResourceBundle(lng, 'translation');
+    i18n.addResourceBundle(lng, 'translation', resources);
     console.log(`[i18n] Successfully loaded resources for ${lng}`);
   } catch (error) {
     console.error(`[i18n] Failed to load ${lng} translations:`, error);
@@ -100,9 +101,25 @@ export async function changeLanguage(lng: SupportedLanguage): Promise<void> {
     // Load resources if not already loaded (English is pre-loaded)
     await loadLanguageResources(lng);
     
+    // Debug: Check what resources are available
+    const hasBundle = i18n.hasResourceBundle(lng, 'translation');
+    console.log(`[i18n] After loading, has ${lng} bundle:`, hasBundle);
+    if (hasBundle) {
+      const bundle = i18n.getResourceBundle(lng, 'translation');
+      console.log(`[i18n] Top-level keys from ${lng}:`, Object.keys(bundle || {}).slice(0, 10));
+      console.log(`[i18n] Full bundle structure for ${lng}:`, JSON.stringify(bundle, null, 2).slice(0, 500));
+      // Test translation with explicit lng parameter
+      const testWithLng = i18n.t('game.title', { lng });
+      console.log(`[i18n] t('game.title', {lng: '${lng}'}):`, testWithLng);
+      // Test exists check
+      const exists = i18n.exists('game.title', { lng });
+      console.log(`[i18n] exists('game.title', {lng: '${lng}'}):`, exists);
+    }
+    
     // Change language (this will trigger re-renders due to bindI18n config)
     await i18n.changeLanguage(lng);
     console.log(`[i18n] Language changed to ${lng}, current language: ${i18n.language}`);
+    console.log(`[i18n] Test game.title after change:`, i18n.t('game.title'));
     
     // Persist to localStorage
     try {
