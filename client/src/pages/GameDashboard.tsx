@@ -148,7 +148,11 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
               </div>
               {gameState.currentRound > 1 && (
                 <div className="text-xs text-muted-foreground" data-testid="text-token-breakdown">
-                  {carryoverTokens} reallocatable + {newTokensThisRound} new = {gameState.tokensAvailable} total
+                  {t('dashboard.tokenBreakdown', { 
+                    carryover: carryoverTokens, 
+                    newTokens: newTokensThisRound, 
+                    total: gameState.tokensAvailable 
+                  })}
                 </div>
               )}
             </div>
@@ -168,7 +172,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
           <div className="lg:sticky lg:top-24 lg:self-start">
             <div className="bg-card border border-card-border rounded-lg p-6">
               <h3 className="text-lg font-semibold mb-6" data-testid="text-metrics-title">
-                Organization Metrics
+                {t('dashboard.metricsTitle')}
               </h3>
               <MetricsPanel metrics={gameState.metrics} />
             </div>
@@ -186,8 +190,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
                 <Alert className="mt-2" data-testid="alert-reallocation">
                   <Info className="h-4 w-4" />
                   <AlertDescription className="text-xs">
-                    <strong>Reallocation:</strong> Half of your previous investments are available to reallocate. 
-                    You also receive {newTokensThisRound} new tokens. Adjust your strategy based on your results.
+                    {t('dashboard.reallocationAlert', { newTokens: newTokensThisRound })}
                   </AlertDescription>
                 </Alert>
               )}

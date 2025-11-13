@@ -1,0 +1,114 @@
+Here’s a checklist you can hand straight to your developer as a “translation-readiness pass” for *any* app or game.
+
+---
+
+## Localization Readiness Checklist (Developer One-Over)
+
+Use this as a pass over each app/game. For every item, make sure the answer is **Yes** or there’s a clear plan to fix it.
+
+---
+
+### 1. Text & Content Handling
+
+* [ ] **All user-visible text is externalized**
+  No hard-coded strings in components/views. All labels, buttons, messages, tooltips, errors, prompts, dialog text, etc. live in resource files (e.g., JSON, i18n framework, .po, etc.).
+
+* [ ] **No string concatenation for sentences**
+  We’re not building phrases like `"Hello " + userName + ", welcome back"` in code. Instead we use templates: `"welcome_message": "Hello {userName}, welcome back"` so translators can reorder words.
+
+* [ ] **Placeholders are clearly named and reusable**
+  Placeholders use meaningful names (`{count}`, `{userName}`, `{date}`), not `{0}`, `{1}` wherever possible. The code lets translators change placeholder order safely.
+
+* [ ] **Plurals and counts are handled via a proper mechanism**
+  Any text involving counts (e.g., “1 file / 2 files”) uses a pluralization system (ICU MessageFormat, i18next plurals, etc.), not manual `if (count === 1) 'file' else 'files'`.
+
+* [ ] **No “hidden English” in config or data**
+  Any user-facing text that comes from config, level data, JSON blobs, etc. is also externalized and translatable, not baked into non-i18n files.
+
+---
+
+### 2. Layout & UI Resilience
+
+* [ ] **UI can tolerate 30–50% text expansion**
+  Buttons, labels, and menus don’t rely on fixed widths that will clip longer translations. Check key screens and dialogs for potential truncation.
+
+* [ ] **No forced line breaks for design**
+  We’re not using manual `\n` or `<br>` purely to break a line at a “nice” point in English. Layout should flow naturally so other languages don’t look broken.
+
+* [ ] **No text baked into images or icons**
+  Words like “Play”, “OK”, “Cancel”, or instructions aren’t embedded in PNGs/SVGs. If they must be, there is a mechanism to swap localized versions per language.
+
+* [ ] **Direction & alignment are not hard-coded to LTR**
+  Text alignment isn’t always assumed left. If we ever want RTL (Arabic, Hebrew, etc.), the main containers can flip direction and still look correct.
+
+---
+
+### 3. Data Formats & Logic
+
+* [ ] **Dates, times, and numbers use locale-aware APIs**
+  We use locale-aware libraries (e.g., Intl APIs or equivalent) instead of hard-coded formats like `"MM/DD/YYYY"` or manual `toFixed()` for currency.
+
+* [ ] **Currencies and units are not hard-coded English assumptions**
+  Wherever we show money or units, there’s a clear place to adjust formatting and symbols (e.g., currency symbol position, thousands separators, decimal commas).
+
+* [ ] **Logic does not depend on specific English phrases**
+  Code never parses human-readable text or checks specific English strings for logic (e.g., `if (statusText === 'Completed')`). It uses stable IDs or enums.
+
+---
+
+### 4. Assets (Images, Audio, Video)
+
+* [ ] **No critical instructions only in non-translatable media**
+  Any essential instructions or story content that appears in images/audio/video also exist as text that can be localized (captions, transcripts, or text overlays via i18n).
+
+* [ ] **Audio/subtitle separation**
+  If there is voiced content, scripts/subtitles are stored in a form that can be localized (not hard-wired inside the video file with no extra track or source text).
+
+---
+
+### 5. Technical Infrastructure
+
+* [ ] **Centralized locale management**
+  There is a single, clear mechanism for:
+
+  * Setting the current locale
+  * Reading the current locale
+  * Switching locale (even if not exposed in UI yet)
+
+* [ ] **Consistent resource structure & naming**
+  Resource files follow a consistent pattern (e.g., `en.json`, `es.json`, `fr.json`) and are organized so a translation team can add new languages without code changes.
+
+* [ ] **Unicode-safe end-to-end**
+  Inputs, storage, and rendering all fully support Unicode (no assumptions of ASCII-only). Emojis and non-Latin scripts don’t break anything critical.
+
+* [ ] **Fallbacks are defined and safe**
+  If a key is missing in a target language, the app behaves gracefully (e.g., falls back to a base language or shows a clear placeholder in dev, not a blank UI).
+
+---
+
+### 6. Testing & Pseudo-Localization
+
+* [ ] **Pseudo-localization mode exists or can be enabled**
+  There is a way (even temporary/dev-only) to:
+
+  * Wrap all strings with markers, e.g. `[!!! 𝑻𝒆𝒙𝒕 𝑯𝒆𝒓𝒆 !!!]`
+  * Expand their length (e.g., doubling characters)
+    This helps reveal clipping, truncation, and layout issues.
+
+* [ ] **App can run with at least one non-English locale**
+  Even if translations are rough or machine-generated, we can flip the app into another language (including non-Latin script) and use it end-to-end without crashes.
+
+* [ ] **All key flows have been spot-checked in another locale**
+  Onboarding, main gameplay or workflows, menus, settings, and error states have been checked in a non-English locale or pseudo-locale for:
+
+  * Missing strings
+  * Truncated text
+  * Misaligned or broken UI
+
+---
+
+You can tell them: for each app/game, capture anything that fails this checklist as **specific tickets**, not vague “localization issues” (e.g., “Hard-coded button label on Settings screen,” “Date format MM/DD/YYYY in reports”).
+
+---
+
+**Confidence:** High that this checklist captures the major engineering and UX issues that determine whether an app is localization-ready across most platforms and stacks; moderate that you may want 1–2 extra org-specific items (e.g., how your content pipeline or CMS is wired) layered on top.

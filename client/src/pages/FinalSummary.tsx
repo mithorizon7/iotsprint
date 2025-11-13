@@ -141,7 +141,7 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
             <div className="pt-6 border-t border-card-border">
               <h4 className="text-base font-semibold flex items-center gap-2 mb-4">
                 <TrendingUp className="w-4 h-4 text-primary" />
-                Your IoT Strategy
+                {t('summary.yourStrategy')}
               </h4>
               <div className="space-y-2">
                 {topInvestments.map((investment) => (
@@ -154,12 +154,12 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
                       <span className="font-medium">{investment.title}</span>
                       {investment.company && (
                         <span className="text-xs text-muted-foreground">
-                          Similar to {investment.company}'s approach
+                          {t('summary.similarToApproach', { company: investment.company })}
                         </span>
                       )}
                     </div>
                     <Badge variant="secondary" className="font-mono">
-                      {investment.tokens} tokens
+                      {t('summary.tokensLabel', { count: investment.tokens })}
                     </Badge>
                   </div>
                 ))}

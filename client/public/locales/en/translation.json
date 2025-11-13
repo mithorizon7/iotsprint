@@ -28,7 +28,10 @@
     "instructions": "Allocate your tokens to IoT initiatives. Each card can receive 0-3 tokens.",
     "runPlanButton": "Run My Plan",
     "nextRoundButton": "Continue to Year {{round}}",
-    "viewSummaryButton": "View Final Results"
+    "viewSummaryButton": "View Final Results",
+    "metricsTitle": "Organization Metrics",
+    "tokenBreakdown": "{{carryover}} reallocatable + {{newTokens}} new = {{total}} total",
+    "reallocationAlert": "You can reallocate 50% of your previous tokens (rounded down). You also receive {{newTokens}} new tokens. Adjust your strategy based on your results."
   },
   "metrics": {
     "visibility": {
@@ -128,10 +131,17 @@
     "logidot": "Logidot warehouse tracking",
     "bosch": "Bosch Energy Platform",
     "att": "AT&T building sensors",
+    "microsoft": "Microsoft Connected Vehicle Platform",
     "rioTinto": "Rio Tinto predictive maintenance",
     "siemens": "Siemens digital twin",
     "marathon": "Marathon Oil emissions detection",
-    "seattle": "Seattle dam monitoring"
+    "seattle": "Seattle dam monitoring",
+    "tensio": "Tensio grid monitoring",
+    "healthTech": "continuous health monitoring",
+    "defaultTracking": "digital tracking systems",
+    "defaultAutomation": "process automation",
+    "defaultEnergy": "energy optimization",
+    "defaultPredictive": "predictive systems"
   },
   "events": {
     "round2": {
@@ -188,7 +198,11 @@
     "whereYouLeftValue": "Opportunities You Might Have Missed",
     "reflectionPrompt": "If you replayed, what would you prioritize differently?",
     "replayButton": "Replay Game",
-    "exitButton": "Exit"
+    "exitButton": "Exit",
+    "yourStrategy": "Your IoT Strategy",
+    "similarToApproach": "Similar to {{company}}'s approach",
+    "tokensLabel": "{{count}} token",
+    "tokensLabel_other": "{{count}} tokens"
   },
   "common": {
     "loading": "Loading...",
@@ -196,6 +210,7 @@
     "back": "Back",
     "next": "Next",
     "close": "Close",
+    "tokens": "Tokens:",
     "category": {
       "visibility": "Visibility",
       "streamlining": "Process Streamlining",

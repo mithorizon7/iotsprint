@@ -24,19 +24,19 @@ export function RoundFeedback({
 
   const delta = calculateMetricsDelta(metricsBefore, metricsAfter);
 
-  // Map card IDs to their company examples for specific feedback
-  const cardExamples: Record<string, string> = {
-    smartTools: 'Airbus smart tools',
-    warehouseFlow: 'Logidot warehouse tracking',
-    energyMonitoring: 'Bosch Energy Platform',
-    smartBuilding: 'AT&T building sensors',
-    fleetOptimization: 'Microsoft Connected Vehicle Platform',
-    predictiveMaintenance: 'Rio Tinto predictive maintenance',
-    digitalTwin: 'Siemens digital twin',
-    emissionsDetection: 'Marathon Oil emissions detection',
-    waterMonitoring: 'Seattle dam monitoring',
-    gridSensors: 'Tensio grid monitoring',
-    healthMonitoring: 'continuous health monitoring',
+  // Map card IDs to their translation keys for company examples
+  const cardExampleKeys: Record<string, string> = {
+    smartTools: 'feedback.airbus',
+    warehouseFlow: 'feedback.logidot',
+    energyMonitoring: 'feedback.bosch',
+    smartBuilding: 'feedback.att',
+    fleetOptimization: 'feedback.microsoft',
+    predictiveMaintenance: 'feedback.rioTinto',
+    digitalTwin: 'feedback.siemens',
+    emissionsDetection: 'feedback.marathon',
+    waterMonitoring: 'feedback.seattle',
+    gridSensors: 'feedback.tensio',
+    healthMonitoring: 'feedback.healthTech',
   };
 
   // Find which cards were invested in to provide specific feedback
@@ -49,7 +49,7 @@ export function RoundFeedback({
 
   if (delta.visibility_insight >= 8) {
     const relevantCard = investedCards.find(id => ['digitalTwin', 'warehouseFlow', 'gridSensors', 'emissionsDetection'].includes(id));
-    const example = relevantCard ? cardExamples[relevantCard] : 'digital tracking systems';
+    const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultTracking');
     feedbackItems.push({
       icon: <TrendingUp className="w-5 h-5" />,
       message: t('feedback.highVisibility', { example }),
@@ -59,7 +59,7 @@ export function RoundFeedback({
 
   if (delta.efficiency_throughput >= 8) {
     const relevantCard = investedCards.find(id => ['smartTools', 'warehouseFlow', 'fleetOptimization'].includes(id));
-    const example = relevantCard ? cardExamples[relevantCard] : 'process automation';
+    const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultAutomation');
     feedbackItems.push({
       icon: <TrendingUp className="w-5 h-5" />,
       message: t('feedback.highEfficiency', { example }),
@@ -69,7 +69,7 @@ export function RoundFeedback({
 
   if (delta.sustainability_emissions >= 8) {
     const relevantCard = investedCards.find(id => ['energyMonitoring', 'smartBuilding', 'fleetOptimization', 'emissionsDetection'].includes(id));
-    const example = relevantCard ? cardExamples[relevantCard] : 'energy optimization';
+    const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultEnergy');
     feedbackItems.push({
       icon: <CheckCircle className="w-5 h-5" />,
       message: t('feedback.highSustainability', { example }),
@@ -79,7 +79,7 @@ export function RoundFeedback({
 
   if (delta.early_warning_prevention >= 8) {
     const relevantCard = investedCards.find(id => ['predictiveMaintenance', 'healthMonitoring', 'gridSensors', 'waterMonitoring'].includes(id));
-    const example = relevantCard ? cardExamples[relevantCard] : 'predictive systems';
+    const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultPredictive');
     feedbackItems.push({
       icon: <CheckCircle className="w-5 h-5" />,
       message: t('feedback.highEarlyWarning', { example }),

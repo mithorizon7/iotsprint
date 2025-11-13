@@ -48,7 +48,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
         </div>
 
         <div className="flex items-center justify-between gap-3 pt-3 border-t border-card-border">
-          <span className="text-sm font-medium text-muted-foreground">Tokens:</span>
+          <span className="text-sm font-medium text-muted-foreground">{t('common.tokens')}</span>
           <div className="flex items-center gap-3">
             <Button
               size="icon"
