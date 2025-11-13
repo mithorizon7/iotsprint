@@ -81,7 +81,7 @@ export const INITIAL_METRICS: GameMetrics = {
   complexity_risk: 20,
 };
 
-export const TOKENS_PER_ROUND = [10, 10, 10]; // Round 1, 2, 3 - each round gets fresh tokens
+export const TOKENS_PER_ROUND = [10, 5, 5]; // Round 1: 10 tokens, Round 2/3: +5 new tokens + reallocation
 
 // Helper to clamp metrics to 0-100
 export function clampMetrics(metrics: GameMetrics): GameMetrics {

@@ -24,37 +24,65 @@ export function RoundFeedback({
 
   const delta = calculateMetricsDelta(metricsBefore, metricsAfter);
 
+  // Map card IDs to their company examples for specific feedback
+  const cardExamples: Record<string, string> = {
+    smartTools: 'Airbus smart tools',
+    warehouseFlow: 'Logidot warehouse tracking',
+    energyMonitoring: 'Bosch Energy Platform',
+    smartBuilding: 'AT&T building sensors',
+    fleetOptimization: 'Microsoft Connected Vehicle Platform',
+    predictiveMaintenance: 'Rio Tinto predictive maintenance',
+    digitalTwin: 'Siemens digital twin',
+    emissionsDetection: 'Marathon Oil emissions detection',
+    waterMonitoring: 'Seattle dam monitoring',
+    gridSensors: 'Tensio grid monitoring',
+    healthMonitoring: 'continuous health monitoring',
+  };
+
+  // Find which cards were invested in to provide specific feedback
+  const investedCards = Object.entries(allocations)
+    .filter(([, tokens]) => tokens > 0)
+    .map(([cardId]) => cardId);
+
   // Generate feedback based on changes
   const feedbackItems: Array<{ icon: React.ReactNode; message: string; type: 'positive' | 'warning' | 'neutral' }> = [];
 
   if (delta.visibility_insight >= 8) {
+    const relevantCard = investedCards.find(id => ['digitalTwin', 'warehouseFlow', 'gridSensors', 'emissionsDetection'].includes(id));
+    const example = relevantCard ? cardExamples[relevantCard] : 'digital tracking systems';
     feedbackItems.push({
       icon: <TrendingUp className="w-5 h-5" />,
-      message: t('feedback.highVisibility', { example: 'Siemens digital twin' }),
+      message: t('feedback.highVisibility', { example }),
       type: 'positive',
     });
   }
 
   if (delta.efficiency_throughput >= 8) {
+    const relevantCard = investedCards.find(id => ['smartTools', 'warehouseFlow', 'fleetOptimization'].includes(id));
+    const example = relevantCard ? cardExamples[relevantCard] : 'process automation';
     feedbackItems.push({
       icon: <TrendingUp className="w-5 h-5" />,
-      message: t('feedback.highEfficiency', { example: 'Airbus smart tools' }),
+      message: t('feedback.highEfficiency', { example }),
       type: 'positive',
     });
   }
 
   if (delta.sustainability_emissions >= 8) {
+    const relevantCard = investedCards.find(id => ['energyMonitoring', 'smartBuilding', 'fleetOptimization', 'emissionsDetection'].includes(id));
+    const example = relevantCard ? cardExamples[relevantCard] : 'energy optimization';
     feedbackItems.push({
       icon: <CheckCircle className="w-5 h-5" />,
-      message: t('feedback.highSustainability', { example: 'Bosch Energy Platform' }),
+      message: t('feedback.highSustainability', { example }),
       type: 'positive',
     });
   }
 
   if (delta.early_warning_prevention >= 8) {
+    const relevantCard = investedCards.find(id => ['predictiveMaintenance', 'healthMonitoring', 'gridSensors', 'waterMonitoring'].includes(id));
+    const example = relevantCard ? cardExamples[relevantCard] : 'predictive systems';
     feedbackItems.push({
       icon: <CheckCircle className="w-5 h-5" />,
-      message: t('feedback.highEarlyWarning', { example: 'Rio Tinto predictive maintenance' }),
+      message: t('feedback.highEarlyWarning', { example }),
       type: 'positive',
     });
   }

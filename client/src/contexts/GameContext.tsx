@@ -104,9 +104,9 @@ export function GameProvider({ children, cards }: GameProviderProps) {
         }
       });
 
-      // Global complexity penalty for IoT sprawl (if more than 8 total tokens used)
-      if (totalTokensUsed > 8) {
-        newMetrics.complexity_risk += (totalTokensUsed - 8) * 3;
+      // Global complexity penalty for IoT sprawl (if more than 12 total tokens used)
+      if (totalTokensUsed > 12) {
+        newMetrics.complexity_risk += (totalTokensUsed - 12) * 2;
       }
 
       // Clamp all metrics
@@ -133,11 +133,29 @@ export function GameProvider({ children, cards }: GameProviderProps) {
       const nextRoundNum = prev.currentRound + 1;
       if (nextRoundNum > 3) return prev;
 
+      // Keep half of previous allocations for reallocation (rounds 2 and 3)
+      const keptAllocations =
+        nextRoundNum > 1
+          ? Object.fromEntries(
+              Object.entries(prev.allocations).map(([cardId, tokens]) => [
+                cardId,
+                Math.floor(tokens * 0.5),
+              ])
+            )
+          : {};
+
+      // Calculate how many tokens are in the carryover
+      const carryoverTotal = Object.values(keptAllocations).reduce((sum, t) => sum + t, 0);
+
+      // Total tokens = base for this round + carryover tokens
+      // The carryover tokens are already allocated in keptAllocations
+      const totalBudget = TOKENS_PER_ROUND[nextRoundNum - 1] + carryoverTotal;
+
       return {
         ...prev,
         currentRound: nextRoundNum,
-        tokensAvailable: TOKENS_PER_ROUND[nextRoundNum - 1],
-        allocations: {}, // Start fresh each round
+        tokensAvailable: totalBudget,
+        allocations: keptAllocations,
       };
     });
   }, []);

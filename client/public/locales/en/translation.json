@@ -55,52 +55,52 @@
   "cards": {
     "warehouseFlow": {
       "title": "Warehouse Flow Tracking",
-      "shortDescription": "Tags on pallets, forklifts, and workers show where goods are getting stuck and where vehicles idle too long.",
+      "shortDescription": "Install tags on pallets, forklifts, and workers. A live map shows where goods are getting stuck and where vehicles idle too long. Based on Logidot's anchor sensors and wearable tags.",
       "whenToUse": "Use when you need to spot bottlenecks and reduce idling in warehouses or factories."
     },
     "smartTools": {
       "title": "Smart Assembly Tools",
-      "shortDescription": "Connected power tools recognize parts automatically and set the right torque. Usage is logged automatically into your system.",
+      "shortDescription": "Connected power tools recognize parts automatically and set the right torque. Usage is logged automatically into your system. Inspired by Airbus's assembly line implementation.",
       "whenToUse": "Use when manual checks are slow and mistakes are costly."
     },
     "energyMonitoring": {
       "title": "Energy Monitoring Platform",
-      "shortDescription": "Sensors on every major machine track energy use. You can spot wasteful leaks and remotely power down unused equipment.",
+      "shortDescription": "Sensors on every major machine track energy use. You can spot wasteful leaks and remotely power down unused equipment. Based on Bosch's Energy Platform approach.",
       "whenToUse": "Use when energy costs are high and you suspect hidden waste."
     },
     "smartBuilding": {
       "title": "Smart Building Systems",
-      "shortDescription": "Dense networks of sensors in lights and vents adjust lighting and heating room by room, minute by minute.",
+      "shortDescription": "Dense networks of sensors in lights and vents adjust lighting and heating room by room, minute by minute. Similar to AT&T and Enlighted's building sensor deployment.",
       "whenToUse": "Use when buildings are large, usage patterns vary, and you want energy savings without sacrificing comfort."
     },
     "fleetOptimization": {
       "title": "Fleet & Vehicle Optimization",
-      "shortDescription": "Vehicles send data about idling, routes, and fuel use. A central service suggests smarter routes and maintenance schedules.",
+      "shortDescription": "Vehicles send data about idling, routes, and fuel use. A central service suggests smarter routes and maintenance schedules. Modeled on Microsoft's Connected Vehicle Platform.",
       "whenToUse": "Use when you run many vehicles and care about emissions and logistics."
     },
     "predictiveMaintenance": {
       "title": "Predictive Maintenance",
-      "shortDescription": "Sensors on vehicles and equipment constantly monitor vibration, temperature, and pressure. AI flags issues before breakdowns.",
+      "shortDescription": "Sensors on vehicles and equipment constantly monitor vibration, temperature, and pressure. AI flags issues before breakdowns. Based on Rio Tinto's haul truck monitoring system.",
       "whenToUse": "Use when equipment downtime is very expensive."
     },
     "digitalTwin": {
       "title": "Digital Twin of Plant",
-      "shortDescription": "Sensors throughout your plant feed a real-time digital model. Engineers can test changes and train remotely before touching real equipment.",
+      "shortDescription": "Sensors throughout your plant feed a real-time digital model. Engineers can test changes and train remotely before touching real equipment. Inspired by Siemens's desalination plant digital twin.",
       "whenToUse": "Use when you want to see detailed status of a complex facility and experiment safely."
     },
     "emissionsDetection": {
       "title": "Emissions Leak Detection",
-      "shortDescription": "Combine on-site sensors and satellite data to detect leaks quickly and reduce emissions.",
+      "shortDescription": "Combine on-site sensors and satellite data to detect leaks quickly and reduce emissions. Based on Marathon Oil and GHGSat's methane leak detection system.",
       "whenToUse": "Use when emissions leaks are critical for regulators, brand, or climate goals."
     },
     "waterMonitoring": {
       "title": "Water Infrastructure Monitoring",
-      "shortDescription": "Sensors embedded in water systems deliver real-time information about usage, quality, and early warning of leaks.",
+      "shortDescription": "Sensors embedded in dams and water systems deliver real-time information about usage, quality, and early warning of leaks. Similar to Seattle's dam monitoring system.",
       "whenToUse": "Use when water conservation is a priority or regulatory compliance is required."
     },
     "gridSensors": {
       "title": "Power Grid Sensors",
-      "shortDescription": "Add sensors to power lines to monitor load, ice, and vibrations. Data feeds a digital twin so you see where lines are near capacity.",
+      "shortDescription": "Add sensors to power lines to monitor load, ice, and vibrations. Data feeds a digital twin so you see where lines are near capacity. Based on Tensio's grid monitoring technology.",
       "whenToUse": "Use when you must understand stress and capacity across a large physical network."
     },
     "securityHardening": {
@@ -110,7 +110,7 @@
     },
     "healthMonitoring": {
       "title": "Health & Safety Monitoring",
-      "shortDescription": "Wearable or handheld sensors track health signals and alert staff early so they can intervene.",
+      "shortDescription": "Wearable or handheld sensors track health signals (like glucose levels or pressure) and alert staff early so they can intervene. Based on continuous health monitoring devices.",
       "whenToUse": "Use when worker safety or health monitoring is a priority."
     }
   },
