@@ -38,10 +38,40 @@ Preferred communication style: Simple, everyday language.
 ### Internationalization (i18n)
 
 **Translation Framework**: react-i18next with JSON resource files
-- All user-facing text stored in separate translation files (`/client/public/locales/en/translation.json`)
-- No hard-coded strings in components
-- Cards and content use key-based references to translation resources
-- Structure supports multiple languages without code changes
+- **Infrastructure**: Dynamic locale loading with localStorage persistence and browser language detection
+- **Supported Languages**: English (en), Russian (ru), Latvian (lv), Pseudo-locale (en-ps for testing)
+- **English Pre-loaded**: Synchronously imported during i18n initialization to ensure fallback always available
+- **Translation Files**: 
+  - English complete: `client/public/locales/en/translation.json` (also at `client/src/locales-en.json` for import)
+  - Russian stub: `client/public/locales/ru/translation.json` (ready for professional translation)
+  - Latvian stub: `client/public/locales/lv/translation.json` (ready for professional translation)
+  - Pseudo-locale: `client/public/locales/en-ps/translation.json` (tests text expansion ~40%)
+- **Language Switcher**: LanguageSwitcher component in top-right corner of all screens (Onboarding, Dashboard, Summary)
+- **Company Names**: Airbus, Bosch, Siemens, Rio Tinto, Marathon Oil, Microsoft, AT&T, etc. remain in English across all languages
+- **Translation Keys**: All UI text externalized to translation keys (no hard-coded strings)
+- **Translator Guide**: See `TRANSLATOR_GUIDE.md` for professional translation instructions
+
+**Status**: Localization infrastructure in place but NOT production-ready. Components require refactoring before translator handoff.
+
+**Critical Issue Identified by Architect**: 
+- **Root Cause**: GameContext stores pre-translated strings (cached English text) instead of translation keys. When language changes, `useTranslation()` re-renders correctly, but components display stale cached strings from context.
+- **Affected**: RoundHistory feedback, metrics tooltips, and any context-derived strings that were translated imperatively with `t()` at creation time rather than during render.
+- **Impact**: Translators cannot verify their work because only LanguageSwitcher re-renders on language change.
+
+**Required Fixes**:
+1. Refactor GameContext to store translation keys (not translated strings)
+2. Move all `t()` calls from data creation to component render paths
+3. Sync `client/src/locales-en.json` with `client/public/locales/en/translation.json`
+4. Retest complete language switching flow before translator handoff
+
+**Completed So Far**:
+- ✓ All UI strings externalized to translation files
+- ✓ Complete English translation.json (943 lines, all keys covered)
+- ✓ i18n infrastructure (dynamic loading, persistence, browser detection)
+- ✓ LanguageSwitcher component (works correctly)
+- ✓ Pseudo-locale for text expansion testing
+- ✓ Russian/Latvian stub files ready
+- ✓ Comprehensive translator guide (TRANSLATOR_GUIDE.md)
 
 ### Game Mechanics
 
