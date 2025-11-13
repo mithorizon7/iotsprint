@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { classifyArchetype } from '@/lib/archetypes';
 import { Trophy, RotateCcw, TrendingUp } from 'lucide-react';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 interface RoundHistory {
   round: number;
@@ -69,6 +70,9 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <div className="w-full max-w-5xl mx-auto space-y-8">
         <div className="text-center space-y-4">
           <div className="flex justify-center mb-4">

@@ -1,0 +1,19 @@
+{
+  "_comment": "Russian translation - Ready for translation",
+  "_translator_note": "This file is ready for professional translation. Please maintain the structure and placeholder syntax ({{variable}}). Company names (Airbus, Siemens, etc.) should remain in English.",
+  "game": {
+    "title": "[RU] IoT Strategy Sprint",
+    "subtitle": "[RU] Learn IoT fundamentals through strategic decision-making"
+  },
+  "common": {
+    "loading": "[RU] Loading...",
+    "tokens": "[RU] Tokens:",
+    "category": {
+      "visibility": "[RU] Visibility",
+      "streamlining": "[RU] Process Streamlining",
+      "sustainability": "[RU] Sustainability",
+      "early_warning": "[RU] Early Warning",
+      "security": "[RU] Security"
+    }
+  }
+}

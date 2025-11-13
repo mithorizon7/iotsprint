@@ -9,6 +9,7 @@ import { RoundFeedback } from '@/components/RoundFeedback';
 import { GameMetrics } from '@shared/schema';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Info } from 'lucide-react';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 interface RoundHistory {
   round: number;
@@ -136,7 +137,9 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
             <h2 className="text-2xl font-bold" data-testid="text-round-title">
               {t('dashboard.roundTitle', { round: gameState.currentRound })}
             </h2>
-            <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-4">
+              <LanguageSwitcher />
+              <div className="flex flex-col items-end gap-1">
               <div className="flex items-center gap-2">
                 <Coins className="w-5 h-5 text-primary" />
                 <span className="text-lg font-mono font-bold" data-testid="text-tokens-remaining">
@@ -155,6 +158,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
                   })}
                 </div>
               )}
+              </div>
             </div>
           </div>
         </div>

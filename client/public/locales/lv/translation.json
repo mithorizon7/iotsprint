@@ -1,0 +1,19 @@
+{
+  "_comment": "Latvian translation - Ready for translation",
+  "_translator_note": "This file is ready for professional translation. Please maintain the structure and placeholder syntax ({{variable}}). Company names (Airbus, Siemens, etc.) should remain in English.",
+  "game": {
+    "title": "[LV] IoT Strategy Sprint",
+    "subtitle": "[LV] Learn IoT fundamentals through strategic decision-making"
+  },
+  "common": {
+    "loading": "[LV] Loading...",
+    "tokens": "[LV] Tokens:",
+    "category": {
+      "visibility": "[LV] Visibility",
+      "streamlining": "[LV] Process Streamlining",
+      "sustainability": "[LV] Sustainability",
+      "early_warning": "[LV] Early Warning",
+      "security": "[LV] Security"
+    }
+  }
+}

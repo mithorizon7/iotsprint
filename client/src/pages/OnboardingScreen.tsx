@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { IoTProcessDiagram } from '@/components/IoTProcessDiagram';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 interface OnboardingScreenProps {
   onStart: () => void;
@@ -11,6 +12,9 @@ export function OnboardingScreen({ onStart }: OnboardingScreenProps) {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <div className="w-full max-w-5xl mx-auto space-y-12">
         <div className="text-center space-y-4">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight" data-testid="text-game-title">
