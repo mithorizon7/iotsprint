@@ -1,0 +1,314 @@
+Here’s an addendum you can bolt onto the end of the brief and hand to your dev as-is.
+
+---
+
+## Addendum: Internationalization & Translation-Readiness
+
+We want this game to be **fully and easily translatable into other languages from day one**. That means both the **code structure** and the **content model** need to be designed for localization.
+
+Below is concrete guidance.
+
+---
+
+### A. Overall i18n strategy
+
+1. **Use an i18n framework/library from the start**
+
+   * For React: `react-intl`, `i18next`, or similar.
+   * The exact library is less important than **never hard-coding English strings** into components.
+
+2. **Single source of truth for text**
+
+   * All display text (labels, card copy, feedback, tooltips, button text, archetype names, error messages) must live in **resource files** (e.g., JSON, YAML) keyed by ID, not embedded in code.
+   * Example structure:
+
+     ```json
+     {
+       "game.title": "IoT Strategy Sprint",
+       "button.start": "Start",
+       "button.runPlan": "Run My Plan",
+       "metric.visibility": "Visibility & Insight",
+       "metric.efficiency": "Efficiency & Throughput",
+       "archetype.sustainabilityChampion.title": "Sustainability Champion",
+       "archetype.sustainabilityChampion.description": "You prioritized energy and emissions reductions..."
+     }
+     ```
+
+3. **Every card is content, not code**
+
+   * IoT initiative cards, feedback templates, round/introduction narrative text, and final archetype blurbs should be **data-driven**, not hard-coded.
+   * We should be able to localize by editing the resource files, without touching the game logic.
+
+---
+
+### B. Cards & content model: localization requirements
+
+1. **Card definitions split into “raw content” + “logic”**
+
+   * Keep **per-token effects, round availability, unlock conditions** in one part.
+   * Keep **all user-facing text** as keys into the i18n system.
+
+   Example (two-layer approach):
+
+   ```json
+   // card_config.json
+   {
+     "id": "warehouse_flow_tracking",
+     "roundsAvailable": [1, 2, 3],
+     "unlockCondition": null,
+     "perTokenEffects": { ... },
+     "category": "streamlining",
+     "copyKeys": {
+       "title": "cards.warehouseFlow.title",
+       "shortDescription": "cards.warehouseFlow.shortDescription",
+       "whenToUse": "cards.warehouseFlow.whenToUse"
+     }
+   }
+   ```
+
+   ```json
+   // en.json
+   {
+     "cards.warehouseFlow.title": "Warehouse Flow Tracking",
+     "cards.warehouseFlow.shortDescription": "Tags on pallets, forklifts, and workers show where goods are getting stuck and where vehicles idle too long.",
+     "cards.warehouseFlow.whenToUse": "Use this when you need to spot bottlenecks and reduce idling in warehouses or factories."
+   }
+   ```
+
+2. **No inline English in config**
+
+   * Avoid writing English directly in config files that are used by code.
+   * Use keys everywhere; language files map keys → strings.
+
+3. **Feedback templates are also localized**
+
+   * Feedback templates (for round summary text) must be i18n-aware and live in language resource files.
+   * Use variables/placeholders instead of concatenating strings in code.
+
+   Example:
+
+   ```json
+   {
+     "feedback.highSustainabilityHighComplexity": "You achieved strong sustainability gains by connecting more assets, but you also increased complexity and risk. Next time, consider investing some tokens in simplifying or securing your IoT setup."
+   }
+   ```
+
+   * The code selects which template to show; the localized files control the language.
+
+---
+
+### C. String formatting & placeholders
+
+1. **Use placeholders, not manual concatenation**
+
+   Bad (harder to translate, grammar-breaker):
+
+   ```js
+   const msg = "Your final score is " + score + " points.";
+   ```
+
+   Good (translatable template):
+
+   ```json
+   {
+     "summary.finalScore": "Your final score is {score} points."
+   }
+   ```
+
+   ```js
+   t("summary.finalScore", { score });
+   ```
+
+2. **Anticipate word order changes**
+
+   * Do not assume English word order; allow translators to move placeholders around:
+
+     * `{metric}`, `{value}`, `{round}`, etc.
+
+3. **Pluralization**
+
+   * Use the library’s pluralization support for anything that can be singular/plural (e.g., “1 token” vs “3 tokens”).
+   * Example pattern:
+
+     ```json
+     {
+       "tokens.remaining": "{count, plural, one {# token left} other {# tokens left}}"
+     }
+     ```
+
+---
+
+### D. UI layout and design for translations
+
+1. **Text expansion**
+
+   * Plan for **30–50% longer** text in some languages (e.g., German, Russian).
+   * Don’t hard-code fixed widths that break when strings get longer.
+   * Card components should handle multi-line titles and descriptions gracefully.
+
+2. **Avoid text baked into images**
+
+   * Do not put words into static images or icons. If there must be text-like visuals:
+
+     * Either keep them language-neutral (symbols, diagrams).
+     * Or allow swapping the asset per locale.
+
+3. **Support Right-to-Left (RTL) later**
+
+   * Even if we don’t ship RTL initially, don’t design in a way that fundamentally blocks it:
+
+     * Use logical properties (`margin-inline-start` instead of `margin-left` where reasonable).
+     * Avoid iconography that assumes left→right flow unless you’re prepared to mirror it.
+
+4. **Line breaks & truncation**
+
+   * Avoid manual `\n`-based line breaks in translations; let the text wrap naturally.
+   * If truncation is necessary (e.g., for very long archetype names), use ellipsis and tooltip, and keep truncation logic locale-aware.
+
+---
+
+### E. Metric labels, buttons, and system messages
+
+1. **Metrics & labels must be translatable**
+
+   * Meter labels (`Visibility & Insight`, `Efficiency & Throughput`, etc.), tooltips explaining each meter, and any hint text must all go through i18n.
+
+   Example:
+
+   ```json
+   {
+     "metrics.visibility.label": "Visibility & Insight",
+     "metrics.visibility.tooltip": "How clearly you can see what is happening in your operations in real time."
+   }
+   ```
+
+2. **Buttons and navigation**
+
+   * All core controls:
+
+     * `Start`, `Run My Plan`, `Next Round`, `Replay`, `Back`, `Skip`, etc. must be keyed in the i18n system.
+   * Do not rely on icons alone; pair them with localizable labels for clarity.
+
+3. **Error messages / fallback text**
+
+   * Any fallback or error (e.g., “Something went wrong, please reload”) must also be localizable.
+
+---
+
+### F. Scoring & archetypes
+
+1. **Archetype names & blurbs are translatable entities**
+
+   * Archetype name and description are just keys:
+
+     ```json
+     {
+       "archetype.sustainabilityChampion.title": "Sustainability Champion",
+       "archetype.sustainabilityChampion.description": "You prioritized energy and emissions reductions, even if it meant slower gains in efficiency or visibility."
+     }
+     ```
+
+2. **No English in logic**
+
+   * The logic for determining archetypes should operate purely on numeric metrics and IDs (e.g., `"SUSTAINABILITY_CHAMPION"`), not on English labels.
+
+3. **Reflection prompts**
+
+   * Reflection questions on the summary screen (“If you replayed, what would you prioritize differently?”) should be localized and pulled from the i18n layer, not embedded in code.
+
+---
+
+### G. Data model for multiple locales
+
+1. **Locale switch**
+
+   * The app should have a clear concept of `currentLocale` (e.g., `"en"`, `"es"`, `"fr"`, etc.) that governs:
+
+     * Which language files are loaded.
+     * Any locale-sensitive formatting (numbers, dates, etc., if used).
+
+2. **Lazy loading (optional but ideal)**
+
+   * For performance, you can lazily load locale-specific bundles when a user chooses a new language (or when the host platform tells you what language to use).
+
+3. **Stable IDs**
+
+   * Never change the IDs (keys) in code once they’re in use; only change the strings in translation files. This prevents breaking translations.
+
+---
+
+### H. Testing for internationalization
+
+Before we call it “localization-ready,” we should:
+
+1. **Run with a pseudo-locale**
+
+   * Use a fake locale (e.g., `en-X`) that:
+
+     * Wraps every string in brackets.
+     * Adds extra characters.
+     * Expands length.
+   * This flushes out hard-coded English and layout issues.
+
+2. **Simulate long strings**
+
+   * Manually put exaggeratedly long text into a few labels and card descriptions to ensure the layout behaves.
+
+3. **Check that no English appears if the language file is swapped**
+
+   * Switch language files and verify that every visible string changes. Any leftover English is likely a hard-coded string.
+
+---
+
+### I. What this means for day-to-day coding
+
+Concrete rules for you as you build:
+
+1. **Never write user-facing English inside JSX/HTML**
+
+   * Instead of:
+
+     ```jsx
+     <button>Run My Plan</button>
+     ```
+
+     Use:
+
+     ```jsx
+     <button>{t("button.runPlan")}</button>
+     ```
+
+2. **Never store English directly in card definitions**
+
+   * Card configs reference keys; language files provide actual text.
+
+3. **When designing new features, ask:**
+
+   * “What strings does this feature show?”
+   * “What IDs should I give them?”
+   * “Where will they live in the language JSON?”
+
+4. **Document new keys**
+
+   * Keep language files ordered and namespaced (`game.`, `cards.`, `metrics.`, `feedback.`, `archetype.`, etc.) so it’s obvious where a translator should look.
+
+---
+
+### J. Summary for the developer
+
+* Treat **every piece of visible text** as something that will eventually be translated.
+* Use a **proper i18n library** and **resource files from day one**.
+* Keep **logic and content separated**:
+
+  * Logic works with IDs and numbers.
+  * Content lives in language files and card configs.
+* Design UI components to be resilient to **longer strings** and **different word orders**.
+
+If we follow these rules, localizing into new languages later becomes “swap in new JSON files” rather than “surgery on the codebase.”
+
+---
+
+**Confidence**
+
+* **High confidence**: The structural guidance here (externalized strings, templated messages, card content separation, i18n library use) is sufficient for building a translation-ready v1.
+* **Medium confidence**: Exact library choice and pseudo-locale/testing approach may vary slightly depending on your stack and existing tooling, but the principles remain valid.

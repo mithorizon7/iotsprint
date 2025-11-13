@@ -1,0 +1,412 @@
+Here’s something you can drop straight into an email/issue for your developer.
+
+---
+
+## Project Brief: IoT Strategy Sprint – 5–10 Minute Learning Game
+
+### 1. What we’re trying to do (in plain English)
+
+We’re building a **short, fast, replayable web game** that teaches non-technical professionals the *practical* basics of the Internet of Things (IoT).
+
+Learners:
+
+* Are **not** IT/engineering people.
+* Will only have seen **four short articles** on IoT before playing (we’ll give you the text).
+* Need to walk away with an intuitive sense of:
+
+  * “**When should I use IoT for this kind of problem?**”
+  * “**What type of IoT solution fits what type of goal?**”
+  * “**What are the tradeoffs if I add more IoT everywhere?**”
+
+The game should feel like a **quick strategy sprint**: you make decisions for a fictional organization, spend a small “IoT budget,” and see how your choices affect different metrics (efficiency, sustainability, risk, etc.). There is no single “right answer,” only **different tradeoff profiles and open-ended optimization**.
+
+Target playtime: **5–10 minutes per run.**
+
+---
+
+### 2. Audience & context
+
+* **Audience**: Adult professionals from various fields (business, government, etc.), many with **zero technical background**.
+* **Prior knowledge**: Only these four readings:
+
+  1. A basic “What is IoT?” explainer (sense → connect → process → act).
+  2. IoT benefits and examples across sectors (manufacturing, logistics, health, etc.).
+  3. IoT for sustainability (energy, emissions, water, ecosystems, agriculture).
+  4. IoT in warehouse logistics (tags, anchors, movement tracking).
+* **Environment**: Runs in a browser, embedded in our broader training. Should be:
+
+  * Lightweight (no heavy backend dependency for v1).
+  * Easy to translate into other languages (no hard-coded strings in components).
+
+You should assume the learner **just finished** those readings and is now playing to *apply* what they saw.
+
+---
+
+### 3. Learning objectives (what “success” looks like)
+
+After playing once or twice, a learner should be able to:
+
+1. **Explain IoT at a conceptual process level**, not as “gadgets”:
+
+   * “We put sensors on things, send the data, analyze it, and then act on it automatically or with better decisions.”
+
+2. **Recognize core “moves” of IoT** and match them to goals:
+
+   * Use IoT for **visibility** into remote/complex systems.
+   * Use IoT to **streamline** processes and reduce manual checks.
+   * Use IoT to improve **sustainability** (energy, water, emissions).
+   * Use IoT for **early warning and predictive maintenance** (catching problems before they blow up).
+
+3. **Match concrete examples to those moves**:
+
+   * Digital twin of a plant/grid/water system.
+   * Smart tools on a factory line.
+   * Warehouse tags tracking pallets and forklifts.
+   * Building energy sensors, emissions leak detection, smart irrigation, wildlife monitors, etc.
+
+4. **See tradeoffs**:
+
+   * Adding more devices usually boosts visibility and control, but also raises **complexity and security risk**.
+   * Focusing only on efficiency may leave you blind to sustainability or early warnings, and vice versa.
+
+5. **Describe a simple IoT strategy for a scenario** in their own words:
+
+   * “For a warehouse with lots of forklift idling and lost pallets, I’d use location tags and a live map because it helps us see bottlenecks and reduce waste.”
+
+We care more about **intuition + vocabulary** than technical depth.
+
+---
+
+### 4. Core game concept
+
+#### High-level concept
+
+* Working title: **“IoT Strategy Sprint”**.
+* Player role: **Director of IoT Strategy** for a fictional organization (“BrightWorks Operations” or similar).
+* The organization includes:
+
+  * A factory/warehouse.
+  * Buildings/campus.
+  * Surrounding environment with water and ecosystems.
+* Over **3 short rounds (Year 1, 2, 3)**, the player:
+
+  1. Gets a limited number of **IoT tokens** to invest.
+  2. Allocates tokens across several **IoT initiative cards** (each card is a specific use case from the articles).
+  3. Clicks a button (“Run My Plan”) and sees the impact on a set of metrics.
+  4. Gets short, plain-language feedback that:
+
+     * Names the pattern (“visibility,” “sustainability,” etc.).
+     * Ties back to one of the article examples.
+     * Highlights tradeoffs (e.g., “great energy gains, complexity creeping up”).
+
+No win/lose screen; instead, we give them a **strategy profile** at the end (e.g., “Sustainability Champion,” “Efficiency-First Optimizer,” “Balanced Architect,” “Over-Connected Risk-Taker”).
+
+#### Rounds & pacing
+
+* **Round 0: Onboarding (≤ 1 minute)**
+
+  * One short explanation screen:
+
+    * Simple diagram of IoT: *sense → share → analyze → act*.
+    * Brief text: “You’ll choose IoT initiatives, see how they change your organization, and learn about the tradeoffs.”
+  * Show starting metrics (see below).
+  * Give starting IoT tokens (e.g., 10).
+
+* **Round 1 (Year 1)**
+
+  * Show 6–8 IoT initiative cards (see section 5).
+  * Player allocates 0–3 tokens per card using sliders or +/- buttons.
+  * On “Run My Plan”:
+
+    * Update metrics (with short animation).
+    * Show 2–4 lines of feedback.
+  * Time: ~2–3 minutes max.
+
+* **Round 2 (Year 2)**
+
+  * Show a small event summary (“Growing pains” / new demands) influenced by their previous choices, e.g.:
+
+    * “Inspectors are asking for more data about water usage.”
+    * “You’re still seeing forklift congestion and idling.”
+    * “Energy use is down, but your IoT devices are getting hard to manage.”
+  * Unlock 2–3 **new cards** (e.g., emissions leak detection, water infrastructure monitoring, or security hardening).
+  * Give 5 new tokens; allow them to **reallocate** some existing tokens (e.g., move up to 50% of previous allocations).
+  * Run plan again, update metrics and feedback.
+
+* **Round 3 (Year 3)**
+
+  * Another short event summary, possibly hinting at:
+
+    * Security/complexity issues if risk is high.
+    * Missed opportunities (e.g., no early warning for equipment).
+  * New tokens, final reallocation.
+  * Final run → metrics + summary + strategy profile.
+
+* **Final Debrief (~1 minute)**
+
+  * Show final metric values.
+  * Show a strategy archetype label.
+  * Provide short textual debrief:
+
+    * What they prioritized.
+    * Where they left potential benefits.
+    * Suggestions for how they might replay with a different focus.
+
+Total playtime: **~5–10 minutes**.
+
+---
+
+### 5. Game state & scoring model
+
+We can keep everything client-side in v1.
+
+#### State variables
+
+Five main metrics (0–100):
+
+* `visibility_insight` – How well they can “see” what’s going on.
+* `efficiency_throughput` – How smoothly operations/logistics run.
+* `sustainability_emissions` – Energy, emissions, and resource use.
+* `early_warning_prevention` – Ability to detect and prevent problems early.
+* `complexity_risk` – Operational + security risk from IoT sprawl (higher is worse).
+
+Additionally:
+
+* `tokens_available` – Budget per round.
+* `allocations[cardId]` – How many tokens assigned to each card.
+
+Initialize (example):
+
+* Visibility: 25
+* Efficiency: 30
+* Sustainability: 30
+* Early Warning: 20
+* Complexity/Risk: 20
+
+Clamp all metrics to [0, 100].
+
+#### IoT initiative cards (content model)
+
+Each **card** is a specific IoT use case drawn from the four articles (digital twins, smart tools, warehouse tags, building sensors, emissions detection, water monitoring, etc.).
+
+We want the card content **fully externalized** for translation and easy iteration.
+
+**Example schema:**
+
+```json
+{
+  "id": "warehouse_flow_tracking",
+  "title": "Warehouse Flow Tracking",
+  "shortDescription": "Tags on pallets, forklifts, and workers show where goods are getting stuck and where vehicles idle too long.",
+  "whenToUse": "Use when you need to spot bottlenecks and reduce idling in warehouses or factories.",
+  "category": "streamlining",
+  "roundsAvailable": [1, 2, 3],
+  "unlockCondition": null,
+  "perTokenEffects": {
+    "visibility_insight": 4,
+    "efficiency_throughput": 4,
+    "sustainability_emissions": 2,
+    "early_warning_prevention": 2,
+    "complexity_risk": 3
+  },
+  "articleReference": "warehouse_logistics_article"
+}
+```
+
+Mechanics:
+
+* On “Run My Plan,” compute:
+
+```ts
+for each card:
+  let t = allocations[card.id]; // tokens invested
+  visibility_insight      += t * perTokenEffects.visibility_insight;
+  efficiency_throughput   += t * perTokenEffects.efficiency_throughput;
+  sustainability_emissions+= t * perTokenEffects.sustainability_emissions;
+  early_warning_prevention+= t * perTokenEffects.early_warning_prevention;
+  complexity_risk         += t * perTokenEffects.complexity_risk;
+```
+
+* Optionally implement **diminishing returns** after 3 tokens per card (e.g., halve effects after the 3rd token).
+* Optionally add a small global +complexity bump if total tokens across all cards exceeds a threshold (representing general IoT sprawl).
+
+#### Final scoring & archetypes
+
+Rather than a single “score,” we derive:
+
+* `score_visibility = visibility_insight`
+* `score_efficiency = efficiency_throughput`
+* `score_sustainability = sustainability_emissions`
+* `score_resilience = max(0, early_warning_prevention - 0.5 * complexity_risk)`
+* `score_overall = rounded average of the above`
+
+We then classify the player into a simple archetype based on the **relative differences** among the scores, e.g.:
+
+* High sustainability, medium everything else → “Sustainability Champion”
+* High efficiency, low sustainability → “Throughput-First Optimizer”
+* High early_warning, moderate others, low complexity → “Resilience Architect”
+* High complexity, low early_warning → “Over-Connected Risk-Taker”
+* All reasonably high, complexity moderate → “Balanced IoT Architect”
+
+This classification logic can live in a small function that takes the final metrics and returns an archetype ID plus text.
+
+---
+
+### 6. UX & copy guidelines
+
+We care a lot about clarity for non-technical users.
+
+**Tone & language:**
+
+* Short, concrete, no jargon.
+
+  * Say: “Sensors on machines send data so you can see energy waste.”
+  * Not: “Edge telemetry flows into a cloud-based analytics pipeline.”
+* Each card: limit to **2–3 sentences** plus a one-sentence “When to use.”
+* Optional `More info` / tooltip for people who want details.
+
+**Screens (minimum set):**
+
+1. **Intro screen**
+
+   * One simple diagram + one paragraph: what IoT is + what they’ll do.
+   * “Start” button.
+
+2. **Round screen**
+
+   * Metrics panel (the five bars).
+   * IoT token counter and instructions (“Drag your tokens onto the cards” or “Use +/- to allocate tokens”).
+   * Card grid or list.
+   * Action button: “Run My Plan”.
+
+3. **Round feedback panel (can be part of same screen)**
+
+   * Updated metrics (bars animate from old value to new value).
+   * 3–4 lines of feedback, including:
+
+     * Pattern names: “You used IoT for visibility / sustainability / early warning.”
+     * Explicit tradeoff callouts: “Complexity is rising faster than early-warning improvements.”
+     * References to the article examples in non-academic style.
+
+4. **Final summary screen**
+
+   * Final metrics.
+   * Archetype label + short explanation.
+   * A very short reflection prompt: “If you replayed, what would you prioritize differently?”
+
+**Accessibility & basic design constraints:**
+
+* Keyboard navigable.
+* Clear focus states.
+* High contrast colors for the metrics and text.
+* All copy should be centrally managed for later localization.
+
+We can give you brand colors / theme guidance separately; for now, design something clean and minimal that we can skin later.
+
+---
+
+### 7. Implementation notes
+
+**Tech stack (suggested, not mandatory):**
+
+* Modern front-end framework (React or similar).
+* Single-page component that can be embedded in our training platform.
+* State held client-side; no backend needed for game logic in v1.
+
+**Data/config driven:**
+
+* **All** textual content (card titles, descriptions, feedback templates, archetype names, etc.) should live in external JSON or similar config, not hard-coded.
+* This is key so we can:
+
+  * Edit content without code changes.
+  * Translate strings easily (i18n).
+  * Swap/rotate card sets.
+
+**Feedback generation:**
+
+We’d like feedback to be semi-templated, so that it’s maintainable:
+
+* You can use a small set of **feedback templates** keyed by:
+
+  * Which metrics changed substantially (e.g., +10 sustainability, +8 complexity).
+  * Which categories of cards got tokens (visibility, streamlining, sustainability, early warning, security).
+
+Example:
+
+```json
+{
+  "id": "high_sustainability_high_complexity",
+  "conditions": {
+    "sustainability_emissions_delta_min": 10,
+    "complexity_risk_delta_min": 5
+  },
+  "text": "You made big gains in sustainability by connecting more assets, but you also increased complexity and risk. Next time, consider investing some tokens in simplifying or securing your IoT setup."
+}
+```
+
+At runtime, you match the player’s deltas to a small number of templates.
+
+**Analytics (nice-to-have for later):**
+
+* Track anonymous statistics:
+
+  * How many times people replay.
+  * Common archetype outcomes.
+  * Average final metric profiles.
+* This could help us refine tuning, but is not required for v1.
+
+---
+
+### 8. Localization & future-proofing
+
+We will eventually run this with multiple languages. Please:
+
+* Avoid string concatenation with variables in the middle of sentences when possible; use templated strings (`"{name} did X"`).
+* Keep all text in a **single translation layer** (JSON/i18n file).
+* Do not bake language into component names or IDs.
+* Assume right-to-left layouts might be needed later (so avoid layout assumptions that break in RTL).
+
+---
+
+### 9. Definition of done (for v1)
+
+We’ll consider v1 “done” when:
+
+1. A user with **no IT background** can:
+
+   * Complete a run in **under 10 minutes** without external help.
+   * Explain in their own words at least one IoT strategy they tried.
+
+2. The game:
+
+   * Runs in a browser as a self-contained component.
+   * Uses config-driven cards and copy.
+   * Shows understandable changes in the 5 metrics after each round.
+   * Produces a final archetype with a plausible explanation.
+
+3. The code:
+
+   * Has a clear separation between logic (state/metrics) and content (strings/card definitions).
+   * Is reasonably easy to skin (CSS/Theme) and localize.
+
+---
+
+### 10. What you *don’t* have to do
+
+* You do **not** need to implement:
+
+  * Low-level IoT tech details (protocols, networks, etc.).
+  * Complex animations/graphics beyond basic transitions.
+  * Backend storage (unless we later decide we need persistence).
+* You do **not** need to invent example scenarios; we’ll supply or approve all card copy and labels derived from the four readings.
+
+---
+
+If anything is unclear or you see a simpler way to implement the same learning behavior (short, replayable, tradeoff-focused, config-driven), propose it — the pedagogy (using IoT “moves” and tradeoffs) is more important than any one specific mechanic.
+
+---
+
+**Confidence check**
+
+* I’m **highly confident** this brief accurately captures the educational intent, game loop, and constraints we talked about.
+* I’m **moderately confident** about the exact numeric tuning of metric effects and thresholds; we should expect to tweak numbers once you have a working prototype and we can playtest it.
