@@ -16,10 +16,11 @@ interface RoundHistory {
 interface FinalSummaryProps {
   metrics: GameMetrics;
   roundHistory?: RoundHistory[];
+  finalAllocations?: Record<string, number>;
   onReplay: () => void;
 }
 
-export function FinalSummary({ metrics, roundHistory = [], onReplay }: FinalSummaryProps) {
+export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}, onReplay }: FinalSummaryProps) {
   const { t } = useTranslation();
 
   const archetypeId = classifyArchetype(metrics);
@@ -42,12 +43,8 @@ export function FinalSummary({ metrics, roundHistory = [], onReplay }: FinalSumm
     healthMonitoring: 'Health Tech',
   };
 
-  // Get final allocations from the last round (reflects player's end-state strategy)
-  const finalAllocations = roundHistory.length > 0 
-    ? roundHistory[roundHistory.length - 1].allocations 
-    : {};
-
-  const topInvestments = Object.entries(finalAllocations)
+  // Use the explicitly passed final allocations (true end state after all rounds)
+  const topInvestments = Object.entries(finalAllocations || {})
     .filter(([, tokens]) => tokens > 0)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5)

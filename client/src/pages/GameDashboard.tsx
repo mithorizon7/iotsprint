@@ -17,7 +17,7 @@ interface RoundHistory {
 }
 
 interface GameDashboardProps {
-  onComplete: (metrics: GameMetrics, roundHistory: RoundHistory[]) => void;
+  onComplete: (metrics: GameMetrics, roundHistory: RoundHistory[], finalAllocations: Record<string, number>) => void;
 }
 
 export function GameDashboard({ onComplete }: GameDashboardProps) {
@@ -56,7 +56,8 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
     // Check if we've completed all 3 rounds
     if (gameState.roundHistory.length === 3) {
       // All rounds complete, show final summary
-      onComplete(gameState.metrics, gameState.roundHistory);
+      // Pass final allocations (current state after Round 3)
+      onComplete(gameState.metrics, gameState.roundHistory, gameState.allocations);
     } else {
       // Move to next round
       nextRound();
