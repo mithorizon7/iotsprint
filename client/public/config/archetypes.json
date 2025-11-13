@@ -1,0 +1,38 @@
+[
+  {
+    "id": "EFFICIENCY_FIRST",
+    "titleKey": "archetypes.EFFICIENCY_FIRST.title",
+    "descriptionKey": "archetypes.EFFICIENCY_FIRST.description",
+    "suggestionsKey": "archetypes.EFFICIENCY_FIRST.suggestions"
+  },
+  {
+    "id": "SUSTAINABILITY_CHAMPION",
+    "titleKey": "archetypes.SUSTAINABILITY_CHAMPION.title",
+    "descriptionKey": "archetypes.SUSTAINABILITY_CHAMPION.description",
+    "suggestionsKey": "archetypes.SUSTAINABILITY_CHAMPION.suggestions"
+  },
+  {
+    "id": "BALANCED_ARCHITECT",
+    "titleKey": "archetypes.BALANCED_ARCHITECT.title",
+    "descriptionKey": "archetypes.BALANCED_ARCHITECT.description",
+    "suggestionsKey": "archetypes.BALANCED_ARCHITECT.suggestions"
+  },
+  {
+    "id": "OVER_CONNECTED_RISK_TAKER",
+    "titleKey": "archetypes.OVER_CONNECTED_RISK_TAKER.title",
+    "descriptionKey": "archetypes.OVER_CONNECTED_RISK_TAKER.description",
+    "suggestionsKey": "archetypes.OVER_CONNECTED_RISK_TAKER.suggestions"
+  },
+  {
+    "id": "EARLY_WARNING_GUARDIAN",
+    "titleKey": "archetypes.EARLY_WARNING_GUARDIAN.title",
+    "descriptionKey": "archetypes.EARLY_WARNING_GUARDIAN.description",
+    "suggestionsKey": "archetypes.EARLY_WARNING_GUARDIAN.suggestions"
+  },
+  {
+    "id": "VISIBILITY_FOCUSED",
+    "titleKey": "archetypes.VISIBILITY_FOCUSED.title",
+    "descriptionKey": "archetypes.VISIBILITY_FOCUSED.description",
+    "suggestionsKey": "archetypes.VISIBILITY_FOCUSED.suggestions"
+  }
+]

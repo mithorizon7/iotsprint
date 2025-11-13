@@ -1,0 +1,218 @@
+[
+  {
+    "id": "warehouseFlow",
+    "roundsAvailable": [1, 2, 3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 4,
+      "efficiency_throughput": 4,
+      "sustainability_emissions": 2,
+      "early_warning_prevention": 2,
+      "complexity_risk": 3
+    },
+    "category": "streamlining",
+    "copyKeys": {
+      "title": "cards.warehouseFlow.title",
+      "shortDescription": "cards.warehouseFlow.shortDescription",
+      "whenToUse": "cards.warehouseFlow.whenToUse"
+    }
+  },
+  {
+    "id": "smartTools",
+    "roundsAvailable": [1, 2, 3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 1,
+      "efficiency_throughput": 5,
+      "sustainability_emissions": 1,
+      "early_warning_prevention": 1,
+      "complexity_risk": 2
+    },
+    "category": "streamlining",
+    "copyKeys": {
+      "title": "cards.smartTools.title",
+      "shortDescription": "cards.smartTools.shortDescription",
+      "whenToUse": "cards.smartTools.whenToUse"
+    }
+  },
+  {
+    "id": "energyMonitoring",
+    "roundsAvailable": [1, 2, 3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 3,
+      "efficiency_throughput": 2,
+      "sustainability_emissions": 5,
+      "early_warning_prevention": 1,
+      "complexity_risk": 2
+    },
+    "category": "sustainability",
+    "copyKeys": {
+      "title": "cards.energyMonitoring.title",
+      "shortDescription": "cards.energyMonitoring.shortDescription",
+      "whenToUse": "cards.energyMonitoring.whenToUse"
+    }
+  },
+  {
+    "id": "smartBuilding",
+    "roundsAvailable": [1, 2, 3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 3,
+      "efficiency_throughput": 2,
+      "sustainability_emissions": 4,
+      "early_warning_prevention": 0,
+      "complexity_risk": 1
+    },
+    "category": "sustainability",
+    "copyKeys": {
+      "title": "cards.smartBuilding.title",
+      "shortDescription": "cards.smartBuilding.shortDescription",
+      "whenToUse": "cards.smartBuilding.whenToUse"
+    }
+  },
+  {
+    "id": "fleetOptimization",
+    "roundsAvailable": [1, 2, 3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 3,
+      "efficiency_throughput": 3,
+      "sustainability_emissions": 3,
+      "early_warning_prevention": 2,
+      "complexity_risk": 2
+    },
+    "category": "sustainability",
+    "copyKeys": {
+      "title": "cards.fleetOptimization.title",
+      "shortDescription": "cards.fleetOptimization.shortDescription",
+      "whenToUse": "cards.fleetOptimization.whenToUse"
+    }
+  },
+  {
+    "id": "predictiveMaintenance",
+    "roundsAvailable": [1, 2, 3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 3,
+      "efficiency_throughput": 2,
+      "sustainability_emissions": 2,
+      "early_warning_prevention": 5,
+      "complexity_risk": 2
+    },
+    "category": "early_warning",
+    "copyKeys": {
+      "title": "cards.predictiveMaintenance.title",
+      "shortDescription": "cards.predictiveMaintenance.shortDescription",
+      "whenToUse": "cards.predictiveMaintenance.whenToUse"
+    }
+  },
+  {
+    "id": "digitalTwin",
+    "roundsAvailable": [2, 3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 5,
+      "efficiency_throughput": 2,
+      "sustainability_emissions": 1,
+      "early_warning_prevention": 3,
+      "complexity_risk": 2
+    },
+    "category": "visibility",
+    "copyKeys": {
+      "title": "cards.digitalTwin.title",
+      "shortDescription": "cards.digitalTwin.shortDescription",
+      "whenToUse": "cards.digitalTwin.whenToUse"
+    }
+  },
+  {
+    "id": "emissionsDetection",
+    "roundsAvailable": [2, 3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 4,
+      "efficiency_throughput": 1,
+      "sustainability_emissions": 5,
+      "early_warning_prevention": 2,
+      "complexity_risk": 3
+    },
+    "category": "sustainability",
+    "copyKeys": {
+      "title": "cards.emissionsDetection.title",
+      "shortDescription": "cards.emissionsDetection.shortDescription",
+      "whenToUse": "cards.emissionsDetection.whenToUse"
+    }
+  },
+  {
+    "id": "waterMonitoring",
+    "roundsAvailable": [2, 3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 4,
+      "efficiency_throughput": 1,
+      "sustainability_emissions": 3,
+      "early_warning_prevention": 2,
+      "complexity_risk": 2
+    },
+    "category": "sustainability",
+    "copyKeys": {
+      "title": "cards.waterMonitoring.title",
+      "shortDescription": "cards.waterMonitoring.shortDescription",
+      "whenToUse": "cards.waterMonitoring.whenToUse"
+    }
+  },
+  {
+    "id": "gridSensors",
+    "roundsAvailable": [2, 3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 5,
+      "efficiency_throughput": 0,
+      "sustainability_emissions": 2,
+      "early_warning_prevention": 3,
+      "complexity_risk": 2
+    },
+    "category": "visibility",
+    "copyKeys": {
+      "title": "cards.gridSensors.title",
+      "shortDescription": "cards.gridSensors.shortDescription",
+      "whenToUse": "cards.gridSensors.whenToUse"
+    }
+  },
+  {
+    "id": "securityHardening",
+    "roundsAvailable": [2, 3],
+    "unlockCondition": "complexity_high",
+    "perTokenEffects": {
+      "visibility_insight": 1,
+      "efficiency_throughput": 0,
+      "sustainability_emissions": 0,
+      "early_warning_prevention": 2,
+      "complexity_risk": -5
+    },
+    "category": "security",
+    "copyKeys": {
+      "title": "cards.securityHardening.title",
+      "shortDescription": "cards.securityHardening.shortDescription",
+      "whenToUse": "cards.securityHardening.whenToUse"
+    }
+  },
+  {
+    "id": "healthMonitoring",
+    "roundsAvailable": [3],
+    "unlockCondition": null,
+    "perTokenEffects": {
+      "visibility_insight": 2,
+      "efficiency_throughput": 1,
+      "sustainability_emissions": 0,
+      "early_warning_prevention": 4,
+      "complexity_risk": 2
+    },
+    "category": "early_warning",
+    "copyKeys": {
+      "title": "cards.healthMonitoring.title",
+      "shortDescription": "cards.healthMonitoring.shortDescription",
+      "whenToUse": "cards.healthMonitoring.whenToUse"
+    }
+  }
+]

@@ -1,0 +1,207 @@
+{
+  "game": {
+    "title": "IoT Strategy Sprint",
+    "subtitle": "Learn IoT fundamentals through strategic decision-making"
+  },
+  "onboarding": {
+    "title": "Welcome to IoT Strategy Sprint",
+    "intro": "You are the Director of IoT Strategy for BrightWorks Operations. Your mission: use IoT to make the organization faster, greener, and safer—without creating complexity.",
+    "processTitle": "How IoT Works",
+    "processSteps": {
+      "sense": "Sense",
+      "senseDesc": "Devices collect data from the environment",
+      "share": "Share",
+      "shareDesc": "Data is transmitted across networks",
+      "process": "Process",
+      "processDesc": "Information is analyzed and interpreted",
+      "act": "Act",
+      "actDesc": "Systems respond based on insights"
+    },
+    "whatYouDo": "What You'll Do",
+    "whatYouDoDesc": "Over 3 years, you'll allocate IoT tokens to different initiatives. Watch how your choices affect key metrics and learn the tradeoffs involved in IoT strategy.",
+    "startButton": "Start Year 1"
+  },
+  "dashboard": {
+    "roundTitle": "Year {{round}}",
+    "tokensAvailable": "{{count}} token remaining",
+    "tokensAvailable_other": "{{count}} tokens remaining",
+    "instructions": "Allocate your tokens to IoT initiatives. Each card can receive 0-3 tokens.",
+    "runPlanButton": "Run My Plan",
+    "nextRoundButton": "Continue to Year {{round}}",
+    "viewSummaryButton": "View Final Results"
+  },
+  "metrics": {
+    "visibility": {
+      "label": "Visibility & Insight",
+      "tooltip": "How clearly you can see what is happening in your operations in real time"
+    },
+    "efficiency": {
+      "label": "Efficiency & Throughput",
+      "tooltip": "How smoothly operations and logistics run across your organization"
+    },
+    "sustainability": {
+      "label": "Sustainability & Emissions",
+      "tooltip": "Energy efficiency, emissions reductions, and resource conservation"
+    },
+    "earlyWarning": {
+      "label": "Early Warning & Prevention",
+      "tooltip": "Ability to detect and prevent problems before they escalate"
+    },
+    "complexity": {
+      "label": "Complexity & Security Risk",
+      "tooltip": "Operational complexity and cybersecurity vulnerabilities from IoT sprawl (lower is better)"
+    }
+  },
+  "cards": {
+    "warehouseFlow": {
+      "title": "Warehouse Flow Tracking",
+      "shortDescription": "Tags on pallets, forklifts, and workers show where goods are getting stuck and where vehicles idle too long.",
+      "whenToUse": "Use when you need to spot bottlenecks and reduce idling in warehouses or factories."
+    },
+    "smartTools": {
+      "title": "Smart Assembly Tools",
+      "shortDescription": "Connected power tools recognize parts automatically and set the right torque. Usage is logged automatically into your system.",
+      "whenToUse": "Use when manual checks are slow and mistakes are costly."
+    },
+    "energyMonitoring": {
+      "title": "Energy Monitoring Platform",
+      "shortDescription": "Sensors on every major machine track energy use. You can spot wasteful leaks and remotely power down unused equipment.",
+      "whenToUse": "Use when energy costs are high and you suspect hidden waste."
+    },
+    "smartBuilding": {
+      "title": "Smart Building Systems",
+      "shortDescription": "Dense networks of sensors in lights and vents adjust lighting and heating room by room, minute by minute.",
+      "whenToUse": "Use when buildings are large, usage patterns vary, and you want energy savings without sacrificing comfort."
+    },
+    "fleetOptimization": {
+      "title": "Fleet & Vehicle Optimization",
+      "shortDescription": "Vehicles send data about idling, routes, and fuel use. A central service suggests smarter routes and maintenance schedules.",
+      "whenToUse": "Use when you run many vehicles and care about emissions and logistics."
+    },
+    "predictiveMaintenance": {
+      "title": "Predictive Maintenance",
+      "shortDescription": "Sensors on vehicles and equipment constantly monitor vibration, temperature, and pressure. AI flags issues before breakdowns.",
+      "whenToUse": "Use when equipment downtime is very expensive."
+    },
+    "digitalTwin": {
+      "title": "Digital Twin of Plant",
+      "shortDescription": "Sensors throughout your plant feed a real-time digital model. Engineers can test changes and train remotely before touching real equipment.",
+      "whenToUse": "Use when you want to see detailed status of a complex facility and experiment safely."
+    },
+    "emissionsDetection": {
+      "title": "Emissions Leak Detection",
+      "shortDescription": "Combine on-site sensors and satellite data to detect leaks quickly and reduce emissions.",
+      "whenToUse": "Use when emissions leaks are critical for regulators, brand, or climate goals."
+    },
+    "waterMonitoring": {
+      "title": "Water Infrastructure Monitoring",
+      "shortDescription": "Sensors embedded in water systems deliver real-time information about usage, quality, and early warning of leaks.",
+      "whenToUse": "Use when water conservation is a priority or regulatory compliance is required."
+    },
+    "gridSensors": {
+      "title": "Power Grid Sensors",
+      "shortDescription": "Add sensors to power lines to monitor load, ice, and vibrations. Data feeds a digital twin so you see where lines are near capacity.",
+      "whenToUse": "Use when you must understand stress and capacity across a large physical network."
+    },
+    "securityHardening": {
+      "title": "IoT Security Hardening",
+      "shortDescription": "Implement centralized monitoring, automatic updates, and network segmentation to reduce vulnerabilities in your IoT devices.",
+      "whenToUse": "Use when complexity and security risks are growing faster than your ability to manage them."
+    },
+    "healthMonitoring": {
+      "title": "Health & Safety Monitoring",
+      "shortDescription": "Wearable or handheld sensors track health signals and alert staff early so they can intervene.",
+      "whenToUse": "Use when worker safety or health monitoring is a priority."
+    }
+  },
+  "feedback": {
+    "highVisibility": "Your IoT investments gave you much better visibility into operations, similar to {{example}}. You can now see what's happening in real time.",
+    "highEfficiency": "Smart tools and tracking systems significantly improved efficiency, like the {{example}}. Operations are running smoother.",
+    "highSustainability": "Energy monitoring and optimization delivered strong sustainability gains, similar to {{example}}. Your environmental footprint is shrinking.",
+    "highEarlyWarning": "Predictive systems are catching problems early, like {{example}}. You're avoiding costly breakdowns.",
+    "highComplexity": "Your IoT network is growing complex. With {{deviceCount}}+ connected devices, security and management are becoming challenges.",
+    "complexityWarning": "Complexity is rising faster than your ability to secure and manage it. Consider investing in security hardening.",
+    "balancedGrowth": "You're taking a balanced approach, improving multiple areas without over-investing in any single dimension.",
+    "focusedStrategy": "You focused heavily on {{category}}. This paid off in that area, but you may have missed opportunities elsewhere.",
+    "diminishingReturns": "Some of your investments showed diminishing returns. Spreading tokens more strategically might yield better results.",
+    "airbus": "Airbus smart tools",
+    "logidot": "Logidot warehouse tracking",
+    "bosch": "Bosch Energy Platform",
+    "att": "AT&T building sensors",
+    "rioTinto": "Rio Tinto predictive maintenance",
+    "siemens": "Siemens digital twin",
+    "marathon": "Marathon Oil emissions detection",
+    "seattle": "Seattle dam monitoring"
+  },
+  "events": {
+    "round2": {
+      "highComplexity": "Your IoT devices are getting hard to manage. Security concerns are emerging.",
+      "lowEfficiency": "Forklift idling remains high. Workers complain about warehouse congestion.",
+      "lowSustainability": "Regulators are asking for more emissions data and improvement plans.",
+      "lowEarlyWarning": "Equipment failures are still catching you by surprise.",
+      "general": "Leadership wants to see continued progress. New initiatives are now available."
+    },
+    "round3": {
+      "highRisk": "Security audits revealed vulnerabilities in your IoT network. Consider hardening measures.",
+      "overIoT": "You're monitoring at the level of every component. That's a lot of data to secure and manage.",
+      "nearTarget": "You're close to your goals. Fine-tune your strategy for maximum impact.",
+      "general": "Final year to optimize your IoT strategy before the board review."
+    }
+  },
+  "archetypes": {
+    "EFFICIENCY_FIRST": {
+      "title": "Efficiency-First Optimizer",
+      "description": "You prioritized throughput and operational efficiency above all else. Your organization runs like a well-oiled machine, but you may have missed opportunities in sustainability and early warning systems.",
+      "suggestions": "Next time, try balancing efficiency gains with environmental impact. Consider predictive maintenance to prevent disruptions."
+    },
+    "SUSTAINABILITY_CHAMPION": {
+      "title": "Sustainability Champion",
+      "description": "You prioritized energy efficiency and emissions reductions, even if it meant slower gains in other areas. Your environmental footprint is significantly reduced.",
+      "suggestions": "Consider how visibility and early warning systems could help you optimize further. Efficiency and sustainability often reinforce each other."
+    },
+    "BALANCED_ARCHITECT": {
+      "title": "Balanced IoT Architect",
+      "description": "You took a measured approach, improving multiple dimensions without over-investing in any single area. Your strategy is sustainable and well-rounded.",
+      "suggestions": "You demonstrated strong strategic thinking. Try pushing one dimension to excellence to see the full potential."
+    },
+    "OVER_CONNECTED_RISK_TAKER": {
+      "title": "Over-Connected Risk-Taker",
+      "description": "You deployed IoT aggressively across your organization, but complexity and security risks grew faster than your ability to manage them. You're collecting lots of data but may struggle to act on it safely.",
+      "suggestions": "Security hardening and strategic simplification would help. Sometimes less IoT, deployed more thoughtfully, delivers better results."
+    },
+    "EARLY_WARNING_GUARDIAN": {
+      "title": "Early-Warning Guardian",
+      "description": "You invested heavily in predictive systems and preventive monitoring. Your organization can now catch problems before they become crises, saving significant costs.",
+      "suggestions": "Strong choice for risk mitigation. Consider how visibility and efficiency initiatives could compound these benefits."
+    },
+    "VISIBILITY_FOCUSED": {
+      "title": "Visibility-Focused Strategist",
+      "description": "You prioritized seeing everything that's happening across your operations. Digital twins and monitoring give you unprecedented insight.",
+      "suggestions": "Excellent foundation. Now consider how to act on all that visibility—through automation, optimization, or predictive systems."
+    }
+  },
+  "summary": {
+    "title": "Your IoT Strategy: Complete",
+    "archetypeLabel": "Your Strategy Archetype",
+    "finalMetricsTitle": "Final Metrics",
+    "whatYouPrioritized": "What You Prioritized",
+    "whereYouLeftValue": "Opportunities You Might Have Missed",
+    "reflectionPrompt": "If you replayed, what would you prioritize differently?",
+    "replayButton": "Replay Game",
+    "exitButton": "Exit"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong. Please try again.",
+    "back": "Back",
+    "next": "Next",
+    "close": "Close",
+    "category": {
+      "visibility": "Visibility",
+      "streamlining": "Process Streamlining",
+      "sustainability": "Sustainability",
+      "early_warning": "Early Warning",
+      "security": "Security"
+    }
+  }
+}

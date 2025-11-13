@@ -1,0 +1,132 @@
+# IoT Strategy Sprint - Educational Game
+
+## Overview
+
+IoT Strategy Sprint is a 5-10 minute educational web game designed to teach non-technical professionals the fundamentals of the Internet of Things (IoT). Players take on the role of an "IoT program lead" at a fictional organization, making strategic resource allocation decisions across 3 rounds (years) to achieve different business and sustainability goals.
+
+The game teaches IoT concepts through practical application rather than technical explanations, helping learners understand when to apply different IoT solutions, what tradeoffs exist, and how to match IoT patterns to organizational goals. The experience is fully browser-based, replayable, and designed to work alongside four short educational articles about IoT fundamentals.
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+## System Architecture
+
+### Frontend Architecture
+
+**Framework**: React with TypeScript using Vite as the build tool
+
+**State Management**: Context-based game state management through `GameContext` that handles:
+- Round progression (3 rounds plus onboarding)
+- Token allocation mechanics (players allocate limited tokens to different IoT initiatives)
+- Metrics calculation and tracking across 5 dimensions (visibility, efficiency, sustainability, early warning, complexity/risk)
+- Round history for feedback and final scoring
+
+**UI Component System**: Shadcn/ui component library built on Radix UI primitives
+- Material Design 3 principles for visual hierarchy and interaction patterns
+- Tailwind CSS for styling with custom design tokens
+- Typography using Inter (primary) and JetBrains Mono (metrics)
+- Responsive layout with mobile-first approach
+
+**Routing**: Single-page application with three main screens:
+1. Onboarding (introduces game concept and IoT process flow)
+2. Game Dashboard (main gameplay with card selection and metric tracking)
+3. Final Summary (archetype classification and performance review)
+
+**Data-Driven Content**: All game content (IoT initiative cards, metrics, archetypes, text) is loaded from JSON configuration files to enable easy updates and future localization
+
+### Internationalization (i18n)
+
+**Translation Framework**: react-i18next with JSON resource files
+- All user-facing text stored in separate translation files (`/client/public/locales/en/translation.json`)
+- No hard-coded strings in components
+- Cards and content use key-based references to translation resources
+- Structure supports multiple languages without code changes
+
+### Game Mechanics
+
+**Content Model**:
+- **Cards**: IoT initiatives with configurable effects on metrics, round availability, and unlock conditions
+- **Metrics**: Five tracked dimensions that respond to player choices
+- **Archetypes**: Six personality profiles based on final metric distributions (Efficiency First, Sustainability Champion, Balanced Architect, etc.)
+- **Tokens**: Limited resource (10 tokens per round) forcing strategic prioritization
+
+**Token System**:
+- Each round provides 10 fresh tokens (no carryover between rounds)
+- Players allocate 0-3 tokens per initiative card
+- Diminishing returns: Tokens 4+ on the same card have 50% effectiveness
+- IoT Sprawl Penalty: Using >8 tokens in a round increases complexity/risk (+3 per extra token)
+
+**Unlock Conditions**:
+- Security Hardening card unlocks when Complexity & Risk metric reaches 40+
+- Demonstrates dynamic content based on player choices
+
+**Scoring System**: Multi-dimensional, open-ended scoring with no single "correct" answer. Success measured across visibility, efficiency, sustainability, early warning capability, and complexity risk.
+
+### Backend Architecture
+
+**Server**: Express.js with TypeScript
+- Minimal backend for development server
+- Static file serving for production build
+- Vite middleware integration for HMR during development
+
+**Storage**: In-memory storage implementation (`MemStorage`)
+- Currently unused but scaffolded for potential future features (user accounts, progress tracking)
+- Interface designed for easy swap to database implementation
+
+**Database Schema**: Drizzle ORM configured for PostgreSQL
+- Schema defined but not actively used in current game implementation
+- User model exists for potential authentication features
+- Database configuration ready via `DATABASE_URL` environment variable
+
+### Application Flow
+
+1. **Onboarding**: Player learns IoT fundamentals (sense → share → process → act) and game objectives
+2. **Round Loop** (3 iterations):
+   - View available IoT initiative cards filtered by round and unlock conditions
+   - Allocate tokens (limited budget) to selected initiatives
+   - Run plan and see metric changes with contextual feedback
+   - Review round results with explanations tying back to real IoT examples
+3. **Final Summary**: Archetype classification based on total metrics, strengths/weaknesses analysis, strategic suggestions
+
+### Build and Development
+
+**Development**: Vite dev server with HMR, React Fast Refresh
+**Production Build**: 
+- Client: Vite build outputting to `dist/public`
+- Server: esbuild bundle outputting to `dist`
+- Combined deployment serves static files from Express
+
+**TypeScript Configuration**: Strict mode enabled with path aliases for clean imports (`@/`, `@shared/`)
+
+## External Dependencies
+
+### UI Framework
+- **Radix UI**: Unstyled, accessible component primitives (dialogs, popovers, tooltips, etc.)
+- **Tailwind CSS**: Utility-first CSS framework with custom configuration
+- **Shadcn/ui**: Pre-built component library following Material Design 3 patterns
+
+### State and Data
+- **React Query (@tanstack/react-query)**: Server state management (minimal use, scaffolded for future API features)
+- **React Hook Form**: Form state management with Zod validation
+- **date-fns**: Date manipulation utilities
+
+### Internationalization
+- **i18next + react-i18next**: Translation framework for multi-language support
+
+### Database (Configured but Not Active)
+- **Drizzle ORM**: TypeScript ORM for PostgreSQL
+- **@neondatabase/serverless**: Serverless PostgreSQL driver for Neon
+- Database currently not used in game logic but ready for user accounts/progress tracking
+
+### Development Tools
+- **Vite**: Build tool and dev server
+- **esbuild**: Production server bundling
+- **TypeScript**: Type safety across client and server
+- **Replit plugins**: Development banner, error overlay, cartographer (for Replit environment)
+
+### Fonts
+- **Google Fonts CDN**: Inter (primary typography), JetBrains Mono (metric values)
+
+### Session Management (Configured but Unused)
+- **express-session + connect-pg-simple**: Session middleware ready for authentication features

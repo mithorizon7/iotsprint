@@ -1,0 +1,56 @@
+import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
+import { IoTProcessDiagram } from '@/components/IoTProcessDiagram';
+
+interface OnboardingScreenProps {
+  onStart: () => void;
+}
+
+export function OnboardingScreen({ onStart }: OnboardingScreenProps) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="w-full max-w-5xl mx-auto space-y-12">
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight" data-testid="text-game-title">
+            {t('game.title')}
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto" data-testid="text-game-subtitle">
+            {t('game.subtitle')}
+          </p>
+        </div>
+
+        <div className="bg-card border border-card-border rounded-lg p-8 space-y-6">
+          <div className="prose prose-sm max-w-none">
+            <p className="text-base leading-relaxed" data-testid="text-intro">
+              {t('onboarding.intro')}
+            </p>
+          </div>
+
+          <IoTProcessDiagram />
+
+          <div className="pt-6 border-t border-card-border space-y-4">
+            <h3 className="text-lg font-semibold" data-testid="text-what-you-do">
+              {t('onboarding.whatYouDo')}
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed" data-testid="text-what-you-do-desc">
+              {t('onboarding.whatYouDoDesc')}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <Button
+            size="lg"
+            onClick={onStart}
+            className="px-8 text-base"
+            data-testid="button-start"
+          >
+            {t('onboarding.startButton')}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
