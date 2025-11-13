@@ -10,8 +10,14 @@ import { GameMetrics } from '@shared/schema';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Info } from 'lucide-react';
 
+interface RoundHistory {
+  round: number;
+  allocations: Record<string, number>;
+  metricsAfter: GameMetrics;
+}
+
 interface GameDashboardProps {
-  onComplete: (metrics: GameMetrics) => void;
+  onComplete: (metrics: GameMetrics, roundHistory: RoundHistory[]) => void;
 }
 
 export function GameDashboard({ onComplete }: GameDashboardProps) {
@@ -22,6 +28,21 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
 
   const tokensUsed = Object.values(gameState.allocations).reduce((sum, t) => sum + t, 0);
   const tokensRemaining = gameState.tokensAvailable - tokensUsed;
+
+  // Calculate actual carryover tokens from previous round (50% of previous allocations)
+  const previousRoundAllocations = gameState.roundHistory.length > 0
+    ? gameState.roundHistory[gameState.roundHistory.length - 1].allocations
+    : {};
+  const carryoverTokens = gameState.currentRound > 1
+    ? Object.values(previousRoundAllocations).reduce((sum, t) => sum + Math.floor(t * 0.5), 0)
+    : 0;
+  
+  const baseTokens = gameState.currentRound === 1 
+    ? 10 
+    : 5;
+  const newTokensThisRound = gameState.currentRound > 1 
+    ? baseTokens 
+    : 0;
 
   const handleRunPlan = () => {
     setPreviousMetrics(gameState.metrics);
@@ -35,7 +56,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
     // Check if we've completed all 3 rounds
     if (gameState.roundHistory.length === 3) {
       // All rounds complete, show final summary
-      onComplete(gameState.metrics);
+      onComplete(gameState.metrics, gameState.roundHistory);
     } else {
       // Move to next round
       nextRound();
@@ -114,14 +135,21 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
             <h2 className="text-2xl font-bold" data-testid="text-round-title">
               {t('dashboard.roundTitle', { round: gameState.currentRound })}
             </h2>
-            <div className="flex items-center gap-2">
-              <Coins className="w-5 h-5 text-primary" />
-              <span className="text-lg font-mono font-bold" data-testid="text-tokens-remaining">
-                {tokensRemaining}
-              </span>
-              <span className="text-sm text-muted-foreground">
-                {t('dashboard.tokensAvailable', { count: tokensRemaining })}
-              </span>
+            <div className="flex flex-col items-end gap-1">
+              <div className="flex items-center gap-2">
+                <Coins className="w-5 h-5 text-primary" />
+                <span className="text-lg font-mono font-bold" data-testid="text-tokens-remaining">
+                  {tokensRemaining}
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  {t('dashboard.tokensAvailable', { count: tokensRemaining })}
+                </span>
+              </div>
+              {gameState.currentRound > 1 && (
+                <div className="text-xs text-muted-foreground" data-testid="text-token-breakdown">
+                  {carryoverTokens} reallocatable + {newTokensThisRound} new = {gameState.tokensAvailable} total
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -153,6 +181,15 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
               <p className="text-sm text-muted-foreground" data-testid="text-instructions">
                 {t('dashboard.instructions')}
               </p>
+              {gameState.currentRound > 1 && (
+                <Alert className="mt-2" data-testid="alert-reallocation">
+                  <Info className="h-4 w-4" />
+                  <AlertDescription className="text-xs">
+                    <strong>Reallocation:</strong> Half of your previous investments are available to reallocate. 
+                    You also receive {newTokensThisRound} new tokens. Adjust your strategy based on your results.
+                  </AlertDescription>
+                </Alert>
+              )}
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">

@@ -76,20 +76,23 @@ function App() {
 function GameFlow() {
   const [gameState, setGameState] = useState<'onboarding' | 'playing' | 'summary'>('onboarding');
   const [finalMetrics, setFinalMetrics] = useState<any>(null);
+  const [finalRoundHistory, setFinalRoundHistory] = useState<any[]>([]);
   const { reset } = useGame();
 
   const handleStart = () => {
     setGameState('playing');
   };
 
-  const handleComplete = (metrics: any) => {
+  const handleComplete = (metrics: any, roundHistory: any[]) => {
     setFinalMetrics(metrics);
+    setFinalRoundHistory(roundHistory);
     setGameState('summary');
   };
 
   const handleReplay = () => {
     reset(); // Reset game state before going back to onboarding
     setFinalMetrics(null);
+    setFinalRoundHistory([]);
     setGameState('onboarding');
   };
 
@@ -101,7 +104,7 @@ function GameFlow() {
     return <GameDashboard onComplete={handleComplete} />;
   }
 
-  return <FinalSummary metrics={finalMetrics} onReplay={handleReplay} />;
+  return <FinalSummary metrics={finalMetrics} roundHistory={finalRoundHistory} onReplay={handleReplay} />;
 }
 
 export default App;

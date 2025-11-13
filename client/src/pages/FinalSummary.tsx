@@ -5,20 +5,58 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { classifyArchetype } from '@/lib/archetypes';
-import { Trophy, RotateCcw } from 'lucide-react';
+import { Trophy, RotateCcw, TrendingUp } from 'lucide-react';
+
+interface RoundHistory {
+  round: number;
+  allocations: Record<string, number>;
+  metricsAfter: GameMetrics;
+}
 
 interface FinalSummaryProps {
   metrics: GameMetrics;
+  roundHistory?: RoundHistory[];
   onReplay: () => void;
 }
 
-export function FinalSummary({ metrics, onReplay }: FinalSummaryProps) {
+export function FinalSummary({ metrics, roundHistory = [], onReplay }: FinalSummaryProps) {
   const { t } = useTranslation();
 
   const archetypeId = classifyArchetype(metrics);
   const archetypeTitle = t(`archetypes.${archetypeId}.title`);
   const archetypeDescription = t(`archetypes.${archetypeId}.description`);
   const archetypeSuggestions = t(`archetypes.${archetypeId}.suggestions`);
+
+  // Map card IDs to company names for strategy synthesis
+  const cardToCompany: Record<string, string> = {
+    smartTools: 'Airbus',
+    warehouseFlow: 'Logidot',
+    energyMonitoring: 'Bosch',
+    smartBuilding: 'AT&T',
+    fleetOptimization: 'Microsoft',
+    predictiveMaintenance: 'Rio Tinto',
+    digitalTwin: 'Siemens',
+    emissionsDetection: 'Marathon Oil',
+    waterMonitoring: 'Seattle',
+    gridSensors: 'Tensio',
+    healthMonitoring: 'Health Tech',
+  };
+
+  // Get final allocations from the last round (reflects player's end-state strategy)
+  const finalAllocations = roundHistory.length > 0 
+    ? roundHistory[roundHistory.length - 1].allocations 
+    : {};
+
+  const topInvestments = Object.entries(finalAllocations)
+    .filter(([, tokens]) => tokens > 0)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([cardId, tokens]) => ({
+      cardId,
+      tokens,
+      title: t(`cards.${cardId}.title`),
+      company: cardToCompany[cardId] || '',
+    }));
 
   // Identify strengths and weaknesses
   const metricScores = [
@@ -101,6 +139,36 @@ export function FinalSummary({ metrics, onReplay }: FinalSummaryProps) {
               </div>
             </div>
           </div>
+
+          {topInvestments.length > 0 && (
+            <div className="pt-6 border-t border-card-border">
+              <h4 className="text-base font-semibold flex items-center gap-2 mb-4">
+                <TrendingUp className="w-4 h-4 text-primary" />
+                Your IoT Strategy
+              </h4>
+              <div className="space-y-2">
+                {topInvestments.map((investment) => (
+                  <div 
+                    key={investment.cardId} 
+                    className="flex items-center justify-between text-sm py-2 px-3 rounded-md bg-accent/20"
+                    data-testid={`strategy-${investment.cardId}`}
+                  >
+                    <div className="flex flex-col">
+                      <span className="font-medium">{investment.title}</span>
+                      {investment.company && (
+                        <span className="text-xs text-muted-foreground">
+                          Similar to {investment.company}'s approach
+                        </span>
+                      )}
+                    </div>
+                    <Badge variant="secondary" className="font-mono">
+                      {investment.tokens} tokens
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="pt-6 border-t border-card-border">
             <div className="bg-accent/30 rounded-lg p-4">
