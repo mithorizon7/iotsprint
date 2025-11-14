@@ -185,7 +185,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
           <div className="space-y-6">
             <div className="space-y-2">
               <h3 className="text-xl font-semibold" data-testid="text-initiatives-title">
-                IoT Initiatives
+                {t('dashboard.initiativesTitle')}
               </h3>
               <p className="text-sm text-muted-foreground" data-testid="text-instructions">
                 {t('dashboard.instructions')}

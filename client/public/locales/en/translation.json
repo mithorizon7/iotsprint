@@ -23,6 +23,7 @@
   },
   "dashboard": {
     "roundTitle": "Year {{round}}",
+    "initiativesTitle": "IoT Initiatives",
     "tokensAvailable": "{{count}} token remaining",
     "tokensAvailable_other": "{{count}} tokens remaining",
     "instructions": "Allocate your tokens to IoT initiatives. Each card can receive 0-3 tokens.",
@@ -209,8 +210,11 @@
     "error": "Something went wrong. Please try again.",
     "back": "Back",
     "next": "Next",
+    "previous": "Previous",
     "close": "Close",
     "tokens": "Tokens:",
+    "more": "More",
+    "toggleSidebar": "Toggle Sidebar",
     "category": {
       "visibility": "Visibility",
       "streamlining": "Process Streamlining",
@@ -218,5 +222,28 @@
       "early_warning": "Early Warning",
       "security": "Security"
     }
+  },
+  "roundFeedback": {
+    "title": "Year {{round}} Results",
+    "subtitle": "See how your IoT investments changed the organization",
+    "before": "Before",
+    "after": "After",
+    "keyInsights": "Key Insights"
+  },
+  "app": {
+    "loadingGame": "Loading...",
+    "errorTitle": "Error Loading Game",
+    "reloadButton": "Reload Page"
+  },
+  "notFound": {
+    "title": "404 Page Not Found",
+    "message": "Did you forget to add the page to the router?"
+  },
+  "accessibility": {
+    "previousSlide": "Previous slide",
+    "nextSlide": "Next slide",
+    "morePages": "More pages",
+    "sidebar": "Sidebar",
+    "sidebarDescription": "Displays the mobile sidebar."
   }
 }

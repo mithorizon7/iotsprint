@@ -124,21 +124,21 @@ export function RoundFeedback({
       <div className="w-full max-w-5xl mx-auto space-y-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-2" data-testid="text-feedback-title">
-            Year {currentRound} Results
+            {t('roundFeedback.title', { round: currentRound })}
           </h2>
           <p className="text-muted-foreground">
-            See how your IoT investments changed the organization
+            {t('roundFeedback.subtitle')}
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
           <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Before</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('roundFeedback.before')}</h3>
             <MetricsPanel metrics={metricsBefore} />
           </Card>
 
           <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">After</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('roundFeedback.after')}</h3>
             <MetricsPanel
               metrics={metricsAfter}
               previousMetrics={metricsBefore}
@@ -149,7 +149,7 @@ export function RoundFeedback({
 
         {feedbackItems.length > 0 && (
           <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Key Insights</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('roundFeedback.keyInsights')}</h3>
             <div className="space-y-3">
               {feedbackItems.map((item, index) => (
                 <div

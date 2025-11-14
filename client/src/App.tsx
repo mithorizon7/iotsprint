@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { I18nextProvider } from 'react-i18next';
+import { I18nextProvider, useTranslation } from 'react-i18next';
 import { queryClient } from './lib/queryClient';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -12,6 +12,15 @@ import { CardConfig } from '@shared/schema';
 import i18n from './lib/i18n';
 
 function App() {
+  return (
+    <I18nextProvider i18n={i18n}>
+      <AppContent />
+    </I18nextProvider>
+  );
+}
+
+function AppContent() {
+  const { t } = useTranslation();
   const [cards, setCards] = useState<CardConfig[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +48,7 @@ function App() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">{t('app.loadingGame')}</p>
         </div>
       </div>
     );
@@ -49,13 +58,13 @@ function App() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-6">
-          <h1 className="text-2xl font-bold text-destructive mb-4">Error Loading Game</h1>
+          <h1 className="text-2xl font-bold text-destructive mb-4">{t('app.errorTitle')}</h1>
           <p className="text-muted-foreground mb-6">{error}</p>
           <button
             onClick={() => window.location.reload()}
             className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover-elevate active-elevate-2"
           >
-            Reload Page
+            {t('app.reloadButton')}
           </button>
         </div>
       </div>
@@ -63,16 +72,14 @@ function App() {
   }
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <GameProvider cards={cards}>
-            <GameFlow />
-          </GameProvider>
-          <Toaster />
-        </TooltipProvider>
-      </QueryClientProvider>
-    </I18nextProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <GameProvider cards={cards}>
+          <GameFlow />
+        </GameProvider>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 }
 

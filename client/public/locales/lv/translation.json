@@ -1,19 +1,16 @@
 {
-  "_comment": "Latvian translation - Ready for translation",
-  "_translator_note": "This file is ready for professional translation. Please maintain the structure and placeholder syntax ({{variable}}). Company names (Airbus, Siemens, etc.) should remain in English.",
   "game": {
-    "title": "[LV] IoT Strategy Sprint",
-    "subtitle": "[LV] Learn IoT fundamentals through strategic decision-making"
+    "title": "IoT Strategy Sprint",
+    "subtitle": "Learn IoT fundamentals through strategic decision-making"
+  },
+  "onboarding": {
+    "title": "Welcome to IoT Strategy Sprint",
+    "intro": "You are the Director of IoT Strategy for BrightWorks Operations. Your mission: use IoT to make the organization faster, greener, and safer—without creating complexity.",
+    "processTitle": "How IoT Works",
+    "startButton": "Start Year 1"
   },
   "common": {
-    "loading": "[LV] Loading...",
-    "tokens": "[LV] Tokens:",
-    "category": {
-      "visibility": "[LV] Visibility",
-      "streamlining": "[LV] Process Streamlining",
-      "sustainability": "[LV] Sustainability",
-      "early_warning": "[LV] Early Warning",
-      "security": "[LV] Security"
-    }
+    "loading": "Loading...",
+    "tokens": "Tokens:"
   }
 }
