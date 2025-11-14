@@ -51,7 +51,7 @@ export function RoundFeedback({
     const relevantCard = investedCards.find(id => ['digitalTwin', 'warehouseFlow', 'gridSensors', 'emissionsDetection'].includes(id));
     const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultTracking');
     feedbackItems.push({
-      icon: <TrendingUp className="w-5 h-5" />,
+      icon: <TrendingUp className="w-5 h-5" data-testid="icon-trending-up" />,
       message: t('feedback.highVisibility', { example }),
       type: 'positive',
     });
@@ -61,7 +61,7 @@ export function RoundFeedback({
     const relevantCard = investedCards.find(id => ['smartTools', 'warehouseFlow', 'fleetOptimization'].includes(id));
     const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultAutomation');
     feedbackItems.push({
-      icon: <TrendingUp className="w-5 h-5" />,
+      icon: <TrendingUp className="w-5 h-5" data-testid="icon-trending-up" />,
       message: t('feedback.highEfficiency', { example }),
       type: 'positive',
     });
@@ -71,7 +71,7 @@ export function RoundFeedback({
     const relevantCard = investedCards.find(id => ['energyMonitoring', 'smartBuilding', 'fleetOptimization', 'emissionsDetection'].includes(id));
     const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultEnergy');
     feedbackItems.push({
-      icon: <CheckCircle className="w-5 h-5" />,
+      icon: <CheckCircle className="w-5 h-5" data-testid="icon-check-circle" />,
       message: t('feedback.highSustainability', { example }),
       type: 'positive',
     });
@@ -81,7 +81,7 @@ export function RoundFeedback({
     const relevantCard = investedCards.find(id => ['predictiveMaintenance', 'healthMonitoring', 'gridSensors', 'waterMonitoring'].includes(id));
     const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultPredictive');
     feedbackItems.push({
-      icon: <CheckCircle className="w-5 h-5" />,
+      icon: <CheckCircle className="w-5 h-5" data-testid="icon-check-circle" />,
       message: t('feedback.highEarlyWarning', { example }),
       type: 'positive',
     });
@@ -90,7 +90,7 @@ export function RoundFeedback({
   if (delta.complexity_risk >= 10) {
     const deviceCount = Object.values(allocations).reduce((sum, t) => sum + t, 0) * 50;
     feedbackItems.push({
-      icon: <AlertCircle className="w-5 h-5" />,
+      icon: <AlertCircle className="w-5 h-5" data-testid="icon-alert-circle" />,
       message: t('feedback.highComplexity', { deviceCount }),
       type: 'warning',
     });
@@ -98,7 +98,7 @@ export function RoundFeedback({
 
   if (metricsAfter.complexity_risk > 60 && delta.early_warning_prevention < 5) {
     feedbackItems.push({
-      icon: <TrendingDown className="w-5 h-5" />,
+      icon: <TrendingDown className="w-5 h-5" data-testid="icon-trending-down" />,
       message: t('feedback.complexityWarning'),
       type: 'warning',
     });
@@ -108,7 +108,7 @@ export function RoundFeedback({
   const allPositive = [delta.visibility_insight, delta.efficiency_throughput, delta.sustainability_emissions, delta.early_warning_prevention].every(d => d > 3);
   if (allPositive && delta.complexity_risk < 8) {
     feedbackItems.push({
-      icon: <CheckCircle className="w-5 h-5" />,
+      icon: <CheckCircle className="w-5 h-5" data-testid="icon-check-circle" />,
       message: t('feedback.balancedGrowth'),
       type: 'positive',
     });

@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Wifi, Database, Cpu, Zap } from 'lucide-react';
+import { logger } from '@/lib/logger';
 
 export function IoTProcessDiagram() {
   const { t, i18n } = useTranslation();
   
-  // Debug: Log when component renders
-  console.log('[IoTProcessDiagram] Rendering with language:', i18n.language);
+  logger.log('[IoTProcessDiagram] Rendering with language:', i18n.language);
 
   const steps = [
     {

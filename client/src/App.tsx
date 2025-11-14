@@ -10,11 +10,15 @@ import { GameDashboard } from '@/pages/GameDashboard';
 import { FinalSummary } from '@/pages/FinalSummary';
 import { CardConfig } from '@shared/schema';
 import i18n from './lib/i18n';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import { logger } from '@/lib/logger';
 
 function App() {
   return (
     <I18nextProvider i18n={i18n}>
-      <AppContent />
+      <ErrorBoundary>
+        <AppContent />
+      </ErrorBoundary>
     </I18nextProvider>
   );
 }
@@ -37,7 +41,7 @@ function AppContent() {
         setLoading(false);
       })
       .catch((error) => {
-        console.error('Failed to load cards:', error);
+        logger.error('Failed to load cards:', error);
         setError(error.message || 'Failed to load game configuration');
         setLoading(false);
       });

@@ -77,7 +77,7 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
         <div className="text-center space-y-4">
           <div className="flex justify-center mb-4">
             <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-              <Trophy className="w-10 h-10 text-primary" />
+              <Trophy className="w-10 h-10 text-primary" data-testid="icon-trophy" />
             </div>
           </div>
           <h1 className="text-4xl font-bold" data-testid="text-summary-title">
@@ -144,7 +144,7 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
           {topInvestments.length > 0 && (
             <div className="pt-6 border-t border-card-border">
               <h4 className="text-base font-semibold flex items-center gap-2 mb-4">
-                <TrendingUp className="w-4 h-4 text-primary" />
+                <TrendingUp className="w-4 h-4 text-primary" data-testid="icon-trending-up" />
                 {t('summary.yourStrategy')}
               </h4>
               <div className="space-y-2">
@@ -194,7 +194,7 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
             className="px-8 gap-2"
             data-testid="button-replay"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="w-4 h-4" data-testid="icon-rotate-ccw" />
             {t('summary.replayButton')}
           </Button>
         </div>

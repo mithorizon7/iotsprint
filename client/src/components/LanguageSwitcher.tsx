@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { SUPPORTED_LANGUAGES, SupportedLanguage, changeLanguage } from '@/lib/i18n';
+import { logger } from '@/lib/logger';
 import { useState } from 'react';
 
 export function LanguageSwitcher() {
@@ -15,17 +16,17 @@ export function LanguageSwitcher() {
   const [isChanging, setIsChanging] = useState(false);
 
   const handleLanguageChange = async (lng: SupportedLanguage) => {
-    console.log(`[LanguageSwitcher] handleLanguageChange called with lng:`, lng);
+    logger.log(`[LanguageSwitcher] handleLanguageChange called with lng:`, lng);
     setIsChanging(true);
     try {
-      console.log(`[LanguageSwitcher] About to call changeLanguage(${lng})`);
+      logger.log(`[LanguageSwitcher] About to call changeLanguage(${lng})`);
       await changeLanguage(lng);
-      console.log(`[LanguageSwitcher] changeLanguage completed for ${lng}`);
+      logger.log(`[LanguageSwitcher] changeLanguage completed for ${lng}`);
     } catch (error) {
-      console.error(`[LanguageSwitcher] Error changing language:`, error);
+      logger.error(`[LanguageSwitcher] Error changing language:`, error);
     } finally {
       setIsChanging(false);
-      console.log(`[LanguageSwitcher] isChanging set to false`);
+      logger.log(`[LanguageSwitcher] isChanging set to false`);
     }
   };
 
@@ -42,7 +43,7 @@ export function LanguageSwitcher() {
           disabled={isChanging}
           data-testid="button-language-switcher"
         >
-          <Globe className="h-4 w-4" />
+          <Globe className="h-4 w-4" data-testid="icon-globe" />
           <span className="text-sm">{currentLanguageName}</span>
         </Button>
       </DropdownMenuTrigger>
@@ -51,7 +52,7 @@ export function LanguageSwitcher() {
           <DropdownMenuItem
             key={code}
             onClick={() => {
-              console.log(`[LanguageSwitcher] MenuItem onClick fired for code:`, code);
+              logger.log(`[LanguageSwitcher] MenuItem onClick fired for code:`, code);
               handleLanguageChange(code as SupportedLanguage);
             }}
             disabled={isChanging || code === currentLanguage}

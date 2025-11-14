@@ -141,7 +141,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
               <LanguageSwitcher />
               <div className="flex flex-col items-end gap-1">
               <div className="flex items-center gap-2">
-                <Coins className="w-5 h-5 text-primary" />
+                <Coins className="w-5 h-5 text-primary" data-testid="icon-coins" />
                 <span className="text-lg font-mono font-bold" data-testid="text-tokens-remaining">
                   {tokensRemaining}
                 </span>
@@ -167,7 +167,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
       <div className="max-w-7xl mx-auto px-6 py-8">
         {eventMessage && (
           <Alert className="mb-6" data-testid="alert-event">
-            <Info className="h-4 w-4" />
+            <Info className="h-4 w-4" data-testid="icon-info" />
             <AlertDescription>{eventMessage}</AlertDescription>
           </Alert>
         )}
@@ -192,7 +192,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
               </p>
               {gameState.currentRound > 1 && (
                 <Alert className="mt-2" data-testid="alert-reallocation">
-                  <Info className="h-4 w-4" />
+                  <Info className="h-4 w-4" data-testid="icon-info" />
                   <AlertDescription className="text-xs">
                     {t('dashboard.reallocationAlert', { newTokens: newTokensThisRound })}
                   </AlertDescription>

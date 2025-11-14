@@ -233,6 +233,7 @@
   "app": {
     "loadingGame": "Loading...",
     "errorTitle": "Error Loading Game",
+    "errorMessage": "Something went wrong. Please try reloading the page.",
     "reloadButton": "Reload Page"
   },
   "notFound": {

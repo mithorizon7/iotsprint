@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { IoTProcessDiagram } from '@/components/IoTProcessDiagram';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { logger } from '@/lib/logger';
 
 interface OnboardingScreenProps {
   onStart: () => void;
@@ -10,8 +11,7 @@ interface OnboardingScreenProps {
 export function OnboardingScreen({ onStart }: OnboardingScreenProps) {
   const { t, i18n } = useTranslation();
   
-  // Debug: Log when component renders and what language it's using
-  console.log('[OnboardingScreen] Rendering with language:', i18n.language, 'title:', t('game.title'));
+  logger.log('[OnboardingScreen] Rendering with language:', i18n.language, 'title:', t('game.title'));
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
