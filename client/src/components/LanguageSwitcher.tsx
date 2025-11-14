@@ -15,11 +15,17 @@ export function LanguageSwitcher() {
   const [isChanging, setIsChanging] = useState(false);
 
   const handleLanguageChange = async (lng: SupportedLanguage) => {
+    console.log(`[LanguageSwitcher] handleLanguageChange called with lng:`, lng);
     setIsChanging(true);
     try {
+      console.log(`[LanguageSwitcher] About to call changeLanguage(${lng})`);
       await changeLanguage(lng);
+      console.log(`[LanguageSwitcher] changeLanguage completed for ${lng}`);
+    } catch (error) {
+      console.error(`[LanguageSwitcher] Error changing language:`, error);
     } finally {
       setIsChanging(false);
+      console.log(`[LanguageSwitcher] isChanging set to false`);
     }
   };
 
@@ -44,7 +50,10 @@ export function LanguageSwitcher() {
         {Object.entries(SUPPORTED_LANGUAGES).map(([code, { nativeName }]) => (
           <DropdownMenuItem
             key={code}
-            onClick={() => handleLanguageChange(code as SupportedLanguage)}
+            onClick={() => {
+              console.log(`[LanguageSwitcher] MenuItem onClick fired for code:`, code);
+              handleLanguageChange(code as SupportedLanguage);
+            }}
             disabled={isChanging || code === currentLanguage}
             data-testid={`menu-item-language-${code}`}
           >

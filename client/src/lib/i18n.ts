@@ -35,12 +35,16 @@ function getInitialLanguage(): SupportedLanguage {
 // Initialize i18n with English resources pre-loaded
 const initialLanguage = getInitialLanguage();
 
-// Initialize i18n WITHOUT pre-loaded resources - load everything dynamically
+// Load English translations synchronously from the pre-bundled file
+// This ensures components never see translation keys on initial render
+import enTranslations from '@/locales-en.json';
+
+// Initialize i18n WITH English pre-loaded to avoid showing keys
 i18n
   .use(initReactI18next)
   .init({
     lng: 'en', // Start with English
-    fallbackLng: 'en', // Fallback to English for missing keys
+    fallbackLng: false, // DISABLE fallback - we want to see if keys are missing
     supportedLngs: Object.keys(SUPPORTED_LANGUAGES),
     ns: ['translation'],
     defaultNS: 'translation',
@@ -56,10 +60,16 @@ i18n
       transSupportBasicHtmlNodes: true, // Allow basic HTML in translations
       transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'], // Allowed HTML tags
     },
-    // No pre-loaded resources - load everything dynamically for consistency
+    resources: {
+      en: {
+        translation: enTranslations
+      }
+    },
+    load: 'currentOnly', // Only load current language, don't load fallbacks
+    nonExplicitSupportedLngs: false, // Don't auto-add language variants
   });
 
-console.log('[i18n] Initialized, will load resources for:', initialLanguage);
+console.log('[i18n] Initialized with English pre-loaded, will load:', initialLanguage);
 
 // Load translation file for a specific language (including English)
 async function loadLanguageResources(lng: SupportedLanguage): Promise<void> {
@@ -114,14 +124,9 @@ export async function changeLanguage(lng: SupportedLanguage): Promise<void> {
     await i18n.changeLanguage(lng);
     console.log(`[i18n] Language changed to ${lng}, current language: ${i18n.language}`);
     
-    // THIRD: Remove all OTHER language bundles (cleanup)
-    const allLanguages = Object.keys(SUPPORTED_LANGUAGES) as SupportedLanguage[];
-    for (const lang of allLanguages) {
-      if (lang !== lng && i18n.hasResourceBundle(lang, 'translation')) {
-        i18n.removeResourceBundle(lang, 'translation');
-        console.log(`[i18n] Cleaned up bundle for ${lang}`);
-      }
-    }
+    // NOTE: We do NOT remove other language bundles here
+    // Removing bundles triggers 'removed' event which breaks React re-render cycle
+    // Let i18next cache manage multiple bundles - modern browsers can handle it
     
     // Test translation with explicit namespace
     const testTranslation = i18n.t('game.title', { ns: 'translation', lng });
