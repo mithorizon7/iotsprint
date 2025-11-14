@@ -35,152 +35,85 @@ function getInitialLanguage(): SupportedLanguage {
 // Initialize i18n with English resources pre-loaded
 const initialLanguage = getInitialLanguage();
 
-// Load English translations synchronously from the pre-bundled file
-// This ensures components never see translation keys on initial render
+// SIMPLIFIED APPROACH: Pre-load ALL languages synchronously
 import enTranslations from '@/locales-en.json';
+// Note: We'll load other languages dynamically on demand since they're larger
 
-// Initialize i18n WITH English pre-loaded to avoid showing keys
+//Initialize i18n with simplified config
 i18n
   .use(initReactI18next)
   .init({
-    lng: 'en', // Start with English
-    fallbackLng: false, // DISABLE fallback - we want to see if keys are missing
+    lng: initialLanguage,
+    fallbackLng: 'en',
     supportedLngs: Object.keys(SUPPORTED_LANGUAGES),
+    nonExplicitSupportedLngs: false, // Preserve exact codes like 'en-ps'
+    load: 'all',
     ns: ['translation'],
     defaultNS: 'translation',
-    keySeparator: '.', // Use dot notation for nested keys
+    keySeparator: '.',
     interpolation: {
-      escapeValue: false, // React already escapes
+      escapeValue: false,
     },
     react: {
       useSuspense: false,
-      bindI18n: 'languageChanged loaded', // Re-render on language change and resource load
-      bindI18nStore: 'added removed', // Re-render when resources are added/removed
-      transEmptyNodeValue: '', // What to return for empty Trans components
-      transSupportBasicHtmlNodes: true, // Allow basic HTML in translations
-      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'], // Allowed HTML tags
+      bindI18n: 'languageChanged',
+      bindI18nStore: '',
+      transEmptyNodeValue: '',
+      transSupportBasicHtmlNodes: true,
+      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i'],
     },
     resources: {
       en: {
         translation: enTranslations
       }
     },
-    load: 'currentOnly', // Only load current language, don't load fallbacks
-    nonExplicitSupportedLngs: false, // Don't auto-add language variants
   });
 
-console.log('[i18n] Initialized with English pre-loaded, will load:', initialLanguage);
+console.log('[i18n] Initialized, current language:', i18n.language, 'resolved:', i18n.resolvedLanguage);
 
-// Load translation file for a specific language (including English)
-async function loadLanguageResources(lng: SupportedLanguage): Promise<void> {
-  // Check if already loaded using i18n's built-in method
+// SIMPLIFIED: Load language resources only if needed
+async function loadLanguageIfNeeded(lng: SupportedLanguage): Promise<void> {
   if (i18n.hasResourceBundle(lng, 'translation')) {
-    console.log(`[i18n] Resources for ${lng} already loaded`);
+    console.log(`[i18n] ${lng} already loaded`);
     return;
   }
   
-  console.log(`[i18n] Loading resources for ${lng}...`);
-  try {
-    const url = `/locales/${lng}/translation.json`;
-    console.log(`[i18n] Fetching from:`, url);
-    const response = await fetch(url);
-    console.log(`[i18n] Response status:`, response.status, response.statusText);
-    if (!response.ok) {
-      throw new Error(`Failed to load ${lng} translations: ${response.statusText}`);
-    }
-    const resources = await response.json();
-    console.log(`[i18n] JSON parsed, keys:`, Object.keys(resources));
-    console.log(`[i18n] Sample (game.title):`, resources?.game?.title);
-    
-    // Add resource bundle fresh (no pre-existing bundle to merge with)
-    i18n.addResourceBundle(lng, 'translation', resources, true, true);
-    console.log(`[i18n] Bundle added for ${lng}`);
-    
-    // Verify
-    const hasIt = i18n.hasResourceBundle(lng, 'translation');
-    console.log(`[i18n] Verify has bundle:`, hasIt);
-    if (hasIt) {
-      const retrieved = i18n.getResourceBundle(lng, 'translation');
-      console.log(`[i18n] Retrieved keys:`, Object.keys(retrieved || {}));
-      console.log(`[i18n] Retrieved game.title:`, retrieved?.game?.title);
-    }
-    
-    console.log(`[i18n] Successfully loaded resources for ${lng}`);
-  } catch (error) {
-    console.error(`[i18n] Failed to load ${lng} translations:`, error);
-    throw error; // Don't silently fail
+  console.log(`[i18n] Loading ${lng}...`);
+  const response = await fetch(`/locales/${lng}/translation.json`);
+  if (!response.ok) {
+    throw new Error(`Failed to load ${lng}`);
   }
+  const resources = await response.json();
+  i18n.addResourceBundle(lng, 'translation', resources, true, true);
+  console.log(`[i18n] ${lng} loaded, sample:`, resources?.game?.title);
 }
 
-// Change language and persist the choice
+// SIMPLIFIED: Just change language - let i18next handle everything
 export async function changeLanguage(lng: SupportedLanguage): Promise<void> {
-  console.log(`[i18n] Changing language to ${lng}...`);
+  console.log(`[i18n] Switching to ${lng}...`);
+  
+  // Load resources if needed
+  await loadLanguageIfNeeded(lng);
+  
+  // Change language - i18next should handle resolvedLanguage automatically
+  await i18n.changeLanguage(lng);
+  
+  // Persist choice
   try {
-    // FIRST: Load resources for target language (keep old ones for now)
-    await loadLanguageResources(lng);
-    console.log(`[i18n] Resources loaded for ${lng}`);
-    
-    // SECOND: Change language (now both old and new bundles exist)
-    await i18n.changeLanguage(lng);
-    console.log(`[i18n] Language changed to ${lng}, current language: ${i18n.language}`);
-    
-    // NOTE: We do NOT remove other language bundles here
-    // Removing bundles triggers 'removed' event which breaks React re-render cycle
-    // Let i18next cache manage multiple bundles - modern browsers can handle it
-    
-    // Test translation with explicit namespace
-    const testTranslation = i18n.t('game.title', { ns: 'translation', lng });
-    console.log(`[i18n] Test t('game.title', {ns:'translation', lng:'${lng}'}) =`, testTranslation);
-    
-    // Test without explicit lng (should use current language)
-    const testDefault = i18n.t('game.title');
-    console.log(`[i18n] Test t('game.title') =`, testDefault);
-    
-    // Test nested key
-    const testNested = i18n.t('onboarding.intro');
-    console.log(`[i18n] Test t('onboarding.intro') =`, testNested);
-    
-    // Debug i18next state
-    console.log(`[i18n] i18n.language =`, i18n.language);
-    console.log(`[i18n] i18n.languages =`, i18n.languages);
-    console.log(`[i18n] i18n.resolvedLanguage =`, i18n.resolvedLanguage);
-    
-    // Check if key exists
-    const exists = i18n.exists('game.title');
-    console.log(`[i18n] exists('game.title') =`, exists);
-    
-    // Try to get raw resource
-    const rawBundle = i18n.getResourceBundle(lng, 'translation');
-    console.log(`[i18n] Raw bundle structure check - game key exists:`, rawBundle?.game ? 'YES' : 'NO');
-    if (rawBundle?.game) {
-      console.log(`[i18n] Raw bundle game.title:`, rawBundle.game.title);
-    }
-    
-    // Persist to localStorage
-    try {
-      localStorage.setItem(STORAGE_KEY, lng);
-    } catch (e) {
-      console.warn('[i18n] Failed to persist language choice:', e);
-    }
-  } catch (error) {
-    console.error('[i18n] Error changing language:', error);
-    // Fall back to English
-    if (lng !== 'en') {
-      await i18n.changeLanguage('en');
-    }
+    localStorage.setItem(STORAGE_KEY, lng);
+  } catch (e) {
+    console.warn('[i18n] localStorage save failed:', e);
   }
+  
+  console.log(`[i18n] Now: language=${i18n.language}, resolved=${i18n.resolvedLanguage}`);
+  console.log(`[i18n] Test t('game.title'):`, i18n.t('game.title'));
 }
 
-// Load initial language resources (including English)
-(async () => {
-  console.log(`[i18n] Loading initial language: ${initialLanguage}`);
-  try {
-    await loadLanguageResources(initialLanguage);
-    await i18n.changeLanguage(initialLanguage);
-    console.log(`[i18n] Initialization complete, current language: ${i18n.language}`);
-  } catch (error) {
-    console.error('[i18n] Failed to load initial language, app may not work correctly:', error);
-  }
-})();
+// Load initial language if not English
+if (initialLanguage !== 'en') {
+  loadLanguageIfNeeded(initialLanguage)
+    .then(() => i18n.changeLanguage(initialLanguage))
+    .catch(err => console.error('[i18n] Failed to load initial language:', err));
+}
 
 export default i18n;

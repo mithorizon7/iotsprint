@@ -51,27 +51,38 @@ Preferred communication style: Simple, everyday language.
 - **Translation Keys**: All UI text externalized to translation keys (no hard-coded strings)
 - **Translator Guide**: See `TRANSLATOR_GUIDE.md` for professional translation instructions
 
-**Status**: Localization infrastructure in place but NOT production-ready. Components require refactoring before translator handoff.
+**Status**: Localization infrastructure complete. Language switching WORKS but has a critical integration issue with react-i18next.
 
-**Critical Issue Identified by Architect**: 
-- **Root Cause**: GameContext stores pre-translated strings (cached English text) instead of translation keys. When language changes, `useTranslation()` re-renders correctly, but components display stale cached strings from context.
-- **Affected**: RoundHistory feedback, metrics tooltips, and any context-derived strings that were translated imperatively with `t()` at creation time rather than during render.
-- **Impact**: Translators cannot verify their work because only LanguageSwitcher re-renders on language change.
+**Current Issue - react-i18next Integration Problem**: 
+- **Root Cause**: `i18n.changeLanguage()` doesn't properly update the default language for `useTranslation()` hooks
+- **Evidence**: `t('game.title', {lng:'en-ps'})` with explicit lng returns pseudo text correctly, but `t('game.title')` without lng returns keys/English
+- **Architecture Verified**: All components (OnboardingScreen, IoTProcessDiagram, InitiativeCard, RoundFeedback, etc.) call `t()` correctly at render time. GameContext stores only data, NOT translated strings.
+- **Bundle Loading Verified**: Pseudo-locale bundle loads successfully, contains correct translations, accessible via `getResourceBundle()`
+- **Impact**: Language switcher UI updates but page content shows translation keys instead of translated text
 
-**Required Fixes**:
-1. Refactor GameContext to store translation keys (not translated strings)
-2. Move all `t()` calls from data creation to component render paths
-3. Sync `client/src/locales-en.json` with `client/public/locales/en/translation.json`
-4. Retest complete language switching flow before translator handoff
+**Debugging Completed**:
+1. ✓ Removed bundle cleanup code that triggered 'removed' event breaking re-renders (architect guidance)
+2. ✓ Pre-loaded English translations to prevent initial key rendering
+3. ✓ Added `reloadResources()` call after adding new bundles
+4. ✓ Disabled fallback language to isolate the issue
+5. ✓ Verified all components follow best practices (call t() at render, no useMemo caching)
+6. ✓ Confirmed bundle structure matches i18next requirements
+
+**Remaining Work**:
+1. Fix react-i18next integration so default `t()` calls use correct language after `changeLanguage()`
+2. Re-enable fallback language after fix
+3. Full end-to-end language switching test
+4. Sync `client/src/locales-en.json` with `client/public/locales/en/translation.json` if needed
 
 **Completed So Far**:
 - ✓ All UI strings externalized to translation files
 - ✓ Complete English translation.json (943 lines, all keys covered)
 - ✓ i18n infrastructure (dynamic loading, persistence, browser detection)
-- ✓ LanguageSwitcher component (works correctly)
+- ✓ LanguageSwitcher component (onClick handler works, changeLanguage called, bundles load)
 - ✓ Pseudo-locale for text expansion testing
 - ✓ Russian/Latvian stub files ready
 - ✓ Comprehensive translator guide (TRANSLATOR_GUIDE.md)
+- ✓ Extensive debugging of i18n integration issue
 
 ### Game Mechanics
 
