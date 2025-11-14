@@ -47,7 +47,7 @@ i18n
     fallbackLng: 'en',
     supportedLngs: Object.keys(SUPPORTED_LANGUAGES),
     nonExplicitSupportedLngs: false, // Preserve exact codes like 'en-ps'
-    load: 'all',
+    load: 'currentOnly', // CRITICAL: Force exact language code matching for 'en-ps'
     ns: ['translation'],
     defaultNS: 'translation',
     keySeparator: '.',
