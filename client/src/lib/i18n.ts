@@ -127,13 +127,29 @@ export async function changeLanguage(lng: SupportedLanguage): Promise<void> {
     const testTranslation = i18n.t('game.title', { ns: 'translation', lng });
     console.log(`[i18n] Test t('game.title', {ns:'translation', lng:'${lng}'}) =`, testTranslation);
     
-    // Also test without namespace
+    // Test without explicit lng (should use current language)
     const testDefault = i18n.t('game.title');
     console.log(`[i18n] Test t('game.title') =`, testDefault);
     
-    // Debug: check what i18next thinks the current language is
+    // Test nested key
+    const testNested = i18n.t('onboarding.intro');
+    console.log(`[i18n] Test t('onboarding.intro') =`, testNested);
+    
+    // Debug i18next state
     console.log(`[i18n] i18n.language =`, i18n.language);
     console.log(`[i18n] i18n.languages =`, i18n.languages);
+    console.log(`[i18n] i18n.resolvedLanguage =`, i18n.resolvedLanguage);
+    
+    // Check if key exists
+    const exists = i18n.exists('game.title');
+    console.log(`[i18n] exists('game.title') =`, exists);
+    
+    // Try to get raw resource
+    const rawBundle = i18n.getResourceBundle(lng, 'translation');
+    console.log(`[i18n] Raw bundle structure check - game key exists:`, rawBundle?.game ? 'YES' : 'NO');
+    if (rawBundle?.game) {
+      console.log(`[i18n] Raw bundle game.title:`, rawBundle.game.title);
+    }
     
     // Persist to localStorage
     try {
