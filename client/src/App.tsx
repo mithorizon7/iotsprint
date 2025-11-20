@@ -7,6 +7,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { GameProvider, useGame } from '@/contexts/GameContext';
 import { OnboardingScreen } from '@/pages/OnboardingScreen';
 import { GameDashboard } from '@/pages/GameDashboard';
+import PreMortemScreen from '@/pages/PreMortemScreen';
 import { FinalSummary } from '@/pages/FinalSummary';
 import { CardConfig, GameConfig } from '@shared/schema';
 import i18n from './lib/i18n';
@@ -99,11 +100,11 @@ function AppContent() {
 }
 
 function GameFlow() {
-  const [gameState, setGameState] = useState<'onboarding' | 'playing' | 'summary'>('onboarding');
+  const [gameState, setGameState] = useState<'onboarding' | 'playing' | 'premortem' | 'summary'>('onboarding');
   const [finalMetrics, setFinalMetrics] = useState<any>(null);
   const [finalRoundHistory, setFinalRoundHistory] = useState<any[]>([]);
   const [finalAllocations, setFinalAllocations] = useState<Record<string, number>>({});
-  const { reset } = useGame();
+  const { reset, gameState: contextGameState } = useGame();
 
   const handleStart = () => {
     setGameState('playing');
@@ -113,6 +114,16 @@ function GameFlow() {
     setFinalMetrics(metrics);
     setFinalRoundHistory(roundHistory);
     setFinalAllocations(allocations);
+    // If round 3 is complete, go to pre-mortem first
+    // Round history length will be 3 when all three rounds are completed
+    if (roundHistory.length >= 3) {
+      setGameState('premortem');
+    } else {
+      setGameState('summary');
+    }
+  };
+
+  const handlePreMortemComplete = () => {
     setGameState('summary');
   };
 
@@ -130,6 +141,10 @@ function GameFlow() {
 
   if (gameState === 'playing') {
     return <GameDashboard onComplete={handleComplete} />;
+  }
+
+  if (gameState === 'premortem') {
+    return <PreMortemScreen onComplete={handlePreMortemComplete} />;
   }
 
   return <FinalSummary metrics={finalMetrics} roundHistory={finalRoundHistory} finalAllocations={finalAllocations} onReplay={handleReplay} />;

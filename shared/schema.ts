@@ -19,6 +19,8 @@ export interface PerTokenEffects {
 
 export type UnlockCondition = 'complexity_high' | null;
 
+export type IotProcessStage = 'sense' | 'share' | 'process' | 'act';
+
 export interface CardConfig {
   id: string;
   roundsAvailable: number[];
@@ -27,6 +29,7 @@ export interface CardConfig {
   category: 'visibility' | 'streamlining' | 'sustainability' | 'early_warning' | 'security';
   companyName: string; // Company reference for final summary (e.g., "Airbus", "Bosch")
   feedbackKey: string; // Translation key for round feedback examples (e.g., "feedback.airbus")
+  iotProcessStages: IotProcessStage[]; // Which IoT process stages this initiative emphasizes
   copyKeys: {
     title: string;
     shortDescription: string;
@@ -39,6 +42,18 @@ export interface CardAllocation {
   tokens: number;
 }
 
+export type PreMortemChoice = 'security_risk' | 'inefficiency' | 'environmental_fine';
+
+export interface DisasterEvent {
+  id: string;
+  round: number;
+  triggerMetric: keyof GameMetrics;
+  threshold: number;
+  penalties: Partial<GameMetrics>;
+  copyKey: string; // Translation key for disaster message
+  mitigatedBy?: string[]; // Card IDs that prevent this disaster (if allocated)
+}
+
 export interface GameState {
   currentRound: number; // 0 = onboarding, 1-3 = game rounds
   metrics: GameMetrics;
@@ -49,13 +64,16 @@ export interface GameState {
     metricsBefore: GameMetrics;
     metricsAfter: GameMetrics;
     allocations: Record<string, number>;
+    events?: DisasterEvent[]; // Disasters that occurred this round
   }[];
+  disasterEvents: DisasterEvent[]; // All disasters encountered
+  preMortemAnswer: PreMortemChoice | null; // Player's risk prediction
 }
 
 export type ArchetypeId = 
   | 'EFFICIENCY_FIRST'
   | 'SUSTAINABILITY_CHAMPION'
-  | 'BALANCED_ARCHITECT'
+  | 'RESILIENT_OPERATOR'
   | 'OVER_CONNECTED_RISK_TAKER'
   | 'EARLY_WARNING_GUARDIAN'
   | 'VISIBILITY_FOCUSED';
@@ -129,6 +147,17 @@ export interface GameConfig {
   unlockConditions: {
     complexityHighThreshold: number;
   };
+  disasters: DisasterConfig[];
+}
+
+export interface DisasterConfig {
+  id: string;
+  round: number;
+  triggerMetric: keyof GameMetrics;
+  threshold: number;
+  penalties: Partial<GameMetrics>;
+  copyKey: string;
+  mitigatedBy?: string[];
 }
 
 // Evaluate unlock conditions based on current game state

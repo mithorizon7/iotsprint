@@ -3,7 +3,7 @@ import { GameMetrics, calculateMetricsDelta } from '@shared/schema';
 import { MetricsPanel } from './MetricsPanel';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { TrendingUp, TrendingDown, AlertCircle, CheckCircle } from 'lucide-react';
+import { TrendingUp, TrendingDown, AlertCircle, CheckCircle, AlertTriangle } from 'lucide-react';
 import { useGame } from '@/contexts/GameContext';
 
 interface RoundFeedbackProps {
@@ -22,7 +22,11 @@ export function RoundFeedback({
   onNext,
 }: RoundFeedbackProps) {
   const { t } = useTranslation();
-  const { allCards, config } = useGame();
+  const { allCards, config, gameState } = useGame();
+  
+  // Check if any disasters occurred this round
+  const currentRoundHistory = gameState.roundHistory.find(r => r.round === currentRound);
+  const disasters = currentRoundHistory?.events || [];
 
   const delta = calculateMetricsDelta(metricsBefore, metricsAfter);
   const thresholds = config.feedbackThresholds;
@@ -124,6 +128,37 @@ export function RoundFeedback({
             {t('roundFeedback.subtitle')}
           </p>
         </div>
+
+        {disasters.length > 0 && (
+          <Card className="p-6 border-destructive bg-destructive/5">
+            <div className="flex items-start gap-4">
+              <div className="p-3 rounded-full bg-destructive/10">
+                <AlertTriangle className="w-8 h-8 text-destructive" data-testid="icon-disaster" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-destructive mb-2" data-testid="text-disaster-title">
+                  {t('disasters.criticalEvent')}
+                </h3>
+                {disasters.map((disaster, index) => (
+                  <div key={index} className="space-y-2">
+                    <p className="text-sm text-foreground leading-relaxed" data-testid={`text-disaster-${index}`}>
+                      {t(disaster.copyKey)}
+                    </p>
+                    <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                      {Object.entries(disaster.penalties).map(([metric, penalty]) => (
+                        penalty !== undefined && (
+                          <span key={metric} className="px-2 py-1 bg-destructive/10 rounded">
+                            {t(`common.metrics.${metric}`)}: {penalty > 0 ? '+' : ''}{penalty}
+                          </span>
+                        )
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+        )}
 
         <div className="grid md:grid-cols-2 gap-6">
           <Card className="p-6">

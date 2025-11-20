@@ -1,9 +1,19 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Minus, Plus } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Minus, Plus, Info } from 'lucide-react';
 import { CardConfig } from '@shared/schema';
+import { IotProcessDiagram } from './IotProcessCardDiagram';
 
 interface InitiativeCardProps {
   card: CardConfig;
@@ -14,6 +24,7 @@ interface InitiativeCardProps {
 
 export function InitiativeCard({ card, allocation, onAllocate, disabled = false }: InitiativeCardProps) {
   const { t } = useTranslation();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const title = t(card.copyKeys.title);
   const description = t(card.copyKeys.shortDescription);
@@ -30,9 +41,34 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
           <CardTitle className="text-lg leading-tight" data-testid={`text-title-${card.id}`}>
             {title}
           </CardTitle>
-          <Badge variant="secondary" className="shrink-0 text-xs" data-testid={`badge-category-${card.id}`}>
-            {categoryLabel}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="h-8 w-8 shrink-0"
+                  data-testid={`button-info-${card.id}`}
+                >
+                  <Info className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl">
+                <DialogHeader>
+                  <DialogTitle data-testid="text-dialog-title">
+                    {title}
+                  </DialogTitle>
+                  <DialogDescription data-testid="text-dialog-description">
+                    {t('iotProcess.dialogDescription')}
+                  </DialogDescription>
+                </DialogHeader>
+                <IotProcessDiagram highlightedStages={card.iotProcessStages} cardTitle={title} />
+              </DialogContent>
+            </Dialog>
+            <Badge variant="secondary" className="shrink-0 text-xs" data-testid={`badge-category-${card.id}`}>
+              {categoryLabel}
+            </Badge>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col gap-4">

@@ -11,6 +11,54 @@
   },
   "common": {
     "loading": "Loading...",
-    "tokens": "Tokens:"
+    "tokens": "Tokens:",
+    "metrics": {
+      "visibility_insight": "Visibility",
+      "efficiency_throughput": "Efficiency",
+      "sustainability_emissions": "Sustainability",
+      "early_warning_prevention": "Early Warning",
+      "complexity_risk": "Complexity"
+    }
+  },
+  "iotProcess": {
+    "sense": { "title": "Sense", "description": "Devices collect data from the environment" },
+    "share": { "title": "Share", "description": "Data is transmitted across networks" },
+    "process": { "title": "Process", "description": "Information is analyzed and interpreted" },
+    "act": { "title": "Act", "description": "Systems respond based on insights" },
+    "howThisWorks": "How This IoT Initiative Works",
+    "cardFitsIn": "See where {{cardTitle}} fits in the IoT process loop",
+    "highlightedStages": "Highlighted stages show which parts of the IoT process this initiative uses",
+    "dialogDescription": "Understanding how IoT initiatives map to the fundamental sense-share-process-act loop helps you see the bigger picture."
+  },
+  "disasters": {
+    "criticalEvent": "Critical Event!",
+    "ransomwareAttack": "Your IoT network was hit by a ransomware attack. Inadequate security hardening left devices vulnerable. Operations were disrupted for days, costing significant efficiency and increasing complexity as you scramble to patch systems."
+  },
+  "premortem": {
+    "title": "Pre-Mortem Reflection",
+    "description": "Before seeing your final results, take a moment to think critically about your strategy.",
+    "prompt": "Looking back at your 3-year IoT journey, what do you think was your biggest risk or vulnerability?",
+    "choices": {
+      "securityRisk": {
+        "label": "Security & Complexity Risk",
+        "description": "I may have deployed too many IoT devices without adequate security measures, creating vulnerabilities."
+      },
+      "inefficiency": {
+        "label": "Inefficiency & Missed Opportunities",
+        "description": "I focused too much on one area and missed opportunities to improve throughput and operations."
+      },
+      "environmentalFine": {
+        "label": "Environmental Compliance Risk",
+        "description": "I didn't invest enough in sustainability, leaving us exposed to regulations and fines."
+      }
+    },
+    "continue": "Continue to Results"
+  },
+  "archetypes": {
+    "RESILIENT_OPERATOR": {
+      "title": "Resilient Operator",
+      "description": "You managed trade-offs skillfully, improving multiple dimensions without creating dangerous complexity.",
+      "suggestions": "You showed excellent judgment in managing competing priorities."
+    }
   }
 }

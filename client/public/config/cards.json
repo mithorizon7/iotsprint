@@ -5,6 +5,7 @@
     "unlockCondition": null,
     "companyName": "Logidot",
     "feedbackKey": "feedback.logidot",
+    "iotProcessStages": ["sense", "share"],
     "perTokenEffects": {
       "visibility_insight": 4,
       "efficiency_throughput": 4,
@@ -25,6 +26,7 @@
     "unlockCondition": null,
     "companyName": "Airbus",
     "feedbackKey": "feedback.airbus",
+    "iotProcessStages": ["sense", "act"],
     "perTokenEffects": {
       "visibility_insight": 1,
       "efficiency_throughput": 5,
@@ -45,6 +47,7 @@
     "unlockCondition": null,
     "companyName": "Bosch",
     "feedbackKey": "feedback.bosch",
+    "iotProcessStages": ["sense", "act"],
     "perTokenEffects": {
       "visibility_insight": 3,
       "efficiency_throughput": 2,
@@ -65,6 +68,7 @@
     "unlockCondition": null,
     "companyName": "AT&T",
     "feedbackKey": "feedback.att",
+    "iotProcessStages": ["sense", "act"],
     "perTokenEffects": {
       "visibility_insight": 3,
       "efficiency_throughput": 2,
@@ -85,6 +89,7 @@
     "unlockCondition": null,
     "companyName": "Microsoft",
     "feedbackKey": "feedback.microsoft",
+    "iotProcessStages": ["sense", "process", "act"],
     "perTokenEffects": {
       "visibility_insight": 3,
       "efficiency_throughput": 3,
@@ -105,6 +110,7 @@
     "unlockCondition": null,
     "companyName": "Rio Tinto",
     "feedbackKey": "feedback.rioTinto",
+    "iotProcessStages": ["sense", "process"],
     "perTokenEffects": {
       "visibility_insight": 3,
       "efficiency_throughput": 2,
@@ -125,6 +131,7 @@
     "unlockCondition": null,
     "companyName": "Siemens",
     "feedbackKey": "feedback.siemens",
+    "iotProcessStages": ["sense", "share", "process", "act"],
     "perTokenEffects": {
       "visibility_insight": 5,
       "efficiency_throughput": 2,
@@ -145,6 +152,7 @@
     "unlockCondition": null,
     "companyName": "Marathon Oil",
     "feedbackKey": "feedback.marathon",
+    "iotProcessStages": ["sense", "share"],
     "perTokenEffects": {
       "visibility_insight": 4,
       "efficiency_throughput": 1,
@@ -165,6 +173,7 @@
     "unlockCondition": null,
     "companyName": "Seattle",
     "feedbackKey": "feedback.seattle",
+    "iotProcessStages": ["sense", "share"],
     "perTokenEffects": {
       "visibility_insight": 4,
       "efficiency_throughput": 1,
@@ -185,6 +194,7 @@
     "unlockCondition": null,
     "companyName": "Tensio",
     "feedbackKey": "feedback.tensio",
+    "iotProcessStages": ["sense", "share"],
     "perTokenEffects": {
       "visibility_insight": 5,
       "efficiency_throughput": 0,
@@ -205,6 +215,7 @@
     "unlockCondition": "complexity_high",
     "companyName": "Generic Security",
     "feedbackKey": "feedback.security",
+    "iotProcessStages": ["share"],
     "perTokenEffects": {
       "visibility_insight": 1,
       "efficiency_throughput": 0,
@@ -225,6 +236,7 @@
     "unlockCondition": null,
     "companyName": "Health Tech",
     "feedbackKey": "feedback.healthTech",
+    "iotProcessStages": ["sense", "process"],
     "perTokenEffects": {
       "visibility_insight": 2,
       "efficiency_throughput": 1,

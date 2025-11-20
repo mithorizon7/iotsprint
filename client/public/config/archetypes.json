@@ -12,10 +12,10 @@
     "suggestionsKey": "archetypes.SUSTAINABILITY_CHAMPION.suggestions"
   },
   {
-    "id": "BALANCED_ARCHITECT",
-    "titleKey": "archetypes.BALANCED_ARCHITECT.title",
-    "descriptionKey": "archetypes.BALANCED_ARCHITECT.description",
-    "suggestionsKey": "archetypes.BALANCED_ARCHITECT.suggestions"
+    "id": "RESILIENT_OPERATOR",
+    "titleKey": "archetypes.RESILIENT_OPERATOR.title",
+    "descriptionKey": "archetypes.RESILIENT_OPERATOR.description",
+    "suggestionsKey": "archetypes.RESILIENT_OPERATOR.suggestions"
   },
   {
     "id": "OVER_CONNECTED_RISK_TAKER",

@@ -18,5 +18,19 @@
   },
   "unlockConditions": {
     "complexityHighThreshold": 40
-  }
+  },
+  "disasters": [
+    {
+      "id": "ransomware_attack",
+      "round": 3,
+      "triggerMetric": "complexity_risk",
+      "threshold": 80,
+      "penalties": {
+        "efficiency_throughput": -20,
+        "complexity_risk": 5
+      },
+      "copyKey": "disasters.ransomwareAttack",
+      "mitigatedBy": []
+    }
+  ]
 }

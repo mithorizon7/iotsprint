@@ -8,6 +8,8 @@ import {
   CardConfig,
   GameConfig,
   evaluateUnlockCondition,
+  PreMortemChoice,
+  DisasterEvent,
 } from '@shared/schema';
 
 interface GameContextType {
@@ -20,6 +22,7 @@ interface GameContextType {
   nextRound: () => void;
   reset: () => void;
   canRunPlan: boolean;
+  setPreMortemAnswer: (answer: PreMortemChoice) => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -45,6 +48,8 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
     tokensAvailable: TOKENS_PER_ROUND[0],
     allocations: {},
     roundHistory: [],
+    disasterEvents: [],
+    preMortemAnswer: null,
   });
 
   const availableCards = cards.filter((card) => {
@@ -142,6 +147,44 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
       let metricsAfter = applyAllocationEffects(metricsBefore, prev.allocations);
       metricsAfter = clampMetrics(metricsAfter);
 
+      // Check for disaster events
+      const triggeredDisasters: DisasterEvent[] = [];
+      config.disasters.forEach((disasterConfig) => {
+        // Only check disasters for matching round
+        if (disasterConfig.round !== prev.currentRound) return;
+
+        // Check if disaster is triggered
+        const metricValue = metricsAfter[disasterConfig.triggerMetric];
+        if (metricValue >= disasterConfig.threshold) {
+          // Check if disaster is mitigated by any allocated cards
+          const isMitigated = disasterConfig.mitigatedBy?.some(
+            (cardId) => (prev.allocations[cardId] || 0) > 0
+          );
+
+          if (!isMitigated) {
+            // Apply disaster penalties
+            const penalizedMetrics = { ...metricsAfter };
+            Object.entries(disasterConfig.penalties).forEach(([metric, penalty]) => {
+              if (penalty !== undefined) {
+                penalizedMetrics[metric as keyof GameMetrics] += penalty;
+              }
+            });
+            metricsAfter = clampMetrics(penalizedMetrics);
+
+            // Record the disaster event
+            triggeredDisasters.push({
+              id: disasterConfig.id,
+              round: prev.currentRound,
+              triggerMetric: disasterConfig.triggerMetric,
+              threshold: disasterConfig.threshold,
+              penalties: disasterConfig.penalties,
+              copyKey: disasterConfig.copyKey,
+              mitigatedBy: disasterConfig.mitigatedBy,
+            });
+          }
+        }
+      });
+
       // Update or append roundHistory entry for this round
       // If this round already exists in history (re-running), replace it
       // Otherwise, append it
@@ -158,6 +201,7 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
           metricsBefore,
           metricsAfter,
           allocations: { ...prev.allocations },
+          events: triggeredDisasters.length > 0 ? triggeredDisasters : undefined,
         };
       } else {
         // Append new entry
@@ -168,14 +212,25 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
             metricsBefore,
             metricsAfter,
             allocations: { ...prev.allocations },
+            events: triggeredDisasters.length > 0 ? triggeredDisasters : undefined,
           },
         ];
       }
+
+      // Update global disaster events list
+      const updatedDisasterEvents = [...prev.disasterEvents];
+      triggeredDisasters.forEach((disaster) => {
+        // Only add if not already in the list (prevent duplicates on re-run)
+        if (!updatedDisasterEvents.some((d) => d.id === disaster.id && d.round === disaster.round)) {
+          updatedDisasterEvents.push(disaster);
+        }
+      });
 
       return {
         ...prev,
         metrics: metricsAfter,
         roundHistory: updatedHistory,
+        disasterEvents: updatedDisasterEvents,
       };
     });
   }, [cards, config]);
@@ -219,7 +274,16 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
       tokensAvailable: TOKENS_PER_ROUND[0],
       allocations: {},
       roundHistory: [],
+      disasterEvents: [],
+      preMortemAnswer: null,
     });
+  }, []);
+
+  const setPreMortemAnswer = useCallback((answer: PreMortemChoice) => {
+    setGameState((prev) => ({
+      ...prev,
+      preMortemAnswer: answer,
+    }));
   }, []);
 
   const tokensUsed = Object.values(gameState.allocations).reduce((sum, t) => sum + t, 0);
@@ -237,6 +301,7 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
         nextRound,
         reset,
         canRunPlan,
+        setPreMortemAnswer,
       }}
     >
       {children}
