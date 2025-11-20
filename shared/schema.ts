@@ -68,6 +68,7 @@ export interface GameState {
   }[];
   disasterEvents: DisasterEvent[]; // All disasters encountered
   preMortemAnswer: PreMortemChoice | null; // Player's risk prediction
+  isGameComplete: boolean; // Explicit flag indicating Round 3 has been completed
 }
 
 export type ArchetypeId = 

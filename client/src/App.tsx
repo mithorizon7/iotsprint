@@ -114,13 +114,9 @@ function GameFlow() {
     setFinalMetrics(metrics);
     setFinalRoundHistory(roundHistory);
     setFinalAllocations(allocations);
-    // If round 3 is complete, go to pre-mortem first
-    // Round history length will be 3 when all three rounds are completed
-    if (roundHistory.length >= 3) {
-      setGameState('premortem');
-    } else {
-      setGameState('summary');
-    }
+    // Always go to pre-mortem first when called after final round
+    // GameDashboard only calls this when isGameComplete=true (Round 3 finished)
+    setGameState('premortem');
   };
 
   const handlePreMortemComplete = () => {

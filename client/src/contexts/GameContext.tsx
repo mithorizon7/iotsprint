@@ -50,6 +50,7 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
     roundHistory: [],
     disasterEvents: [],
     preMortemAnswer: null,
+    isGameComplete: false, // Game starts incomplete
   });
 
   const availableCards = cards.filter((card) => {
@@ -231,6 +232,7 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
         metrics: metricsAfter,
         roundHistory: updatedHistory,
         disasterEvents: updatedDisasterEvents,
+        isGameComplete: prev.currentRound === 3, // Mark game complete when Round 3 is run
       };
     });
   }, [cards, config]);
@@ -276,6 +278,7 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
       roundHistory: [],
       disasterEvents: [],
       preMortemAnswer: null,
+      isGameComplete: false, // Reset completion flag
     });
   }, []);
 

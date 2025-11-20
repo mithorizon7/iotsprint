@@ -54,8 +54,8 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
   const handleNextRound = () => {
     setShowFeedback(false);
     
-    // Check if we've completed all 3 rounds
-    if (gameState.roundHistory.length === 3) {
+    // Check if game is complete using explicit flag (not brittle round count)
+    if (gameState.isGameComplete) {
       // All rounds complete, show final summary
       // Pass final allocations (current state after Round 3)
       onComplete(gameState.metrics, gameState.roundHistory, gameState.allocations);
