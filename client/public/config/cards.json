@@ -3,6 +3,8 @@
     "id": "warehouseFlow",
     "roundsAvailable": [1, 2, 3],
     "unlockCondition": null,
+    "companyName": "Logidot",
+    "feedbackKey": "feedback.logidot",
     "perTokenEffects": {
       "visibility_insight": 4,
       "efficiency_throughput": 4,
@@ -21,6 +23,8 @@
     "id": "smartTools",
     "roundsAvailable": [1, 2, 3],
     "unlockCondition": null,
+    "companyName": "Airbus",
+    "feedbackKey": "feedback.airbus",
     "perTokenEffects": {
       "visibility_insight": 1,
       "efficiency_throughput": 5,
@@ -39,6 +43,8 @@
     "id": "energyMonitoring",
     "roundsAvailable": [1, 2, 3],
     "unlockCondition": null,
+    "companyName": "Bosch",
+    "feedbackKey": "feedback.bosch",
     "perTokenEffects": {
       "visibility_insight": 3,
       "efficiency_throughput": 2,
@@ -57,6 +63,8 @@
     "id": "smartBuilding",
     "roundsAvailable": [1, 2, 3],
     "unlockCondition": null,
+    "companyName": "AT&T",
+    "feedbackKey": "feedback.att",
     "perTokenEffects": {
       "visibility_insight": 3,
       "efficiency_throughput": 2,
@@ -75,6 +83,8 @@
     "id": "fleetOptimization",
     "roundsAvailable": [1, 2, 3],
     "unlockCondition": null,
+    "companyName": "Microsoft",
+    "feedbackKey": "feedback.microsoft",
     "perTokenEffects": {
       "visibility_insight": 3,
       "efficiency_throughput": 3,
@@ -93,6 +103,8 @@
     "id": "predictiveMaintenance",
     "roundsAvailable": [1, 2, 3],
     "unlockCondition": null,
+    "companyName": "Rio Tinto",
+    "feedbackKey": "feedback.rioTinto",
     "perTokenEffects": {
       "visibility_insight": 3,
       "efficiency_throughput": 2,
@@ -111,6 +123,8 @@
     "id": "digitalTwin",
     "roundsAvailable": [2, 3],
     "unlockCondition": null,
+    "companyName": "Siemens",
+    "feedbackKey": "feedback.siemens",
     "perTokenEffects": {
       "visibility_insight": 5,
       "efficiency_throughput": 2,
@@ -129,6 +143,8 @@
     "id": "emissionsDetection",
     "roundsAvailable": [2, 3],
     "unlockCondition": null,
+    "companyName": "Marathon Oil",
+    "feedbackKey": "feedback.marathon",
     "perTokenEffects": {
       "visibility_insight": 4,
       "efficiency_throughput": 1,
@@ -147,6 +163,8 @@
     "id": "waterMonitoring",
     "roundsAvailable": [2, 3],
     "unlockCondition": null,
+    "companyName": "Seattle",
+    "feedbackKey": "feedback.seattle",
     "perTokenEffects": {
       "visibility_insight": 4,
       "efficiency_throughput": 1,
@@ -165,6 +183,8 @@
     "id": "gridSensors",
     "roundsAvailable": [2, 3],
     "unlockCondition": null,
+    "companyName": "Tensio",
+    "feedbackKey": "feedback.tensio",
     "perTokenEffects": {
       "visibility_insight": 5,
       "efficiency_throughput": 0,
@@ -183,6 +203,8 @@
     "id": "securityHardening",
     "roundsAvailable": [2, 3],
     "unlockCondition": "complexity_high",
+    "companyName": "Generic Security",
+    "feedbackKey": "feedback.security",
     "perTokenEffects": {
       "visibility_insight": 1,
       "efficiency_throughput": 0,
@@ -201,6 +223,8 @@
     "id": "healthMonitoring",
     "roundsAvailable": [3],
     "unlockCondition": null,
+    "companyName": "Health Tech",
+    "feedbackKey": "feedback.healthTech",
     "perTokenEffects": {
       "visibility_insight": 2,
       "efficiency_throughput": 1,

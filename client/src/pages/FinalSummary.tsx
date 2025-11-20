@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { classifyArchetype } from '@/lib/archetypes';
 import { Trophy, RotateCcw, TrendingUp } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useGame } from '@/contexts/GameContext';
 
 interface RoundHistory {
   round: number;
@@ -23,26 +24,18 @@ interface FinalSummaryProps {
 
 export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}, onReplay }: FinalSummaryProps) {
   const { t } = useTranslation();
+  const { allCards } = useGame();
 
   const archetypeId = classifyArchetype(metrics);
   const archetypeTitle = t(`archetypes.${archetypeId}.title`);
   const archetypeDescription = t(`archetypes.${archetypeId}.description`);
   const archetypeSuggestions = t(`archetypes.${archetypeId}.suggestions`);
 
-  // Map card IDs to company names for strategy synthesis
-  const cardToCompany: Record<string, string> = {
-    smartTools: 'Airbus',
-    warehouseFlow: 'Logidot',
-    energyMonitoring: 'Bosch',
-    smartBuilding: 'AT&T',
-    fleetOptimization: 'Microsoft',
-    predictiveMaintenance: 'Rio Tinto',
-    digitalTwin: 'Siemens',
-    emissionsDetection: 'Marathon Oil',
-    waterMonitoring: 'Seattle',
-    gridSensors: 'Tensio',
-    healthMonitoring: 'Health Tech',
-  };
+  // Build dynamic mapping from card data
+  const cardToCompany: Record<string, string> = allCards.reduce((acc, card) => {
+    acc[card.id] = card.companyName;
+    return acc;
+  }, {} as Record<string, string>);
 
   // Use the explicitly passed final allocations (true end state after all rounds)
   const topInvestments = Object.entries(finalAllocations || {})

@@ -1,0 +1,22 @@
+{
+  "feedbackThresholds": {
+    "highVisibilityDelta": 8,
+    "highEfficiencyDelta": 8,
+    "highSustainabilityDelta": 8,
+    "highEarlyWarningDelta": 8,
+    "highComplexityDelta": 10,
+    "criticalComplexityAbsolute": 60,
+    "lowEarlyWarningDelta": 5,
+    "balancedGrowthMinDelta": 3,
+    "balancedGrowthMaxComplexity": 8
+  },
+  "tokenMechanics": {
+    "diminishingReturnsThreshold": 3,
+    "diminishingReturnsMultiplier": 0.5,
+    "iotSprawlThreshold": 12,
+    "iotSprawlPenaltyPerToken": 2
+  },
+  "unlockConditions": {
+    "complexityHighThreshold": 40
+  }
+}

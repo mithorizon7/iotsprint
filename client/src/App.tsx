@@ -8,7 +8,7 @@ import { GameProvider, useGame } from '@/contexts/GameContext';
 import { OnboardingScreen } from '@/pages/OnboardingScreen';
 import { GameDashboard } from '@/pages/GameDashboard';
 import { FinalSummary } from '@/pages/FinalSummary';
-import { CardConfig } from '@shared/schema';
+import { CardConfig, GameConfig } from '@shared/schema';
 import i18n from './lib/i18n';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { logger } from '@/lib/logger';
@@ -26,22 +26,29 @@ function App() {
 function AppContent() {
   const { t } = useTranslation();
   const [cards, setCards] = useState<CardConfig[]>([]);
+  const [gameConfig, setGameConfig] = useState<GameConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Load card configurations
-    fetch('/config/cards.json')
-      .then((res) => {
+    // Load both card configurations and game config in parallel
+    Promise.all([
+      fetch('/config/cards.json').then((res) => {
+        if (!res.ok) throw new Error('Failed to load cards configuration');
+        return res.json();
+      }),
+      fetch('/config/gameConfig.json').then((res) => {
         if (!res.ok) throw new Error('Failed to load game configuration');
         return res.json();
       })
-      .then((data) => {
-        setCards(data);
+    ])
+      .then(([cardsData, configData]) => {
+        setCards(cardsData);
+        setGameConfig(configData);
         setLoading(false);
       })
       .catch((error) => {
-        logger.error('Failed to load cards:', error);
+        logger.error('Failed to load game data:', error);
         setError(error.message || 'Failed to load game configuration');
         setLoading(false);
       });
@@ -75,10 +82,14 @@ function AppContent() {
     );
   }
 
+  if (!gameConfig) {
+    return null; // Should never happen since loading state handles this
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <GameProvider cards={cards}>
+        <GameProvider cards={cards} config={gameConfig}>
           <GameFlow />
         </GameProvider>
         <Toaster />

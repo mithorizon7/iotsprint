@@ -1,0 +1,67 @@
+Here is a comprehensive analysis of the "IoT Strategy Sprint" game, divided into a technical report for your developer and a pedagogical review for your learning design team.
+
+Part 1: Developer Report (Bugs & Technical Fixes)
+To: Lead Developer From: Product/QA Subject: Priority Fixes & Refactors for IoT Strategy Sprint v1
+
+The following issues were identified during a static analysis of the codebase. Please address them in the order listed below to ensure stability and localization readiness.
+
+🚨 Priority 1: Critical Logic & State Management
+1. Metric Accumulation "Runaway" Effect
+
+Location: client/src/contexts/GameContext.tsx (lines 67-104)
+
+Issue: The runPlan function calculates new metrics by adding the calculated effects to prev.metrics. Because you carry over 50% of allocations to the next round, the metrics effectively "double dip." A token allocated in Round 1 adds value in Round 1, and if kept, adds value again in Round 2 on top of the previous total.
+
+Result: Metrics will likely hit 100/100 too early, removing the challenge in Round 3.
+
+Fix: Change the calculation model to be "State-Based" rather than "Accumulative."
+
+Proposed Logic: Current_Metrics = Initial_Metrics + (Sum_of_All_Current_Allocations * Effects).
+
+Action: Calculate metrics from the baseline (INITIAL_METRICS) every time runPlan is called, rather than adding to prev.metrics.
+
+2. Hardcoded Logic/Content Coupling
+
+Location: client/src/components/RoundFeedback.tsx (lines 22-33) and client/src/pages/FinalSummary.tsx (lines 28-39)
+
+Issue: The mapping of specific cards to feedback examples (e.g., smartTools -> Airbus) is hardcoded in TypeScript objects inside the components. If we add or rename cards in cards.json, the app will break or show fallback text.
+
+Fix: Move these mappings into the cards.json schema.
+
+Action: Add a companyReference or feedbackKey field to the CardConfig interface and JSON file. The UI should read this property dynamically.
+
+🟡 Priority 2: Localization & Schema Issues
+1. Hardcoded Company Names in UI
+
+Location: client/src/pages/FinalSummary.tsx (lines 28-39)
+
+Issue: The variable cardToCompany contains hardcoded strings ("Airbus", "Logidot", "Bosch"). While these proper nouns generally don't change across languages, their association with the card ID should not live in the view layer.
+
+Fix: As per Priority 1, move "Airbus" into the cards.json data under a companyName field.
+
+2. Magic Numbers in Feedback Logic
+
+Location: client/src/components/RoundFeedback.tsx (lines 43, 72, 80)
+
+Issue: Thresholds like if (delta.visibility_insight >= 8) and if (delta.complexity_risk >= 10) are hardcoded.
+
+Fix: Extract these thresholds to a gameConfig.json or constants file. This allows game designers to tune difficulty without requiring code changes.
+
+🟢 Priority 3: Edge Cases & Polish
+1. Token Reallocation Rounding
+
+Location: client/src/contexts/GameContext.tsx (line 118)
+
+Issue: Math.floor(tokens * 0.5) is used. If a user has 1 token on a card, they keep 0.
+
+Observation: This is mathematically correct per the brief ("up to half"), but it feels punishing for players who spread tokens thinly (1 on everything).
+
+Fix: Confirm with design if this is intended. If players end up with too few tokens in Round 2, consider Math.ceil or a minimum carryover rule.
+
+2. Event Logic Hardcoding
+
+Location: client/src/pages/GameDashboard.tsx (lines 65-103)
+
+Issue: The logic for triggering Round 2 and 3 events (e.g., metrics.complexity_risk > 40) is hardcoded in the component.
+
+Fix: Move event triggers to a configuration file (e.g., events.json) containing an array of events with simple condition operators (e.g., { "trigger": "complexity > 40", "msgKey": "events.round2.highComplexity" }).

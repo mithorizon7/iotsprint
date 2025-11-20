@@ -4,6 +4,7 @@ import { MetricsPanel } from './MetricsPanel';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { TrendingUp, TrendingDown, AlertCircle, CheckCircle } from 'lucide-react';
+import { useGame } from '@/contexts/GameContext';
 
 interface RoundFeedbackProps {
   currentRound: number;
@@ -21,33 +22,26 @@ export function RoundFeedback({
   onNext,
 }: RoundFeedbackProps) {
   const { t } = useTranslation();
+  const { allCards, config } = useGame();
 
   const delta = calculateMetricsDelta(metricsBefore, metricsAfter);
+  const thresholds = config.feedbackThresholds;
 
-  // Map card IDs to their translation keys for company examples
-  const cardExampleKeys: Record<string, string> = {
-    smartTools: 'feedback.airbus',
-    warehouseFlow: 'feedback.logidot',
-    energyMonitoring: 'feedback.bosch',
-    smartBuilding: 'feedback.att',
-    fleetOptimization: 'feedback.microsoft',
-    predictiveMaintenance: 'feedback.rioTinto',
-    digitalTwin: 'feedback.siemens',
-    emissionsDetection: 'feedback.marathon',
-    waterMonitoring: 'feedback.seattle',
-    gridSensors: 'feedback.tensio',
-    healthMonitoring: 'feedback.healthTech',
-  };
+  // Build dynamic mapping from card data
+  const cardExampleKeys: Record<string, string> = allCards.reduce((acc, card) => {
+    acc[card.id] = card.feedbackKey;
+    return acc;
+  }, {} as Record<string, string>);
 
   // Find which cards were invested in to provide specific feedback
   const investedCards = Object.entries(allocations)
     .filter(([, tokens]) => tokens > 0)
     .map(([cardId]) => cardId);
 
-  // Generate feedback based on changes
+  // Generate feedback based on changes (using configurable thresholds)
   const feedbackItems: Array<{ icon: React.ReactNode; message: string; type: 'positive' | 'warning' | 'neutral' }> = [];
 
-  if (delta.visibility_insight >= 8) {
+  if (delta.visibility_insight >= thresholds.highVisibilityDelta) {
     const relevantCard = investedCards.find(id => ['digitalTwin', 'warehouseFlow', 'gridSensors', 'emissionsDetection'].includes(id));
     const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultTracking');
     feedbackItems.push({
@@ -57,7 +51,7 @@ export function RoundFeedback({
     });
   }
 
-  if (delta.efficiency_throughput >= 8) {
+  if (delta.efficiency_throughput >= thresholds.highEfficiencyDelta) {
     const relevantCard = investedCards.find(id => ['smartTools', 'warehouseFlow', 'fleetOptimization'].includes(id));
     const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultAutomation');
     feedbackItems.push({
@@ -67,7 +61,7 @@ export function RoundFeedback({
     });
   }
 
-  if (delta.sustainability_emissions >= 8) {
+  if (delta.sustainability_emissions >= thresholds.highSustainabilityDelta) {
     const relevantCard = investedCards.find(id => ['energyMonitoring', 'smartBuilding', 'fleetOptimization', 'emissionsDetection'].includes(id));
     const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultEnergy');
     feedbackItems.push({
@@ -77,7 +71,7 @@ export function RoundFeedback({
     });
   }
 
-  if (delta.early_warning_prevention >= 8) {
+  if (delta.early_warning_prevention >= thresholds.highEarlyWarningDelta) {
     const relevantCard = investedCards.find(id => ['predictiveMaintenance', 'healthMonitoring', 'gridSensors', 'waterMonitoring'].includes(id));
     const example = relevantCard ? t(cardExampleKeys[relevantCard]) : t('feedback.defaultPredictive');
     feedbackItems.push({
@@ -87,7 +81,7 @@ export function RoundFeedback({
     });
   }
 
-  if (delta.complexity_risk >= 10) {
+  if (delta.complexity_risk >= thresholds.highComplexityDelta) {
     const deviceCount = Object.values(allocations).reduce((sum, t) => sum + t, 0) * 50;
     feedbackItems.push({
       icon: <AlertCircle className="w-5 h-5" data-testid="icon-alert-circle" />,
@@ -96,7 +90,7 @@ export function RoundFeedback({
     });
   }
 
-  if (metricsAfter.complexity_risk > 60 && delta.early_warning_prevention < 5) {
+  if (metricsAfter.complexity_risk > thresholds.criticalComplexityAbsolute && delta.early_warning_prevention < thresholds.lowEarlyWarningDelta) {
     feedbackItems.push({
       icon: <TrendingDown className="w-5 h-5" data-testid="icon-trending-down" />,
       message: t('feedback.complexityWarning'),
@@ -105,8 +99,8 @@ export function RoundFeedback({
   }
 
   // Balanced growth check
-  const allPositive = [delta.visibility_insight, delta.efficiency_throughput, delta.sustainability_emissions, delta.early_warning_prevention].every(d => d > 3);
-  if (allPositive && delta.complexity_risk < 8) {
+  const allPositive = [delta.visibility_insight, delta.efficiency_throughput, delta.sustainability_emissions, delta.early_warning_prevention].every(d => d > thresholds.balancedGrowthMinDelta);
+  if (allPositive && delta.complexity_risk < thresholds.balancedGrowthMaxComplexity) {
     feedbackItems.push({
       icon: <CheckCircle className="w-5 h-5" data-testid="icon-check-circle" />,
       message: t('feedback.balancedGrowth'),

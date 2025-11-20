@@ -93,6 +93,45 @@ Preferred communication style: Simple, everyday language.
 - ✅ Language preference persists across page reloads (localStorage)
 - ✅ No console errors related to i18n
 
+### Architecture Improvements (November 20, 2025)
+
+**Critical Bug Fixes**:
+1. **Metric Calculation Bug Fixed** - Changed from additive to cumulative state-based calculation
+   - Previous: Metrics added to previous round totals on each runPlan(), causing double-counting and runaway growth
+   - Fixed: Metrics now use stored values from previous rounds instead of recalculating
+   - Implementation: 
+     - `metricsBefore` = previous round's stored `metricsAfter` (or INITIAL_METRICS for round 1)
+     - `metricsAfter` = `metricsBefore` + current round's allocation effects
+     - Each round stores both metricsBefore and metricsAfter in roundHistory
+   - Benefits:
+     - Simple O(1) lookup instead of O(n) iteration
+     - Immune to retroactive config/card changes
+     - Correct deltas in all scenarios (first run, re-run, allocation changes)
+   - Impact: Game balance restored, metrics properly cumulative across rounds 1-3
+
+**Data Architecture Improvements**:
+2. **Decoupled Content from Code**:
+   - Added `companyName` and `feedbackKey` fields to CardConfig schema
+   - All 12 cards updated in `client/public/config/cards.json` with company references
+   - Removed hardcoded mappings from `RoundFeedback.tsx` and `FinalSummary.tsx`
+   - Cards now fully data-driven and maintainable via JSON
+
+3. **Configurable Game Balance**:
+   - Created `client/public/config/gameConfig.json` with tunable thresholds
+   - Extracted all magic numbers to configuration:
+     - Feedback thresholds (delta >= 8, complexity > 60, etc.)
+     - Token mechanics (diminishing returns at 3rd token, IoT sprawl at 12 tokens)
+     - Unlock conditions (complexity_high at 40)
+   - Game designers can now adjust difficulty without code changes
+   - Added GameConfig interface to shared/schema.ts
+
+**Design Considerations**:
+- **Token Rounding Behavior**: Current implementation uses `Math.floor(tokens * 0.5)` for round-to-round carryover
+  - Effect: 1 token becomes 0, 2 tokens becomes 1, 3 tokens becomes 1, etc.
+  - This is intentional design to prevent overextension and encourage focused strategies
+  - Players who spread tokens thinly (1 on everything) lose all carryover
+  - Alternative would be Math.ceil or minimum carryover guarantee (pending design review)
+
 ### Game Mechanics
 
 **Content Model**:

@@ -25,6 +25,8 @@ export interface CardConfig {
   unlockCondition: UnlockCondition;
   perTokenEffects: PerTokenEffects;
   category: 'visibility' | 'streamlining' | 'sustainability' | 'early_warning' | 'security';
+  companyName: string; // Company reference for final summary (e.g., "Airbus", "Bosch")
+  feedbackKey: string; // Translation key for round feedback examples (e.g., "feedback.airbus")
   copyKeys: {
     title: string;
     shortDescription: string;
@@ -105,19 +107,46 @@ export function calculateMetricsDelta(before: GameMetrics, after: GameMetrics): 
   };
 }
 
+// Game Configuration Types
+export interface GameConfig {
+  feedbackThresholds: {
+    highVisibilityDelta: number;
+    highEfficiencyDelta: number;
+    highSustainabilityDelta: number;
+    highEarlyWarningDelta: number;
+    highComplexityDelta: number;
+    criticalComplexityAbsolute: number;
+    lowEarlyWarningDelta: number;
+    balancedGrowthMinDelta: number;
+    balancedGrowthMaxComplexity: number;
+  };
+  tokenMechanics: {
+    diminishingReturnsThreshold: number;
+    diminishingReturnsMultiplier: number;
+    iotSprawlThreshold: number;
+    iotSprawlPenaltyPerToken: number;
+  };
+  unlockConditions: {
+    complexityHighThreshold: number;
+  };
+}
+
 // Evaluate unlock conditions based on current game state
 export function evaluateUnlockCondition(
   condition: UnlockCondition,
   metrics: GameMetrics,
-  allocations: Record<string, number>
+  allocations: Record<string, number>,
+  config?: GameConfig
 ): boolean {
   if (condition === null) {
     return true; // No unlock condition, always available
   }
 
+  const complexityThreshold = config?.unlockConditions.complexityHighThreshold ?? 40;
+
   switch (condition) {
     case 'complexity_high':
-      return metrics.complexity_risk >= 40;
+      return metrics.complexity_risk >= complexityThreshold;
     default:
       return true;
   }

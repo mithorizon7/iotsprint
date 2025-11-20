@@ -6,12 +6,15 @@ import {
   TOKENS_PER_ROUND,
   clampMetrics,
   CardConfig,
+  GameConfig,
   evaluateUnlockCondition,
 } from '@shared/schema';
 
 interface GameContextType {
   gameState: GameState;
-  availableCards: CardConfig[];
+  allCards: CardConfig[]; // All cards in the game
+  availableCards: CardConfig[]; // Cards available in current round
+  config: GameConfig; // Game configuration with tunable thresholds
   allocateTokens: (cardId: string, tokens: number) => void;
   runPlan: () => void;
   nextRound: () => void;
@@ -32,9 +35,10 @@ export function useGame() {
 interface GameProviderProps {
   children: ReactNode;
   cards: CardConfig[];
+  config: GameConfig;
 }
 
-export function GameProvider({ children, cards }: GameProviderProps) {
+export function GameProvider({ children, cards, config }: GameProviderProps) {
   const [gameState, setGameState] = useState<GameState>({
     currentRound: 1, // Start at round 1 (after onboarding)
     metrics: { ...INITIAL_METRICS },
@@ -50,7 +54,7 @@ export function GameProvider({ children, cards }: GameProviderProps) {
     }
 
     // Check unlock condition using the centralized evaluation function
-    return evaluateUnlockCondition(card.unlockCondition, gameState.metrics, gameState.allocations);
+    return evaluateUnlockCondition(card.unlockCondition, gameState.metrics, gameState.allocations, config);
   });
 
   const allocateTokens = useCallback((cardId: string, tokens: number) => {
@@ -79,54 +83,102 @@ export function GameProvider({ children, cards }: GameProviderProps) {
 
   const runPlan = useCallback(() => {
     setGameState((prev) => {
-      const metricsBefore = { ...prev.metrics };
-      let newMetrics = { ...prev.metrics };
+      // Helper function to apply allocation effects to a metrics object
+      const applyAllocationEffects = (
+        metricsToUpdate: GameMetrics,
+        allocations: Record<string, number>
+      ): GameMetrics => {
+        const updated = { ...metricsToUpdate };
+        const totalTokensUsed = Object.values(allocations).reduce((sum, t) => sum + t, 0);
 
-      // Calculate total tokens used across all cards
-      const totalTokensUsed = Object.values(prev.allocations).reduce((sum, t) => sum + t, 0);
+        Object.entries(allocations).forEach(([cardId, tokens]) => {
+          if (tokens === 0) return;
 
-      // Apply per-token effects
-      Object.entries(prev.allocations).forEach(([cardId, tokens]) => {
-        if (tokens === 0) return;
+          const card = cards.find((c) => c.id === cardId);
+          if (!card) return;
 
-        const card = cards.find((c) => c.id === cardId);
-        if (!card) return;
+          // Apply effects with diminishing returns after threshold
+          for (let i = 0; i < tokens; i++) {
+            const multiplier = i >= config.tokenMechanics.diminishingReturnsThreshold 
+              ? config.tokenMechanics.diminishingReturnsMultiplier 
+              : 1;
 
-        // Apply effects with diminishing returns after 3rd token
-        for (let i = 0; i < tokens; i++) {
-          const multiplier = i >= 3 ? 0.5 : 1;
+            updated.visibility_insight += card.perTokenEffects.visibility_insight * multiplier;
+            updated.efficiency_throughput += card.perTokenEffects.efficiency_throughput * multiplier;
+            updated.sustainability_emissions += card.perTokenEffects.sustainability_emissions * multiplier;
+            updated.early_warning_prevention += card.perTokenEffects.early_warning_prevention * multiplier;
+            updated.complexity_risk += card.perTokenEffects.complexity_risk * multiplier;
+          }
+        });
 
-          newMetrics.visibility_insight += card.perTokenEffects.visibility_insight * multiplier;
-          newMetrics.efficiency_throughput += card.perTokenEffects.efficiency_throughput * multiplier;
-          newMetrics.sustainability_emissions += card.perTokenEffects.sustainability_emissions * multiplier;
-          newMetrics.early_warning_prevention += card.perTokenEffects.early_warning_prevention * multiplier;
-          newMetrics.complexity_risk += card.perTokenEffects.complexity_risk * multiplier;
+        // Global complexity penalty for IoT sprawl (per round)
+        if (totalTokensUsed > config.tokenMechanics.iotSprawlThreshold) {
+          updated.complexity_risk += (totalTokensUsed - config.tokenMechanics.iotSprawlThreshold) * config.tokenMechanics.iotSprawlPenaltyPerToken;
         }
-      });
 
-      // Global complexity penalty for IoT sprawl (if more than 12 total tokens used)
-      if (totalTokensUsed > 12) {
-        newMetrics.complexity_risk += (totalTokensUsed - 12) * 2;
+        return updated;
+      };
+
+      // Calculate metricsBefore by using stored metrics from previous round
+      // This is more robust than recalculating and immune to config changes
+      let metricsBefore: GameMetrics;
+      if (prev.currentRound === 1) {
+        // Round 1: start from baseline
+        metricsBefore = { ...INITIAL_METRICS };
+      } else {
+        // Rounds 2-3: use metricsAfter from previous round
+        const previousRound = prev.roundHistory.find(
+          (r) => r.round === prev.currentRound - 1
+        );
+        if (previousRound) {
+          metricsBefore = { ...previousRound.metricsAfter };
+        } else {
+          // Fallback (shouldn't happen in normal gameplay)
+          metricsBefore = { ...INITIAL_METRICS };
+        }
       }
 
-      // Clamp all metrics
-      newMetrics = clampMetrics(newMetrics);
+      // Calculate metricsAfter: metricsBefore + current round effects
+      let metricsAfter = applyAllocationEffects(metricsBefore, prev.allocations);
+      metricsAfter = clampMetrics(metricsAfter);
 
-      return {
-        ...prev,
-        metrics: newMetrics,
-        roundHistory: [
+      // Update or append roundHistory entry for this round
+      // If this round already exists in history (re-running), replace it
+      // Otherwise, append it
+      const existingRoundIndex = prev.roundHistory.findIndex(
+        (r) => r.round === prev.currentRound
+      );
+
+      let updatedHistory;
+      if (existingRoundIndex >= 0) {
+        // Replace existing entry for this round
+        updatedHistory = [...prev.roundHistory];
+        updatedHistory[existingRoundIndex] = {
+          round: prev.currentRound,
+          metricsBefore,
+          metricsAfter,
+          allocations: { ...prev.allocations },
+        };
+      } else {
+        // Append new entry
+        updatedHistory = [
           ...prev.roundHistory,
           {
             round: prev.currentRound,
             metricsBefore,
-            metricsAfter: newMetrics,
+            metricsAfter,
             allocations: { ...prev.allocations },
           },
-        ],
+        ];
+      }
+
+      return {
+        ...prev,
+        metrics: metricsAfter,
+        roundHistory: updatedHistory,
       };
     });
-  }, [cards]);
+  }, [cards, config]);
 
   const nextRound = useCallback(() => {
     setGameState((prev) => {
@@ -177,7 +229,9 @@ export function GameProvider({ children, cards }: GameProviderProps) {
     <GameContext.Provider
       value={{
         gameState,
+        allCards: cards,
         availableCards,
+        config,
         allocateTokens,
         runPlan,
         nextRound,
