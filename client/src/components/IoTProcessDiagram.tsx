@@ -39,30 +39,64 @@ export function IoTProcessDiagram() {
       <h3 className="text-xl font-semibold text-center mb-8" data-testid="text-process-title">
         {t('onboarding.processTitle')}
       </h3>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {steps.map((step, index) => {
+      
+      {/* Mobile: Vertical layout */}
+      <div className="flex flex-col gap-6 md:hidden">
+        {steps.map((step) => {
           const Icon = step.icon;
           return (
-            <div key={step.key} className="relative" data-testid={`card-process-${step.key}`}>
-              <div className="flex flex-col items-center text-center">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                  <Icon className="w-8 h-8 text-primary" />
-                </div>
-                <h4 className="text-base font-semibold mb-2" data-testid={`text-step-${step.key}`}>
-                  {step.title}
-                </h4>
-                <p className="text-sm text-muted-foreground" data-testid={`text-desc-${step.key}`}>
-                  {step.desc}
-                </p>
+            <div key={step.key} className="flex flex-col items-center text-center" data-testid={`card-process-${step.key}`}>
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                <Icon className="w-8 h-8 text-primary" />
               </div>
-              {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-border -translate-y-1/2 -ml-3">
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-border rotate-45 translate-x-1/2" />
-                </div>
-              )}
+              <h4 className="text-base font-semibold mb-2" data-testid={`text-step-${step.key}`}>
+                {step.title}
+              </h4>
+              <p className="text-sm text-muted-foreground" data-testid={`text-desc-${step.key}`}>
+                {step.desc}
+              </p>
             </div>
           );
         })}
+      </div>
+
+      {/* Desktop: Horizontal layout with connecting lines */}
+      <div className="hidden md:block">
+        {/* Icons row with connectors */}
+        <div className="flex items-center justify-between mb-4">
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <div key={step.key} className="contents">
+                {/* Circle with icon */}
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <Icon className="w-8 h-8 text-primary" />
+                </div>
+                {/* Connector line between circles */}
+                {index < steps.length - 1 && (
+                  <div className="flex-1 flex items-center mx-2">
+                    <div className="flex-1 h-0.5 bg-border" />
+                    <div className="w-2 h-2 bg-border rotate-45 shrink-0" />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Labels row */}
+        <div className="grid grid-cols-4 gap-4">
+          {steps.map((step) => (
+            <div key={step.key} className="text-center" data-testid={`card-process-${step.key}`}>
+              <h4 className="text-base font-semibold mb-2" data-testid={`text-step-${step.key}`}>
+                {step.title}
+              </h4>
+              <p className="text-sm text-muted-foreground" data-testid={`text-desc-${step.key}`}>
+                {step.desc}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
