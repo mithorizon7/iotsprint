@@ -3,22 +3,16 @@ import { useGame } from '@/contexts/GameContext';
 import { MetricsPanel } from '@/components/MetricsPanel';
 import { InitiativeCard } from '@/components/InitiativeCard';
 import { Button } from '@/components/ui/button';
-import { Coins } from 'lucide-react';
+import { Coins, Info } from 'lucide-react';
 import { useState } from 'react';
 import { RoundFeedback } from '@/components/RoundFeedback';
-import { GameMetrics } from '@shared/schema';
+import { GameMetrics, RoundHistoryEntry } from '@shared/schema';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Info } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-
-interface RoundHistory {
-  round: number;
-  allocations: Record<string, number>;
-  metricsAfter: GameMetrics;
-}
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface GameDashboardProps {
-  onComplete: (metrics: GameMetrics, roundHistory: RoundHistory[], finalAllocations: Record<string, number>) => void;
+  onComplete: (metrics: GameMetrics, roundHistory: RoundHistoryEntry[], finalAllocations: Record<string, number>) => void;
 }
 
 export function GameDashboard({ onComplete }: GameDashboardProps) {
@@ -138,6 +132,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
               {t('dashboard.roundTitle', { round: gameState.currentRound })}
             </h2>
             <div className="flex items-center gap-4">
+              <ThemeToggle />
               <LanguageSwitcher />
               <div className="flex flex-col items-end gap-1">
               <div className="flex items-center gap-2">

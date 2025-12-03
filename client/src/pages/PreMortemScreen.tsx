@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { AlertTriangle, TrendingDown, TreeDeciduous } from 'lucide-react';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 interface PreMortemScreenProps {
   onComplete: () => void;
@@ -46,7 +48,11 @@ export default function PreMortemScreen({ onComplete }: PreMortemScreenProps) {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-4">
+    <div className="container max-w-4xl mx-auto py-8 px-4 relative">
+      <div className="absolute top-0 right-0 flex items-center gap-2">
+        <ThemeToggle />
+        <LanguageSwitcher />
+      </div>
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold" data-testid="text-premortem-title">

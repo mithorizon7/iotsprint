@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -34,8 +34,29 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
   const canDecrement = allocation > 0;
   const canIncrement = allocation < 3 && !disabled;
 
+  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      if (canIncrement) {
+        onAllocate(allocation + 1);
+      }
+    } else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      if (canDecrement && !disabled) {
+        onAllocate(allocation - 1);
+      }
+    }
+  }, [allocation, canIncrement, canDecrement, disabled, onAllocate]);
+
   return (
-    <Card className="flex flex-col h-full" data-testid={`card-initiative-${card.id}`}>
+    <Card 
+      className="flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" 
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      role="group"
+      aria-label={`${title}: ${allocation} tokens allocated. Use arrow keys to adjust.`}
+      data-testid={`card-initiative-${card.id}`}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2 mb-2">
           <CardTitle className="text-lg leading-tight" data-testid={`text-title-${card.id}`}>
@@ -47,7 +68,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="h-8 w-8 shrink-0"
+                  aria-label={`More info about ${title}`}
                   data-testid={`button-info-${card.id}`}
                 >
                   <Info className="h-4 w-4" />
@@ -91,7 +112,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
               variant="outline"
               onClick={() => onAllocate(allocation - 1)}
               disabled={!canDecrement || disabled}
-              className="h-10 w-10"
+              aria-label={`Remove token from ${title}`}
               data-testid={`button-decrement-${card.id}`}
             >
               <Minus className="h-4 w-4" />
@@ -107,7 +128,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
               variant="outline"
               onClick={() => onAllocate(allocation + 1)}
               disabled={!canIncrement}
-              className="h-10 w-10"
+              aria-label={`Add token to ${title}`}
               data-testid={`button-increment-${card.id}`}
             >
               <Plus className="h-4 w-4" />

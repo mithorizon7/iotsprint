@@ -54,18 +54,20 @@ export interface DisasterEvent {
   mitigatedBy?: string[]; // Card IDs that prevent this disaster (if allocated)
 }
 
+export interface RoundHistoryEntry {
+  round: number;
+  metricsBefore: GameMetrics;
+  metricsAfter: GameMetrics;
+  allocations: Record<string, number>;
+  events?: DisasterEvent[]; // Disasters that occurred this round
+}
+
 export interface GameState {
   currentRound: number; // 0 = onboarding, 1-3 = game rounds
   metrics: GameMetrics;
   tokensAvailable: number;
   allocations: Record<string, number>; // cardId -> tokens
-  roundHistory: {
-    round: number;
-    metricsBefore: GameMetrics;
-    metricsAfter: GameMetrics;
-    allocations: Record<string, number>;
-    events?: DisasterEvent[]; // Disasters that occurred this round
-  }[];
+  roundHistory: RoundHistoryEntry[];
   disasterEvents: DisasterEvent[]; // All disasters encountered
   preMortemAnswer: PreMortemChoice | null; // Player's risk prediction
   isGameComplete: boolean; // Explicit flag indicating Round 3 has been completed

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useMemo, useEffect, ReactNode } from 'react';
 import {
   GameState,
   GameMetrics,
@@ -11,6 +11,8 @@ import {
   PreMortemChoice,
   DisasterEvent,
 } from '@shared/schema';
+
+const STORAGE_KEY = 'iot-game-state';
 
 interface GameContextType {
   gameState: GameState;
@@ -41,27 +43,54 @@ interface GameProviderProps {
   config: GameConfig;
 }
 
-export function GameProvider({ children, cards, config }: GameProviderProps) {
-  const [gameState, setGameState] = useState<GameState>({
-    currentRound: 1, // Start at round 1 (after onboarding)
+function getInitialGameState(): GameState {
+  const defaultState: GameState = {
+    currentRound: 1,
     metrics: { ...INITIAL_METRICS },
     tokensAvailable: TOKENS_PER_ROUND[0],
     allocations: {},
     roundHistory: [],
     disasterEvents: [],
     preMortemAnswer: null,
-    isGameComplete: false, // Game starts incomplete
-  });
+    isGameComplete: false,
+  };
 
-  const availableCards = cards.filter((card) => {
-    // Check if card is available in current round
-    if (!card.roundsAvailable.includes(gameState.currentRound)) {
-      return false;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed && typeof parsed === 'object' && !parsed.isGameComplete) {
+        return { ...defaultState, ...parsed };
+      }
     }
+  } catch (e) {
+    console.warn('Failed to restore game state from localStorage:', e);
+  }
 
-    // Check unlock condition using the centralized evaluation function
-    return evaluateUnlockCondition(card.unlockCondition, gameState.metrics, gameState.allocations, config);
-  });
+  return defaultState;
+}
+
+export function GameProvider({ children, cards, config }: GameProviderProps) {
+  const [gameState, setGameState] = useState<GameState>(getInitialGameState);
+
+  useEffect(() => {
+    try {
+      if (!gameState.isGameComplete) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+      }
+    } catch (e) {
+      console.warn('Failed to save game state to localStorage:', e);
+    }
+  }, [gameState]);
+
+  const availableCards = useMemo(() => {
+    return cards.filter((card) => {
+      if (!card.roundsAvailable.includes(gameState.currentRound)) {
+        return false;
+      }
+      return evaluateUnlockCondition(card.unlockCondition, gameState.metrics, gameState.allocations, config);
+    });
+  }, [cards, gameState.currentRound, gameState.metrics, gameState.allocations, config]);
 
   const allocateTokens = useCallback((cardId: string, tokens: number) => {
     setGameState((prev) => {
@@ -270,15 +299,20 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
   }, []);
 
   const reset = useCallback(() => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (e) {
+      console.warn('Failed to clear game state from localStorage:', e);
+    }
     setGameState({
-      currentRound: 1, // Reset to round 1
+      currentRound: 1,
       metrics: { ...INITIAL_METRICS },
       tokensAvailable: TOKENS_PER_ROUND[0],
       allocations: {},
       roundHistory: [],
       disasterEvents: [],
       preMortemAnswer: null,
-      isGameComplete: false, // Reset completion flag
+      isGameComplete: false,
     });
   }, []);
 

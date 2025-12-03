@@ -140,6 +140,7 @@ function MetricBar({
             <TooltipTrigger asChild>
               <button
                 className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label={`Information about ${label}`}
                 data-testid={`button-info-${testId}`}
               >
                 <Info className="w-4 h-4" />

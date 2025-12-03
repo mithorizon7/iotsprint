@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { GameMetrics } from '@shared/schema';
+import { GameMetrics, RoundHistoryEntry } from '@shared/schema';
 import { MetricsPanel } from '@/components/MetricsPanel';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -7,17 +7,12 @@ import { Badge } from '@/components/ui/badge';
 import { classifyArchetype } from '@/lib/archetypes';
 import { Trophy, RotateCcw, TrendingUp } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { useGame } from '@/contexts/GameContext';
-
-interface RoundHistory {
-  round: number;
-  allocations: Record<string, number>;
-  metricsAfter: GameMetrics;
-}
 
 interface FinalSummaryProps {
   metrics: GameMetrics;
-  roundHistory?: RoundHistory[];
+  roundHistory?: RoundHistoryEntry[];
   finalAllocations?: Record<string, number>;
   onReplay: () => void;
 }
@@ -63,7 +58,8 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-4 right-4 flex items-center gap-2">
+        <ThemeToggle />
         <LanguageSwitcher />
       </div>
       <div className="w-full max-w-5xl mx-auto space-y-8">

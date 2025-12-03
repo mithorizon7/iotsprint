@@ -5,22 +5,25 @@ import { queryClient } from './lib/queryClient';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { GameProvider, useGame } from '@/contexts/GameContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import { OnboardingScreen } from '@/pages/OnboardingScreen';
 import { GameDashboard } from '@/pages/GameDashboard';
 import PreMortemScreen from '@/pages/PreMortemScreen';
 import { FinalSummary } from '@/pages/FinalSummary';
-import { CardConfig, GameConfig } from '@shared/schema';
+import { CardConfig, GameConfig, GameMetrics, RoundHistoryEntry } from '@shared/schema';
 import i18n from './lib/i18n';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { logger } from '@/lib/logger';
 
 function App() {
   return (
-    <I18nextProvider i18n={i18n}>
-      <ErrorBoundary>
-        <AppContent />
-      </ErrorBoundary>
-    </I18nextProvider>
+    <ThemeProvider>
+      <I18nextProvider i18n={i18n}>
+        <ErrorBoundary>
+          <AppContent />
+        </ErrorBoundary>
+      </I18nextProvider>
+    </ThemeProvider>
   );
 }
 
@@ -101,16 +104,16 @@ function AppContent() {
 
 function GameFlow() {
   const [gameState, setGameState] = useState<'onboarding' | 'playing' | 'premortem' | 'summary'>('onboarding');
-  const [finalMetrics, setFinalMetrics] = useState<any>(null);
-  const [finalRoundHistory, setFinalRoundHistory] = useState<any[]>([]);
+  const [finalMetrics, setFinalMetrics] = useState<GameMetrics | null>(null);
+  const [finalRoundHistory, setFinalRoundHistory] = useState<RoundHistoryEntry[]>([]);
   const [finalAllocations, setFinalAllocations] = useState<Record<string, number>>({});
-  const { reset, gameState: contextGameState } = useGame();
+  const { reset } = useGame();
 
   const handleStart = () => {
     setGameState('playing');
   };
 
-  const handleComplete = (metrics: any, roundHistory: any[], allocations: Record<string, number>) => {
+  const handleComplete = (metrics: GameMetrics, roundHistory: RoundHistoryEntry[], allocations: Record<string, number>) => {
     setFinalMetrics(metrics);
     setFinalRoundHistory(roundHistory);
     setFinalAllocations(allocations);
@@ -141,6 +144,10 @@ function GameFlow() {
 
   if (gameState === 'premortem') {
     return <PreMortemScreen onComplete={handlePreMortemComplete} />;
+  }
+
+  if (!finalMetrics) {
+    return null;
   }
 
   return <FinalSummary metrics={finalMetrics} roundHistory={finalRoundHistory} finalAllocations={finalAllocations} onReplay={handleReplay} />;
