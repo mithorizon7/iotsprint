@@ -7,7 +7,8 @@
     "title": "Welcome to IoT Strategy Sprint",
     "intro": "You are the Director of IoT Strategy for BrightWorks Operations. Your mission: use IoT to make the organization faster, greener, and safer—without creating complexity.",
     "processTitle": "How IoT Works",
-    "startButton": "Start Year 1"
+    "startButton": "Start Year 1",
+    "startWithTutorial": "Start with Tutorial"
   },
   "common": {
     "loading": "Loading...",

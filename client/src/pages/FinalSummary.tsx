@@ -1,6 +1,11 @@
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import { GameMetrics, RoundHistoryEntry } from '@shared/schema';
 import { MetricsPanel } from '@/components/MetricsPanel';
+import { SocialShare } from '@/components/SocialShare';
+import { ExportSummary } from '@/components/ExportSummary';
+import { Achievements } from '@/components/Achievements';
+import { ComparisonStats } from '@/components/ComparisonStats';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -57,22 +62,32 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
   const weaknesses = sortedMetrics.slice(-2);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-6">
-      <div className="absolute top-4 right-4 flex items-center gap-2">
+    <div className="min-h-screen bg-background py-8 px-6">
+      <div className="fixed top-4 right-4 flex items-center gap-2 z-10">
         <ThemeToggle />
         <LanguageSwitcher />
       </div>
       <div className="w-full max-w-5xl mx-auto space-y-8">
-        <div className="text-center space-y-4">
+        <motion.div 
+          className="text-center space-y-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="flex justify-center mb-4">
-            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+            <motion.div 
+              className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', delay: 0.2 }}
+            >
               <Trophy className="w-10 h-10 text-primary" data-testid="icon-trophy" />
-            </div>
+            </motion.div>
           </div>
           <h1 className="text-4xl font-bold" data-testid="text-summary-title">
             {t('summary.title')}
           </h1>
-        </div>
+        </motion.div>
 
         <Card className="p-8 space-y-6">
           <div className="text-center space-y-3">
@@ -175,7 +190,46 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
           </div>
         </Card>
 
-        <div className="flex justify-center gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <Achievements 
+            metrics={metrics} 
+            roundHistory={roundHistory} 
+            allocations={finalAllocations} 
+          />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <ComparisonStats metrics={metrics} />
+        </motion.div>
+
+        <motion.div 
+          className="flex flex-col sm:flex-row justify-center items-center gap-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <div className="flex gap-2">
+            <SocialShare 
+              archetypeTitle={archetypeTitle} 
+              archetypeId={archetypeId}
+              metrics={metrics} 
+            />
+            <ExportSummary 
+              metrics={metrics}
+              archetypeTitle={archetypeTitle}
+              archetypeDescription={archetypeDescription}
+              roundHistory={roundHistory}
+              topInvestments={topInvestments}
+            />
+          </div>
           <Button
             size="lg"
             variant="default"
@@ -186,7 +240,7 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
             <RotateCcw className="w-4 h-4" data-testid="icon-rotate-ccw" />
             {t('summary.replayButton')}
           </Button>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

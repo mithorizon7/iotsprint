@@ -1,7 +1,11 @@
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
 import { MetricsPanel } from '@/components/MetricsPanel';
 import { InitiativeCard } from '@/components/InitiativeCard';
+import { ProgressIndicator } from '@/components/ProgressIndicator';
+import { StrategyHints } from '@/components/StrategyHints';
+import { TutorialTrigger } from '@/components/Tutorial';
 import { Button } from '@/components/ui/button';
 import { Coins, Info } from 'lucide-react';
 import { useState } from 'react';
@@ -128,10 +132,16 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
       <div className="sticky top-0 z-10 bg-background border-b border-border">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between gap-4 flex-wrap">
-            <h2 className="text-2xl font-bold" data-testid="text-round-title">
-              {t('dashboard.roundTitle', { round: gameState.currentRound })}
-            </h2>
             <div className="flex items-center gap-4">
+              <h2 className="text-2xl font-bold" data-testid="text-round-title">
+                {t('dashboard.roundTitle', { round: gameState.currentRound })}
+              </h2>
+              <div className="hidden md:block">
+                <ProgressIndicator currentRound={gameState.currentRound} showLabels={false} />
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <TutorialTrigger />
               <ThemeToggle />
               <LanguageSwitcher />
               <div className="flex flex-col items-end gap-1">
@@ -195,18 +205,30 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
               )}
             </div>
 
+            <StrategyHints 
+              metrics={gameState.metrics} 
+              allocations={gameState.allocations} 
+              currentRound={gameState.currentRound} 
+            />
+
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-              {availableCards.map((card) => (
-                <InitiativeCard
+              {availableCards.map((card, index) => (
+                <motion.div
                   key={card.id}
-                  card={card}
-                  allocation={gameState.allocations[card.id] || 0}
-                  onAllocate={(tokens) => allocateTokens(card.id, tokens)}
-                  disabled={
-                    tokensRemaining === 0 &&
-                    (gameState.allocations[card.id] || 0) === 0
-                  }
-                />
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <InitiativeCard
+                    card={card}
+                    allocation={gameState.allocations[card.id] || 0}
+                    onAllocate={(tokens) => allocateTokens(card.id, tokens)}
+                    disabled={
+                      tokensRemaining === 0 &&
+                      (gameState.allocations[card.id] || 0) === 0
+                    }
+                  />
+                </motion.div>
               ))}
             </div>
 

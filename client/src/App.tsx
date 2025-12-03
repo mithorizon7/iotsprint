@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { I18nextProvider, useTranslation } from 'react-i18next';
+import { AnimatePresence, motion } from 'framer-motion';
 import { queryClient } from './lib/queryClient';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { GameProvider, useGame } from '@/contexts/GameContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
+import { TutorialProvider } from '@/components/Tutorial';
 import { OnboardingScreen } from '@/pages/OnboardingScreen';
 import { GameDashboard } from '@/pages/GameDashboard';
 import PreMortemScreen from '@/pages/PreMortemScreen';
@@ -14,6 +16,18 @@ import { CardConfig, GameConfig, GameMetrics, RoundHistoryEntry } from '@shared/
 import i18n from './lib/i18n';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { logger } from '@/lib/logger';
+
+const pageVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+};
+
+const pageTransition = {
+  type: 'tween',
+  ease: 'easeInOut',
+  duration: 0.3,
+};
 
 function App() {
   return (
@@ -93,9 +107,11 @@ function AppContent() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <GameProvider cards={cards} config={gameConfig}>
-          <GameFlow />
-        </GameProvider>
+        <TutorialProvider>
+          <GameProvider cards={cards} config={gameConfig}>
+            <GameFlow />
+          </GameProvider>
+        </TutorialProvider>
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
@@ -134,23 +150,41 @@ function GameFlow() {
     setGameState('onboarding');
   };
 
-  if (gameState === 'onboarding') {
-    return <OnboardingScreen onStart={handleStart} />;
-  }
+  const renderScreen = () => {
+    if (gameState === 'onboarding') {
+      return <OnboardingScreen onStart={handleStart} />;
+    }
 
-  if (gameState === 'playing') {
-    return <GameDashboard onComplete={handleComplete} />;
-  }
+    if (gameState === 'playing') {
+      return <GameDashboard onComplete={handleComplete} />;
+    }
 
-  if (gameState === 'premortem') {
-    return <PreMortemScreen onComplete={handlePreMortemComplete} />;
-  }
+    if (gameState === 'premortem') {
+      return <PreMortemScreen onComplete={handlePreMortemComplete} />;
+    }
 
-  if (!finalMetrics) {
-    return null;
-  }
+    if (!finalMetrics) {
+      return null;
+    }
 
-  return <FinalSummary metrics={finalMetrics} roundHistory={finalRoundHistory} finalAllocations={finalAllocations} onReplay={handleReplay} />;
+    return <FinalSummary metrics={finalMetrics} roundHistory={finalRoundHistory} finalAllocations={finalAllocations} onReplay={handleReplay} />;
+  };
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={gameState}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={pageVariants}
+        transition={pageTransition}
+        className="w-full min-h-screen"
+      >
+        {renderScreen()}
+      </motion.div>
+    </AnimatePresence>
+  );
 }
 
 export default App;

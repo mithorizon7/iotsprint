@@ -19,7 +19,8 @@
     },
     "whatYouDo": "What You'll Do",
     "whatYouDoDesc": "Over 3 years, you'll allocate IoT tokens to different initiatives. Watch how your choices affect key metrics and learn the tradeoffs involved in IoT strategy.",
-    "startButton": "Start Year 1"
+    "startButton": "Start Year 1",
+    "startWithTutorial": "Start with Tutorial"
   },
   "dashboard": {
     "roundTitle": "Year {{round}}",

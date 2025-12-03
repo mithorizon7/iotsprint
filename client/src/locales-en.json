@@ -246,5 +246,135 @@
     "morePages": "More pages",
     "sidebar": "Sidebar",
     "sidebarDescription": "Displays the mobile sidebar."
+  },
+  "progress": {
+    "round": "Year {{number}}"
+  },
+  "share": {
+    "button": "Share Results",
+    "text": "I just completed IoT Strategy Sprint! My archetype: {{archetype}}. Visibility: {{visibility}}%, Efficiency: {{efficiency}}%, Sustainability: {{sustainability}}%.",
+    "twitter": "Share on Twitter",
+    "linkedin": "Share on LinkedIn",
+    "copyLink": "Copy Link",
+    "copied": "Copied!"
+  },
+  "tutorial": {
+    "helpButton": "How to Play",
+    "skip": "Skip Tutorial",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Start Playing",
+    "step": "Step {{current}} of {{total}}",
+    "welcome": {
+      "title": "Welcome to IoT Strategy Sprint!",
+      "description": "In this game, you'll learn IoT fundamentals by making strategic investment decisions. Let's walk through how it works."
+    },
+    "metrics": {
+      "title": "Understanding Metrics",
+      "description": "These five metrics track your organization's performance. Your goal is to improve visibility, efficiency, sustainability, and early warning while keeping complexity low."
+    },
+    "tokens": {
+      "title": "Token System",
+      "description": "Each year you receive tokens to invest. Allocate them wisely across different IoT initiatives to improve your metrics."
+    },
+    "cards": {
+      "title": "Initiative Cards",
+      "description": "Each card represents a real-world IoT solution. Click the info button to see how it affects the IoT process loop (Sense, Share, Process, Act)."
+    },
+    "allocation": {
+      "title": "Allocating Tokens",
+      "description": "Use the +/- buttons or arrow keys to add tokens to each card. You can allocate up to 3 tokens per initiative. More tokens = stronger effect, but watch for diminishing returns."
+    },
+    "ready": {
+      "title": "You're Ready!",
+      "description": "Make strategic choices, learn from feedback, and see how your IoT strategy shapes the organization. Good luck!"
+    }
+  },
+  "hints": {
+    "highComplexity": "Your complexity is getting high. Consider investing in Security Hardening to reduce vulnerabilities.",
+    "lowVisibility": "Low visibility limits your ability to make informed decisions. Consider tracking or monitoring solutions.",
+    "lowEfficiency": "Efficiency is lagging. Smart tools or process optimization could help.",
+    "lowSustainability": "Your sustainability score is low. Energy monitoring and green initiatives could improve this.",
+    "lowEarlyWarning": "Limited early warning capability leaves you vulnerable to surprises. Consider predictive maintenance.",
+    "noAllocation": "Start by allocating tokens to initiatives that align with your strategic priorities.",
+    "tooSpread": "You're spreading tokens across many initiatives. Focusing on fewer may yield better results."
+  },
+  "export": {
+    "title": "IoT Strategy Sprint Results",
+    "generatedOn": "Generated on {{date}}",
+    "yourArchetype": "Your Strategy Archetype",
+    "finalMetrics": "Final Metrics",
+    "topInvestments": "Top Investments",
+    "roundByRound": "Round-by-Round Progress",
+    "learnMore": "Learn more about IoT fundamentals",
+    "print": "Print",
+    "download": "Download"
+  },
+  "achievements": {
+    "title": "Achievements",
+    "unlocked": "unlocked",
+    "securityChampion": {
+      "title": "Security Champion",
+      "description": "Keep complexity low while maintaining strong early warning"
+    },
+    "greenPioneer": {
+      "title": "Green Pioneer",
+      "description": "Achieve 70%+ sustainability score"
+    },
+    "efficiencyExpert": {
+      "title": "Efficiency Expert",
+      "description": "Achieve 70%+ efficiency score"
+    },
+    "visibilityMaster": {
+      "title": "Visibility Master",
+      "description": "Achieve 70%+ visibility score"
+    },
+    "balancedStrategist": {
+      "title": "Balanced Strategist",
+      "description": "Score 40%+ in all positive metrics with low complexity"
+    },
+    "focusedInvestor": {
+      "title": "Focused Investor",
+      "description": "Use 20+ tokens across 4 or fewer initiatives"
+    },
+    "completionist": {
+      "title": "Completionist",
+      "description": "Complete the game investing in 6+ different initiatives"
+    },
+    "perfectScore": {
+      "title": "Perfect Score",
+      "description": "Achieve 60%+ in all positive metrics with complexity under 40%"
+    }
+  },
+  "comparison": {
+    "title": "How You Compare",
+    "description": "See how your strategy compares to the average player.",
+    "yourScore": "You",
+    "average": "Avg",
+    "percentile": "Rank",
+    "top": "Top {{percent}}%"
+  },
+  "premortem": {
+    "title": "Strategic Reflection",
+    "description": "Before seeing your final results, take a moment to reflect on potential risks.",
+    "prompt": "If your IoT strategy were to fail in the next year, what would be the most likely cause?",
+    "choices": {
+      "securityRisk": {
+        "label": "Security Breach",
+        "description": "Our IoT network could be compromised due to inadequate security measures."
+      },
+      "inefficiency": {
+        "label": "Operational Inefficiency",
+        "description": "We might not see the efficiency gains we expected from our investments."
+      },
+      "environmentalFine": {
+        "label": "Environmental Compliance",
+        "description": "We could face fines or penalties for not meeting sustainability targets."
+      }
+    },
+    "submitButton": "Continue to Results"
+  },
+  "iotProcess": {
+    "dialogDescription": "See how this initiative maps to the IoT process loop."
   }
 }
