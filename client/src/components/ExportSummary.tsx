@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Download, Printer } from 'lucide-react';
 import { GameMetrics, RoundHistoryEntry } from '@shared/schema';
+import { formatDate, formatDateForFilename } from '@/lib/dateFormat';
 
 interface ExportSummaryProps {
   metrics: GameMetrics;
@@ -21,7 +22,7 @@ export function ExportSummary({
   const { t } = useTranslation();
 
   const generatePrintContent = () => {
-    const date = new Date().toLocaleDateString();
+    const date = formatDate(new Date(), 'long');
     
     return `
       <!DOCTYPE html>
@@ -182,7 +183,7 @@ export function ExportSummary({
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `iot-strategy-results-${new Date().toISOString().split('T')[0]}.html`;
+    a.download = `iot-strategy-results-${formatDateForFilename(new Date())}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
