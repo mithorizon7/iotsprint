@@ -1,0 +1,108 @@
+i18n Startup Checklist (New Builds)
+1. Architecture Decisions (Day 1)
+
+Choose ICU-capable i18n lib per stack:
+
+React: LinguiJS or react-intl
+
+i18next: must include i18next-icu
+
+Vue: vue-i18n with ICU mode
+
+Decide key strategy: key-based IDs vs text-as-ID and document it.
+
+Define locale structure:
+
+locales/{lang}/common.json, locales/{lang}/nav.json, locales/{lang}/activityX.json
+
+Define routing & fallback:
+
+URL structure (/[lang]/...?) and default locale (e.g., en).
+
+Configure locale detection: browser → stored preference → default.
+
+Add RTL support from the start (CSS logical properties, dir="rtl" handling).
+
+2. Tooling Setup
+
+Install extraction CLI (Lingui / FormatJS / i18next tooling) to pull strings automatically.
+
+Add ICU validation step (compile or dedicated validator).
+
+Add ESLint or custom checks to:
+
+Block hardcoded user-facing strings in UI dirs.
+
+Create npm scripts:
+
+i18n:extract, i18n:compile, i18n:pseudo.
+
+Integrate scripts into CI (fail build on i18n errors).
+
+Wire catalogs to a TMS (Crowdin, Lokalise, locize, etc.) once complexity warrants it.
+
+3. Code Patterns
+
+Never hardcode user-facing strings – always go through the i18n layer.
+
+Translate accessibility text too: aria-* labels, alt, tooltips.
+
+Use ICU MessageFormat for plurals/selects instead of manual JS conditionals.
+
+Keep formatting (dates, numbers, currencies) locale-aware via Intl.* or library helpers.
+
+Avoid string concatenation – use placeholders: Hello {name} not "Hello " + name.
+
+Avoid raw HTML in messages; use rich text helpers / components instead.
+
+4. Message Organization
+
+Establish ID naming convention (e.g., section.component.element or namespaces).
+
+Require a description / context note for every message for translators.
+
+Group related messages into logical namespaces (common, nav, errors, activityX).
+
+Keep messages atomic – one concept per string; don’t jam multiple sentences with different lifecycles into one.
+
+Prefer separate keys for phrases reused in different contexts.
+
+Regularly clean up deprecated/unused keys.
+
+5. Design Considerations
+
+Allow 30–40% text expansion (especially for buttons, nav, modals).
+
+Avoid text baked into images; use translatable text layers (HTML, CSS, SVG).
+
+Don’t rely on English word order for meaning.
+
+Test with pseudo-localization early to catch:
+
+hardcoded strings,
+
+layout issues,
+
+string truncation.
+
+Test with at least one RTL locale and one non-Latin script (e.g., Arabic + Chinese).
+
+Ensure buttons/labels can grow with text (flex layouts, no fixed-width tiny pills).
+
+6. Workflow Documentation
+
+Create a style guide for translators (tone, formality, domain terms).
+
+Maintain a shared glossary of key terms and names.
+
+Document the extraction → translation → review → compile → deploy pipeline.
+
+Define roles/owners for:
+
+adding keys,
+
+reviewing translations,
+
+releasing language updates.
+
+Document a simple, repeatable process for adding new languages (config, routing, TMS, QA).

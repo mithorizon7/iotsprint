@@ -1,65 +1,400 @@
 {
   "game": {
-    "title": "IoT Strategy Sprint",
-    "subtitle": "Learn IoT fundamentals through strategic decision-making"
+    "title": "IoT Stratēģijas Sprints",
+    "subtitle": "Apgūstiet IoT pamatus, pieņemot stratēģiskus lēmumus"
   },
   "onboarding": {
-    "title": "Welcome to IoT Strategy Sprint",
-    "intro": "You are the Director of IoT Strategy for BrightWorks Operations. Your mission: use IoT to make the organization faster, greener, and safer—without creating complexity.",
-    "processTitle": "How IoT Works",
-    "startButton": "Start Year 1",
-    "startWithTutorial": "Start with Tutorial"
+    "title": "Laipni lūdzam IoT Stratēģijas Sprintā",
+    "intro": "Jūs esat IoT stratēģijas direktors uzņēmumā BrightWorks Operations. Jūsu misija: izmantot IoT, lai padarītu organizāciju ātrāku, zaļāku un drošāku — neradot sarežģītību.",
+    "processTitle": "Kā darbojas IoT",
+    "processSteps": {
+      "sense": "Uztvert",
+      "senseDesc": "Ierīces vāc datus no apkārtējās vides",
+      "share": "Dalīties",
+      "shareDesc": "Dati tiek pārraidīti pa tīkliem",
+      "process": "Apstrādāt",
+      "processDesc": "Informācija tiek analizēta un interpretēta",
+      "act": "Rīkoties",
+      "actDesc": "Sistēmas reaģē, pamatojoties uz ieskatiem"
+    },
+    "whatYouDo": "Ko jūs darīsiet",
+    "whatYouDoDesc": "3 gadu laikā jūs sadalīsiet IoT žetonus dažādām iniciatīvām. Vērojiet, kā jūsu izvēles ietekmē galvenos rādītājus, un uzziniet par IoT stratēģijas kompromisiem.",
+    "startButton": "Sākt 1. gadu",
+    "startWithTutorial": "Sākt ar apmācību"
   },
-  "common": {
-    "loading": "Loading...",
-    "tokens": "Tokens:",
-    "metrics": {
-      "visibility_insight": "Visibility",
-      "efficiency_throughput": "Efficiency",
-      "sustainability_emissions": "Sustainability",
-      "early_warning_prevention": "Early Warning",
-      "complexity_risk": "Complexity"
+  "dashboard": {
+    "roundTitle": "{{round}}. gads",
+    "initiativesTitle": "IoT iniciatīvas",
+    "tokensAvailable": "Atlikuši {{count}} žetons",
+    "tokensAvailable_other": "Atlikuši {{count}} žetoni",
+    "instructions": "Sadaliet savus žetonus IoT iniciatīvām. Katra karte var saņemt 0-3 žetonus.",
+    "runPlanButton": "Palaist manu plānu",
+    "nextRoundButton": "Turpināt uz {{round}}. gadu",
+    "viewSummaryButton": "Skatīt gala rezultātus",
+    "metricsTitle": "Organizācijas rādītāji",
+    "tokenBreakdown": "{{carryover}} pārdalāmi + {{newTokens}} jauni = {{total}} kopā",
+    "reallocationAlert": "Jūs varat pārdalīt 50% no iepriekšējiem žetoniem (noapaļojot uz leju). Jūs arī saņemat {{newTokens}} jaunus žetonus. Pielāgojiet savu stratēģiju, pamatojoties uz rezultātiem."
+  },
+  "metrics": {
+    "visibility": {
+      "label": "Redzamība un ieskats",
+      "tooltip": "Cik skaidri jūs varat redzēt, kas notiek jūsu operācijās reāllaikā"
+    },
+    "efficiency": {
+      "label": "Efektivitāte un caurlaidspēja",
+      "tooltip": "Cik vienmērīgi darbojas operācijas un loģistika jūsu organizācijā"
+    },
+    "sustainability": {
+      "label": "Ilgtspēja un emisijas",
+      "tooltip": "Energoefektivitāte, emisiju samazināšana un resursu saglabāšana"
+    },
+    "earlyWarning": {
+      "label": "Agrīnā brīdināšana",
+      "tooltip": "Spēja atklāt un novērst problēmas, pirms tās saasinas"
+    },
+    "complexity": {
+      "label": "Sarežģītība un drošības risks",
+      "tooltip": "Operacionālā sarežģītība un kiberdrošības ievainojamības no IoT izplešanās (mazāk ir labāk)"
     }
   },
-  "iotProcess": {
-    "sense": { "title": "Sense", "description": "Devices collect data from the environment" },
-    "share": { "title": "Share", "description": "Data is transmitted across networks" },
-    "process": { "title": "Process", "description": "Information is analyzed and interpreted" },
-    "act": { "title": "Act", "description": "Systems respond based on insights" },
-    "howThisWorks": "How This IoT Initiative Works",
-    "cardFitsIn": "See where {{cardTitle}} fits in the IoT process loop",
-    "highlightedStages": "Highlighted stages show which parts of the IoT process this initiative uses",
-    "dialogDescription": "Understanding how IoT initiatives map to the fundamental sense-share-process-act loop helps you see the bigger picture."
-  },
-  "disasters": {
-    "criticalEvent": "Critical Event!",
-    "ransomwareAttack": "Your IoT network was hit by a ransomware attack. Inadequate security hardening left devices vulnerable. Operations were disrupted for days, costing significant efficiency and increasing complexity as you scramble to patch systems."
-  },
-  "premortem": {
-    "title": "Pre-Mortem Reflection",
-    "description": "Before seeing your final results, take a moment to think critically about your strategy.",
-    "prompt": "Looking back at your 3-year IoT journey, what do you think was your biggest risk or vulnerability?",
-    "choices": {
-      "securityRisk": {
-        "label": "Security & Complexity Risk",
-        "description": "I may have deployed too many IoT devices without adequate security measures, creating vulnerabilities."
-      },
-      "inefficiency": {
-        "label": "Inefficiency & Missed Opportunities",
-        "description": "I focused too much on one area and missed opportunities to improve throughput and operations."
-      },
-      "environmentalFine": {
-        "label": "Environmental Compliance Risk",
-        "description": "I didn't invest enough in sustainability, leaving us exposed to regulations and fines."
-      }
+  "cards": {
+    "warehouseFlow": {
+      "title": "Noliktavas plūsmas izsekošana",
+      "shortDescription": "Uzstādiet tagus uz paletēm, iekrāvējiem un darbiniekiem. Tiešraides karte parāda, kur preces iestrēgst un kur transportlīdzekļi dīkstāvē. Balstīts uz Logidot enkura sensoriem.",
+      "whenToUse": "Izmantojiet, kad jāatklāj vājās vietas un jāsamazina dīkstāve noliktavās vai rūpnīcās."
     },
-    "continue": "Continue to Results"
+    "smartTools": {
+      "title": "Viedie montāžas instrumenti",
+      "shortDescription": "Savienotie elektroinstrumenti automātiski atpazīst detaļas un iestata pareizo griezes momentu. Lietojums tiek automātiski reģistrēts jūsu sistēmā. Iedvesmots no Airbus montāžas līnijas.",
+      "whenToUse": "Izmantojiet, kad manuālās pārbaudes ir lēnas un kļūdas ir dārgas."
+    },
+    "energyMonitoring": {
+      "title": "Enerģijas monitoringa platforma",
+      "shortDescription": "Sensori uz katras galvenās iekārtas izseko enerģijas patēriņu. Jūs varat atrast izšķērdīgus noplūdes un attālināti izslēgt neizmantotas iekārtas. Balstīts uz Bosch Energy Platform pieeju.",
+      "whenToUse": "Izmantojiet, kad enerģijas izmaksas ir augstas un jūs aizdomājaties par slēptiem zudumiem."
+    },
+    "smartBuilding": {
+      "title": "Viedās ēku sistēmas",
+      "shortDescription": "Blīvi sensoru tīkli gaismās un ventilācijā regulē apgaismojumu un apkuri katrai istabai minūti pēc minūtes. Līdzīgi AT&T un Enlighted ēku sensoru izvietošanai.",
+      "whenToUse": "Izmantojiet, kad ēkas ir lielas, lietošanas modeļi mainās, un vēlaties enerģijas ietaupījumus bez komforta zaudējuma."
+    },
+    "fleetOptimization": {
+      "title": "Autoparka optimizācija",
+      "shortDescription": "Transportlīdzekļi sūta datus par dīkstāvi, maršrutiem un degvielas patēriņu. Centrālais serviss iesaka gudrākus maršrutus un apkopes grafikus. Modelēts pēc Microsoft Connected Vehicle Platform.",
+      "whenToUse": "Izmantojiet, kad jums ir daudz transportlīdzekļu un rūp emisijas un loģistika."
+    },
+    "predictiveMaintenance": {
+      "title": "Prognozējošā apkope",
+      "shortDescription": "Sensori uz transportlīdzekļiem un iekārtām pastāvīgi uzrauga vibrācijas, temperatūru un spiedienu. AI atzīmē problēmas pirms bojājumiem. Balstīts uz Rio Tinto kravas automašīnu uzraudzības sistēmu.",
+      "whenToUse": "Izmantojiet, kad iekārtu dīkstāve ir ļoti dārga."
+    },
+    "digitalTwin": {
+      "title": "Rūpnīcas digitālais dvīnis",
+      "shortDescription": "Sensori visā jūsu rūpnīcā baro reāllaika digitālo modeli. Inženieri var testēt izmaiņas un apmācīties attālināti pirms reālu iekārtu aizskaršanas. Iedvesmots no Siemens desalinācijas rūpnīcas digitālā dvīņa.",
+      "whenToUse": "Izmantojiet, kad vēlaties redzēt detalizētu sarežģītas iekārtas statusu un droši eksperimentēt."
+    },
+    "emissionsDetection": {
+      "title": "Emisiju noplūdes noteikšana",
+      "shortDescription": "Apvienojiet vietējos sensorus un satelīta datus, lai ātri atklātu noplūdes un samazinātu emisijas. Balstīts uz Marathon Oil un GHGSat metāna noplūdes noteikšanas sistēmu.",
+      "whenToUse": "Izmantojiet, kad emisiju noplūdes ir kritiskas regulatoriem, zīmolam vai klimata mērķiem."
+    },
+    "waterMonitoring": {
+      "title": "Ūdens infrastruktūras monitorings",
+      "shortDescription": "Sensori, kas iebūvēti aizsprostos un ūdens sistēmās, nodrošina reāllaika informāciju par lietojumu, kvalitāti un agrīnu brīdinājumu par noplūdēm. Līdzīgi Sietlas aizsprosta uzraudzības sistēmai.",
+      "whenToUse": "Izmantojiet, kad ūdens saglabāšana ir prioritāte vai nepieciešama normatīvā atbilstība."
+    },
+    "gridSensors": {
+      "title": "Elektrotīkla sensori",
+      "shortDescription": "Pievienojiet sensorus elektrolīnijām, lai uzraudzītu slodzi, ledu un vibrācijas. Dati baro digitālo dvīni, lai jūs redzētu, kur līnijas ir tuvu jaudai. Balstīts uz Tensio tīkla uzraudzības tehnoloģiju.",
+      "whenToUse": "Izmantojiet, kad jāsaprot spriedze un jauda lielā fiziskā tīklā."
+    },
+    "securityHardening": {
+      "title": "IoT drošības nostiprināšana",
+      "shortDescription": "Ieviesiet centralizētu uzraudzību, automātiskus atjauninājumus un tīkla segmentāciju, lai samazinātu ievainojamības jūsu IoT ierīcēs.",
+      "whenToUse": "Izmantojiet, kad sarežģītība un drošības riski aug ātrāk nekā jūsu spēja tos pārvaldīt."
+    },
+    "healthMonitoring": {
+      "title": "Veselības un drošības monitorings",
+      "shortDescription": "Valkājamie vai rokas sensori izseko veselības signālus (piemēram, glikozes līmeni vai spiedienu) un agri brīdina personālu iejaukties. Balstīts uz nepārtrauktas veselības uzraudzības ierīcēm.",
+      "whenToUse": "Izmantojiet, kad darbinieku drošība vai veselības uzraudzība ir prioritāte."
+    }
+  },
+  "feedback": {
+    "highVisibility": "Jūsu IoT ieguldījumi deva jums daudz labāku operāciju redzamību, līdzīgi {{example}}. Tagad jūs varat redzēt, kas notiek reāllaikā.",
+    "highEfficiency": "Viedie instrumenti un izsekošanas sistēmas ievērojami uzlaboja efektivitāti, kā {{example}}. Operācijas darbojas vienmērīgāk.",
+    "highSustainability": "Enerģijas monitorings un optimizācija nodrošināja spēcīgus ilgtspējas ieguvumus, līdzīgi {{example}}. Jūsu vides pēda samazinās.",
+    "highEarlyWarning": "Prognozējošās sistēmas atklāj problēmas agri, kā {{example}}. Jūs izvairāties no dārgiem bojājumiem.",
+    "highComplexity": "Jūsu IoT tīkls kļūst sarežģīts. Ar {{deviceCount}}+ savienotām ierīcēm drošība un pārvaldība kļūst par izaicinājumu.",
+    "complexityWarning": "Sarežģītība aug ātrāk nekā jūsu spēja to nodrošināt un pārvaldīt. Apsveriet ieguldījumus drošības nostiprināšanā.",
+    "balancedGrowth": "Jūs izmantojat līdzsvarotu pieeju, uzlabojot vairākas jomas bez pārmērīgiem ieguldījumiem kādā konkrētā.",
+    "focusedStrategy": "Jūs koncentrējāties uz {{category}}. Tas atmaksājās šajā jomā, bet jūs, iespējams, palaidāt garām iespējas citur.",
+    "diminishingReturns": "Daži jūsu ieguldījumi uzrādīja dilstošu atdevi. Stratēģiskāka žetonu sadale varētu dot labākus rezultātus.",
+    "airbus": "Airbus viedie instrumenti",
+    "logidot": "Logidot noliktavas izsekošana",
+    "bosch": "Bosch Energy Platform",
+    "att": "AT&T ēku sensori",
+    "microsoft": "Microsoft Connected Vehicle Platform",
+    "rioTinto": "Rio Tinto prognozējošā apkope",
+    "siemens": "Siemens digitālais dvīnis",
+    "marathon": "Marathon Oil emisiju noteikšana",
+    "seattle": "Sietlas aizsprosta uzraudzība",
+    "tensio": "Tensio tīkla uzraudzība",
+    "healthTech": "nepārtraukta veselības uzraudzība",
+    "defaultTracking": "digitālās izsekošanas sistēmas",
+    "defaultAutomation": "procesu automatizācija",
+    "defaultEnergy": "enerģijas optimizācija",
+    "defaultPredictive": "prognozējošās sistēmas"
+  },
+  "events": {
+    "round2": {
+      "highComplexity": "Jūsu IoT ierīces kļūst grūti pārvaldāmas. Parādās drošības bažas.",
+      "lowEfficiency": "Iekrāvēju dīkstāve joprojām ir augsta. Darbinieki sūdzas par noliktavas sastrēgumiem.",
+      "lowSustainability": "Regulatori pieprasa vairāk emisiju datu un uzlabojumu plānus.",
+      "lowEarlyWarning": "Iekārtu bojājumi joprojām pārsteidz jūs.",
+      "general": "Vadība vēlas redzēt turpmāku progresu. Tagad ir pieejamas jaunas iniciatīvas."
+    },
+    "round3": {
+      "highRisk": "Drošības auditi atklāja ievainojamības jūsu IoT tīklā. Apsveriet nostiprināšanas pasākumus.",
+      "overIoT": "Jūs uzraugāt katra komponenta līmenī. Tas ir daudz datu, ko nodrošināt un pārvaldīt.",
+      "nearTarget": "Jūs esat tuvu saviem mērķiem. Precīzi noregulējiet savu stratēģiju maksimālai ietekmei.",
+      "general": "Pēdējais gads, lai optimizētu savu IoT stratēģiju pirms valdes pārskata."
+    }
   },
   "archetypes": {
+    "EFFICIENCY_FIRST": {
+      "title": "Efektivitātes prioritātes optimizētājs",
+      "description": "Jūs prioritizējāt caurlaidspēju un operacionālo efektivitāti pāri visam citam. Jūsu organizācija darbojas kā labi ieeļļota mašīna, bet jūs, iespējams, palaidāt garām iespējas ilgtspējā un agrīnās brīdināšanas sistēmās.",
+      "suggestions": "Nākamreiz mēģiniet līdzsvarot efektivitātes ieguvumus ar vides ietekmi. Apsveriet prognozējošo apkopi, lai novērstu traucējumus."
+    },
+    "SUSTAINABILITY_CHAMPION": {
+      "title": "Ilgtspējas čempions",
+      "description": "Jūs prioritizējāt energoefektivitāti un emisiju samazināšanu, pat ja tas nozīmēja lēnākus ieguvumus citās jomās. Jūsu vides pēda ir ievērojami samazināta.",
+      "suggestions": "Apsveriet, kā redzamības un agrīnās brīdināšanas sistēmas varētu palīdzēt optimizēt tālāk. Efektivitāte un ilgtspēja bieži pastiprina viena otru."
+    },
     "RESILIENT_OPERATOR": {
-      "title": "Resilient Operator",
-      "description": "You managed trade-offs skillfully, improving multiple dimensions without creating dangerous complexity.",
-      "suggestions": "You showed excellent judgment in managing competing priorities."
+      "title": "Izturīgs operators",
+      "description": "Jūs prasmīgi pārvaldījāt kompromisus, uzlabojot vairākas dimensijas, neradot bīstamu sarežģītību. Jūsu pieeja demonstrē līdzsvaru, kas nepieciešams ilgtermiņa IoT panākumiem.",
+      "suggestions": "Jūs parādījāt lielisku spriedumu, pārvaldot konkurējošās prioritātes. Apsveriet, kā fokusēti ieguldījumi vienā jomā varētu paātrināt konkrētus biznesa mērķus."
+    },
+    "OVER_CONNECTED_RISK_TAKER": {
+      "title": "Pārmērīgi savienotais riska uzņēmējs",
+      "description": "Jūs agresīvi izvietojāt IoT visā organizācijā, bet sarežģītība un drošības riski auga ātrāk nekā jūsu spēja tos pārvaldīt. Jūs vācat daudz datu, bet varat cīnīties ar to drošu izmantošanu.",
+      "suggestions": "Drošības nostiprināšana un stratēģiska vienkāršošana palīdzētu. Dažreiz mazāk IoT, izvietots pārdomātāk, dod labākus rezultātus."
+    },
+    "EARLY_WARNING_GUARDIAN": {
+      "title": "Agrīnās brīdināšanas sargs",
+      "description": "Jūs aktīvi ieguldījāt prognozējošās sistēmās un preventīvā uzraudzībā. Jūsu organizācija tagad var atklāt problēmas, pirms tās kļūst par krīzēm, ietaupot ievērojamus līdzekļus.",
+      "suggestions": "Lieliska izvēle risku mazināšanai. Apsveriet, kā redzamības un efektivitātes iniciatīvas varētu pastiprināt šos ieguvumus."
+    },
+    "VISIBILITY_FOCUSED": {
+      "title": "Uz redzamību fokusēts stratēģis",
+      "description": "Jūs prioritizējāt redzēt visu, kas notiek jūsu operācijās. Digitālie dvīņi un uzraudzība dod jums bezprecedenta ieskatu.",
+      "suggestions": "Lielisks pamats. Tagad apsveriet, kā rīkoties ar visu šo redzamību — caur automatizāciju, optimizāciju vai prognozējošām sistēmām."
     }
+  },
+  "summary": {
+    "title": "Jūsu IoT stratēģija: Pabeigta",
+    "archetypeLabel": "Jūsu stratēģijas arhetips",
+    "finalMetricsTitle": "Gala rādītāji",
+    "whatYouPrioritized": "Ko jūs prioritizējāt",
+    "whereYouLeftValue": "Iespējas, ko jūs, iespējams, palaidāt garām",
+    "reflectionPrompt": "Ja jūs atkārtotu spēli, ko jūs prioritizētu citādi?",
+    "replayButton": "Spēlēt vēlreiz",
+    "exitButton": "Iziet",
+    "yourStrategy": "Jūsu IoT stratēģija",
+    "similarToApproach": "Līdzīgi {{company}} pieejai",
+    "tokensLabel": "{{count}} žetons",
+    "tokensLabel_other": "{{count}} žetoni"
+  },
+  "common": {
+    "loading": "Ielādē...",
+    "error": "Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz.",
+    "back": "Atpakaļ",
+    "next": "Tālāk",
+    "previous": "Iepriekšējais",
+    "close": "Aizvērt",
+    "tokens": "Žetoni:",
+    "more": "Vairāk",
+    "toggleSidebar": "Pārslēgt sānjoslu",
+    "category": {
+      "visibility": "Redzamība",
+      "streamlining": "Procesu optimizācija",
+      "sustainability": "Ilgtspēja",
+      "early_warning": "Agrīnā brīdināšana",
+      "security": "Drošība"
+    },
+    "metrics": {
+      "visibility_insight": "Redzamība",
+      "efficiency_throughput": "Efektivitāte",
+      "sustainability_emissions": "Ilgtspēja",
+      "early_warning_prevention": "Agrīnā brīdināšana",
+      "complexity_risk": "Sarežģītība"
+    }
+  },
+  "roundFeedback": {
+    "title": "{{round}}. gada rezultāti",
+    "subtitle": "Skatiet, kā jūsu IoT ieguldījumi mainīja organizāciju",
+    "before": "Pirms",
+    "after": "Pēc",
+    "keyInsights": "Galvenie ieskati"
+  },
+  "app": {
+    "loadingGame": "Ielādē...",
+    "errorTitle": "Kļūda ielādējot spēli",
+    "errorMessage": "Kaut kas nogāja greizi. Lūdzu, mēģiniet pārlādēt lapu.",
+    "reloadButton": "Pārlādēt lapu"
+  },
+  "notFound": {
+    "title": "404 Lapa nav atrasta",
+    "message": "Vai jūs aizmirsāt pievienot lapu maršrutētājam?"
+  },
+  "accessibility": {
+    "previousSlide": "Iepriekšējais slaids",
+    "nextSlide": "Nākamais slaids",
+    "morePages": "Vairāk lapu",
+    "sidebar": "Sānjosla",
+    "sidebarDescription": "Parāda mobilo sānjoslu."
+  },
+  "iotProcess": {
+    "sense": {
+      "title": "Uztvert",
+      "description": "Ierīces vāc datus no apkārtējās vides"
+    },
+    "share": {
+      "title": "Dalīties",
+      "description": "Dati tiek pārraidīti pa tīkliem"
+    },
+    "process": {
+      "title": "Apstrādāt",
+      "description": "Informācija tiek analizēta un interpretēta"
+    },
+    "act": {
+      "title": "Rīkoties",
+      "description": "Sistēmas reaģē, pamatojoties uz ieskatiem"
+    },
+    "howThisWorks": "Kā darbojas šī IoT iniciatīva",
+    "cardFitsIn": "Skatiet, kur {{cardTitle}} iekļaujas IoT procesa ciklā",
+    "highlightedStages": "Izcelti posmi parāda, kuras IoT procesa daļas izmanto šī iniciatīva",
+    "dialogDescription": "Izpratne par to, kā IoT iniciatīvas attiecas uz fundamentālo uztvert-dalīties-apstrādāt-rīkoties ciklu, palīdz redzēt kopējo ainu."
+  },
+  "disasters": {
+    "criticalEvent": "Kritisks notikums!",
+    "ransomwareAttack": "Jūsu IoT tīklu skāra izspiedējvīrusa uzbrukums. Nepietiekama drošības nostiprināšana atstāja ierīces neaizsargātas. Operācijas tika traucētas vairākas dienas, kas maksāja ievērojamu efektivitāti un palielināja sarežģītību, kamēr jūs steidzami labojat sistēmas."
+  },
+  "premortem": {
+    "title": "Pirmsmortem pārdomas",
+    "description": "Pirms redzat gala rezultātus, veltiet brīdi kritiskai domāšanai par savu stratēģiju.",
+    "prompt": "Atskatoties uz savu 3 gadu IoT ceļojumu, kāds, jūsuprāt, bija jūsu lielākais risks vai ievainojamība?",
+    "choices": {
+      "securityRisk": {
+        "label": "Drošības un sarežģītības risks",
+        "description": "Iespējams, es izvietoju pārāk daudz IoT ierīču bez atbilstošiem drošības pasākumiem, radot ievainojamības."
+      },
+      "inefficiency": {
+        "label": "Neefektivitāte un palaistas garām iespējas",
+        "description": "Es pārāk daudz koncentrējos uz vienu jomu un palaidu garām iespējas uzlabot caurlaidspēju un operācijas."
+      },
+      "environmentalFine": {
+        "label": "Vides atbilstības risks",
+        "description": "Es pietiekami neieguldīju ilgtspējā, atstājot mūs pakļautus regulējumiem un sodiem."
+      }
+    },
+    "continue": "Turpināt uz rezultātiem"
+  },
+  "tutorial": {
+    "welcome": {
+      "title": "Laipni lūdzam IoT Stratēģijas Sprintā!",
+      "description": "Šī apmācība palīdzēs jums saprast, kā spēlēt spēli. Jūs iemācīsieties sadalīt žetonus, saprast rādītājus un pieņemt stratēģiskus lēmumus."
+    },
+    "metrics": {
+      "title": "Organizācijas rādītāji",
+      "description": "Šis panelis parāda jūsu organizācijas pašreizējos rādītājus. Sekojiet līdzi līdzsvaram starp dažādiem rādītājiem, lai gūtu panākumus."
+    },
+    "tokens": {
+      "title": "Jūsu žetoni",
+      "description": "Žetoni ir jūsu resurss ieguldīšanai IoT iniciatīvās. Katrā kārtā jūs saņemat jaunus žetonus sadalīšanai."
+    },
+    "cards": {
+      "title": "Iniciatīvu kartes",
+      "description": "Katra karte pārstāv reālu IoT iniciatīvu. Izpētiet to ietekmi un izvēlieties tās, kas atbilst jūsu stratēģijai."
+    },
+    "allocation": {
+      "title": "Žetonu sadale",
+      "description": "Izmantojiet + un - pogas, lai sadalītu žetonus starp kartēm. Katra karte var saņemt no 0 līdz 3 žetoniem."
+    },
+    "ready": {
+      "title": "Gatavs sākt!",
+      "description": "Tagad jūs zināt pamatus. Noklikšķiniet 'Palaist manu plānu', lai redzētu savu lēmumu rezultātus. Veiksmi!"
+    },
+    "step": "{{current}}. solis no {{total}}",
+    "skip": "Izlaist",
+    "back": "Atpakaļ",
+    "next": "Tālāk",
+    "finish": "Pabeigt",
+    "helpButton": "Kā spēlēt"
+  },
+  "hints": {
+    "highComplexity": "Augsta sarežģītība! Apsveriet ieguldījumus IoT drošības nostiprināšanā, lai samazinātu riskus.",
+    "lowVisibility": "Redzamība ir zema. Ieguldījumi izsekošanā un uzraudzībā var palīdzēt labāk izprast jūsu operācijas.",
+    "lowEfficiency": "Efektivitāte cieš. Viedie instrumenti un procesu optimizācija var uzlabot caurlaidspēju.",
+    "lowSustainability": "Ilgtspēja prasa uzmanību. Enerģijas uzraudzība un emisiju noteikšana var palīdzēt.",
+    "lowEarlyWarning": "Agrīnās brīdināšanas sistēma ir vāja. Prognozējošā apkope var novērst dārgus bojājumus.",
+    "noAllocation": "Sāciet, sadalot žetonus starp iniciatīvām, kas atbilst jūsu mērķiem.",
+    "tooSpread": "Jūs sadalāt žetonus pārāk plaši. Koncentrējieties uz mazāk iniciatīvām lielākai ietekmei."
+  },
+  "progress": {
+    "round": "{{number}}. kārta",
+    "of": "no"
+  },
+  "achievements": {
+    "title": "Jūsu sasniegumi",
+    "efficiencyExpert": {
+      "title": "Efektivitātes eksperts",
+      "description": "Sasniegta efektivitāte virs 60%"
+    },
+    "sustainabilityChampion": {
+      "title": "Ilgtspējas čempions",
+      "description": "Sasniegta ilgtspēja virs 60%"
+    },
+    "securityConscious": {
+      "title": "Drošības apzinīgs",
+      "description": "Sarežģītība noturēta zem 40%"
+    },
+    "earlyWarningMaster": {
+      "title": "Agrīnās brīdināšanas meistars",
+      "description": "Sasniegta agrīnā brīdināšana virs 50%"
+    },
+    "balancedStrategist": {
+      "title": "Līdzsvarots stratēģis",
+      "description": "Visi rādītāji virs 40%"
+    },
+    "focusedInvestor": {
+      "title": "Fokusēts investors",
+      "description": "Maksimāli ieguldījumi vienā kartē"
+    }
+  },
+  "comparison": {
+    "title": "Salīdzinājums ar vidējo spēlētāju",
+    "yourScore": "Jūsu rezultāts",
+    "average": "Vidējais",
+    "aboveAverage": "Virs vidējā",
+    "belowAverage": "Zem vidējā"
+  },
+  "social": {
+    "shareTitle": "Dalīties ar rezultātiem",
+    "shareText": "Es pabeidzu IoT Stratēģijas Sprintu ar arhetipu: {{archetype}}!",
+    "twitter": "Dalīties Twitter",
+    "linkedin": "Dalīties LinkedIn"
+  },
+  "export": {
+    "title": "IoT stratēģijas rezultāti",
+    "print": "Drukāt",
+    "download": "Lejupielādēt",
+    "generatedOn": "Izveidots {{date}}",
+    "yourArchetype": "Jūsu stratēģijas arhetips",
+    "finalMetrics": "Gala rādītāji",
+    "topInvestments": "Galvenie ieguldījumi",
+    "roundByRound": "Pa kārtām",
+    "learnMore": "Uzzināt vairāk par IoT stratēģiju"
   }
 }
