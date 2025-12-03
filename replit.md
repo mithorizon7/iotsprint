@@ -71,8 +71,29 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+- Added comprehensive UX enhancements:
+  - **Page Transitions**: Smooth Framer Motion animations between screens
+  - **Progress Indicator**: Visual progress tracker showing Round X of 3
+  - **Social Sharing**: Share archetype results on Twitter/LinkedIn with pre-formatted messages
+  - **Tutorial System**: Guided walkthrough for first-time players with localStorage persistence
+  - **Strategy Hints**: Context-aware tips based on player behavior and metrics
+  - **Export Functionality**: Print and download game results as HTML
+  - **Achievement Badges**: Earned based on play style and metric thresholds
+  - **Comparison Stats**: Compare performance against average player benchmarks
 - Added dark mode toggle with ThemeProvider and localStorage persistence
 - Added localStorage persistence for game state (auto-save during gameplay, cleared on game reset)
 - Enhanced accessibility with ARIA labels and keyboard navigation for token allocation
 - Improved TypeScript type safety (replaced `any` types, consolidated `RoundHistoryEntry` in shared schema)
 - Memoized available cards filtering for performance
+
+## New Components (December 2025)
+
+- `Tutorial.tsx`: Interactive tutorial overlay with step navigation and localStorage persistence
+- `TutorialProvider`: Context provider for tutorial state management
+- `ProgressIndicator.tsx`: Visual round progress tracker (1-3)
+- `StrategyHints.tsx`: Dynamic hints based on metrics and allocations
+- `Achievements.tsx`: Achievement badge display with earned/locked states
+- `ComparisonStats.tsx`: Comparison against average player metrics
+- `SocialShare.tsx`: Social media sharing buttons
+- `ExportSummary.tsx`: Print and download functionality
+- `PageTransition.tsx`: Framer Motion page transition wrapper
