@@ -20,6 +20,13 @@ function getBrowserLanguage(): SupportedLanguage {
   return (browserLang in SUPPORTED_LANGUAGES ? browserLang : 'en') as SupportedLanguage;
 }
 
+// Update document.lang attribute for accessibility and SEO
+function updateDocumentLang(lng: SupportedLanguage): void {
+  const htmlLang = lng === 'en-ps' ? 'en' : lng;
+  document.documentElement.lang = htmlLang;
+  document.documentElement.dir = 'ltr';
+}
+
 // Get stored language or browser language
 function getInitialLanguage(): SupportedLanguage {
   try {
@@ -99,6 +106,9 @@ export async function changeLanguage(lng: SupportedLanguage): Promise<void> {
   // Change language - i18next should handle resolvedLanguage automatically
   await i18n.changeLanguage(lng);
   
+  // Update document.lang attribute for accessibility
+  updateDocumentLang(lng);
+  
   // Persist choice
   try {
     localStorage.setItem(STORAGE_KEY, lng);
@@ -110,10 +120,16 @@ export async function changeLanguage(lng: SupportedLanguage): Promise<void> {
   logger.log(`[i18n] Test t('game.title'):`, i18n.t('game.title'));
 }
 
+// Set initial document language
+updateDocumentLang(initialLanguage);
+
 // Load initial language if not English
 if (initialLanguage !== 'en') {
   loadLanguageIfNeeded(initialLanguage)
-    .then(() => i18n.changeLanguage(initialLanguage))
+    .then(() => {
+      i18n.changeLanguage(initialLanguage);
+      updateDocumentLang(initialLanguage);
+    })
     .catch(err => logger.error('[i18n] Failed to load initial language:', err));
 }
 
