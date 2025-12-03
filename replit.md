@@ -13,9 +13,11 @@ Preferred communication style: Simple, everyday language.
 ### Frontend
 
 **Framework**: React with TypeScript (Vite build tool).
-**State Management**: Context-based `GameContext` manages round progression, token allocation, metric calculation across five dimensions (visibility, efficiency, sustainability, early warning, complexity/risk), and round history.
-**UI Component System**: Shadcn/ui (built on Radix UI) with Material Design 3 principles, Tailwind CSS for styling, and Inter/JetBrains Mono fonts. Responsive, mobile-first design.
-**Routing**: Single-page application with Onboarding, Game Dashboard, and Final Summary screens.
+**State Management**: Context-based `GameContext` manages round progression, token allocation, metric calculation across five dimensions (visibility, efficiency, sustainability, early warning, complexity/risk), and round history. State persists to localStorage for session recovery.
+**Theme Support**: Dark/light mode toggle with `ThemeContext`. Respects system preference on first visit, persists choice to localStorage (key: 'iot-game-theme').
+**UI Component System**: Shadcn/ui (built on Radix UI) with Material Design 3 principles, Tailwind CSS for styling, and Inter/JetBrains Mono fonts (loaded via Google Fonts). Responsive, mobile-first design.
+**Accessibility**: ARIA labels on interactive elements, keyboard navigation for token allocation (arrow keys), focus indicators on initiative cards.
+**Routing**: Single-page application with Onboarding, Game Dashboard, Pre-Mortem, and Final Summary screens.
 **Data-Driven Content**: All game content (initiative cards, metrics, archetypes, text) is loaded from JSON configuration files for flexibility and localization.
 
 ### Internationalization (i18n)
@@ -64,5 +66,13 @@ Preferred communication style: Simple, everyday language.
 ### Development Tools
 - **Vite**: Build tool and dev server.
 - **esbuild**: Production server bundling.
-- **TypeScript**: Type safety.
-- **Google Fonts CDN**: Inter, JetBrains Mono.
+- **TypeScript**: Type safety with proper typing throughout (no `any` types).
+- **Google Fonts CDN**: Inter (primary text), JetBrains Mono (metric values).
+
+## Recent Changes
+
+- Added dark mode toggle with ThemeProvider and localStorage persistence
+- Added localStorage persistence for game state (auto-save during gameplay, cleared on game reset)
+- Enhanced accessibility with ARIA labels and keyboard navigation for token allocation
+- Improved TypeScript type safety (replaced `any` types, consolidated `RoundHistoryEntry` in shared schema)
+- Memoized available cards filtering for performance
