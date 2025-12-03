@@ -70,6 +70,23 @@ Preferred communication style: Simple, everyday language.
 - **TypeScript**: Type safety with proper typing throughout (no `any` types).
 - **Google Fonts CDN**: Inter (primary text), JetBrains Mono (metric values).
 
+## Mobile Accessibility (EU WCAG 2.1 Level AA / EN 301 549 Compliance)
+
+The application meets EU accessibility requirements (enforcement deadline June 28, 2025):
+
+**Touch Targets**: All interactive elements use the Button component's responsive sizing:
+- Mobile (< 768px): 44×44px minimum touch targets (`h-11 w-11` or `min-h-11`)
+- Desktop (≥ 768px): Standard 36px sizing (`h-9 w-9` or `min-h-9`)
+- Implementation: `client/src/components/ui/button.tsx` defines responsive variants for all button sizes
+
+**Viewport & Pinch-Zoom**: `client/index.html` uses `<meta name="viewport" content="width=device-width, initial-scale=1.0">` without `maximum-scale=1` to allow pinch-zoom on mobile devices
+
+**Scrollable Containers**: Game dashboard uses `overflow-y-auto` to ensure all content is accessible on small screens
+
+**Responsive Layouts**: Headers use `flex-wrap` to prevent horizontal overflow on narrow viewports
+
+**Text Contrast**: Maintains 4.5:1 ratio for normal text using Tailwind's default color palette
+
 ## Recent Changes
 
 - Added comprehensive UX enhancements:
@@ -91,6 +108,10 @@ Preferred communication style: Simple, everyday language.
   - ExportSummary now renders localized dates based on current language
 - Improved TypeScript type safety (replaced `any` types, consolidated `RoundHistoryEntry` in shared schema)
 - Memoized available cards filtering for performance
+- **EU Mobile Accessibility Compliance** (December 2025):
+  - Button component now has responsive touch targets (44px mobile, 36px desktop) centralized in size variants
+  - Removed viewport zoom restriction (maximum-scale) for pinch-zoom support
+  - Added scroll containers and flex-wrap for small screen layouts
 
 ## New Components (December 2025)
 
