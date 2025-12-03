@@ -23,6 +23,7 @@ interface GameContextType {
   runPlan: () => void;
   nextRound: () => void;
   reset: () => void;
+  resetRound: () => void; // Reset current round allocations only
   canRunPlan: boolean;
   setPreMortemAnswer: (answer: PreMortemChoice) => void;
 }
@@ -316,6 +317,32 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
     });
   }, []);
 
+  const resetRound = useCallback(() => {
+    setGameState((prev) => {
+      if (prev.currentRound === 1) {
+        return {
+          ...prev,
+          allocations: {},
+        };
+      }
+
+      const previousRound = prev.roundHistory[prev.roundHistory.length - 1];
+      const keptAllocations = previousRound
+        ? Object.fromEntries(
+            Object.entries(previousRound.allocations).map(([cardId, tokens]) => [
+              cardId,
+              Math.floor(tokens * 0.5),
+            ])
+          )
+        : {};
+
+      return {
+        ...prev,
+        allocations: keptAllocations,
+      };
+    });
+  }, []);
+
   const setPreMortemAnswer = useCallback((answer: PreMortemChoice) => {
     setGameState((prev) => ({
       ...prev,
@@ -337,6 +364,7 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
         runPlan,
         nextRound,
         reset,
+        resetRound,
         canRunPlan,
         setPreMortemAnswer,
       }}

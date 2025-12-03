@@ -33,7 +33,13 @@
     "viewSummaryButton": "View Final Results",
     "metricsTitle": "Organization Metrics",
     "tokenBreakdown": "{{carryover}} reallocatable + {{newTokens}} new = {{total}} total",
-    "reallocationAlert": "You can reallocate 50% of your previous tokens (rounded down). You also receive {{newTokens}} new tokens. Adjust your strategy based on your results."
+    "reallocationAlert": "You can reallocate 50% of your previous tokens (rounded down). You also receive {{newTokens}} new tokens. Adjust your strategy based on your results.",
+    "resetRound": "Reset Allocations",
+    "iotLoopTitle": "IoT Process Coverage",
+    "investedCards": "Contributing initiatives",
+    "investedTokens": "{{count}} token invested",
+    "investedTokens_other": "{{count}} tokens invested",
+    "noInvestment": "No investment yet"
   },
   "metrics": {
     "visibility": {
@@ -117,7 +123,8 @@
       "title": "Health & Safety Monitoring",
       "shortDescription": "Wearable or handheld sensors track health signals (like glucose levels or pressure) and alert staff early so they can intervene. Based on continuous health monitoring devices.",
       "whenToUse": "Use when worker safety or health monitoring is a priority."
-    }
+    },
+    "synergyWith": "Works well with"
   },
   "feedback": {
     "highVisibility": "Your IoT investments gave you much better visibility into operations, similar to {{example}}. You can now see what's happening in real time.",
@@ -204,7 +211,11 @@
     "yourStrategy": "Your IoT Strategy",
     "similarToApproach": "Similar to {{company}}'s approach",
     "tokensLabel": "{{count}} token",
-    "tokensLabel_other": "{{count}} tokens"
+    "tokensLabel_other": "{{count}} tokens",
+    "journeyTitle": "Your IoT Journey",
+    "keyInvestments": "Key Investments",
+    "finalState": "Final Organizational State",
+    "disasterOccurred": "Disaster Event"
   },
   "common": {
     "loading": "Loading...",
@@ -385,5 +396,96 @@
   },
   "iotProcess": {
     "dialogDescription": "See how this initiative maps to the IoT process loop."
+  },
+  "glossary": {
+    "title": "IoT Glossary",
+    "description": "Key terms and concepts to help you understand IoT strategy",
+    "searchPlaceholder": "Search terms...",
+    "openGlossary": "Open IoT glossary",
+    "example": "Example",
+    "relatedTerms": "Related terms",
+    "noResults": "No matching terms found",
+    "digitalTwin": {
+      "term": "Digital Twin",
+      "definition": "A virtual replica of a physical asset, process, or system that receives real-time data from sensors. It allows you to monitor, analyze, and simulate the physical counterpart without touching it.",
+      "example": "A factory creates a digital twin of its production line. Engineers can test changes virtually before implementing them, reducing downtime and risk."
+    },
+    "predictiveMaintenance": {
+      "term": "Predictive Maintenance",
+      "definition": "Using sensor data and analytics to predict when equipment will fail, allowing maintenance before breakdowns occur. This reduces unplanned downtime and extends equipment life.",
+      "example": "Sensors on a conveyor belt motor detect increasing vibration patterns. The system alerts maintenance to replace bearings before the motor fails."
+    },
+    "sensor": {
+      "term": "Sensor",
+      "definition": "A device that detects physical properties (temperature, motion, light, pressure) and converts them into signals that can be read by systems. Sensors are the 'eyes and ears' of IoT.",
+      "example": "Temperature sensors in a warehouse track cold storage conditions, alerting staff if temperatures rise above safe levels."
+    },
+    "edgeComputing": {
+      "term": "Edge Computing",
+      "definition": "Processing data near where it's collected (at the 'edge' of the network) rather than sending everything to a central server. This reduces latency and bandwidth usage.",
+      "example": "A security camera analyzes video locally to detect motion, only sending alerts rather than streaming all footage continuously."
+    },
+    "iotDevice": {
+      "term": "IoT Device",
+      "definition": "Any physical object embedded with sensors, software, and connectivity that allows it to collect and exchange data over the internet. From smart thermostats to industrial machines.",
+      "example": "Smart light bulbs that can be controlled remotely and report energy usage are IoT devices."
+    },
+    "realTimeData": {
+      "term": "Real-Time Data",
+      "definition": "Information that is collected, processed, and delivered immediately as events occur. This enables instant visibility and rapid response to changing conditions.",
+      "example": "A fleet management system shows the exact location of every delivery truck at this moment, not where they were an hour ago."
+    },
+    "connectivity": {
+      "term": "Connectivity",
+      "definition": "The ability of devices to connect to networks and communicate data. This includes Wi-Fi, cellular, Bluetooth, and specialized industrial protocols.",
+      "example": "Sensors in a remote oil field use cellular connectivity to send data back to headquarters hundreds of miles away."
+    },
+    "machineLearning": {
+      "term": "Machine Learning",
+      "definition": "AI techniques that allow systems to learn patterns from data and make predictions or decisions without explicit programming. Used in IoT for anomaly detection and prediction.",
+      "example": "An ML model learns normal vibration patterns of a pump and can detect when vibrations indicate an upcoming failure."
+    },
+    "automation": {
+      "term": "Automation",
+      "definition": "Using technology to perform tasks with minimal human intervention. In IoT, this often means systems that respond automatically to sensor data.",
+      "example": "When motion sensors detect no one in a room for 10 minutes, lights automatically turn off to save energy."
+    },
+    "iotSprawl": {
+      "term": "IoT Sprawl",
+      "definition": "The uncontrolled growth of IoT devices across an organization, leading to management complexity, security vulnerabilities, and difficulty maintaining oversight.",
+      "example": "A company finds it has 500+ connected devices from 20 different vendors, many running outdated firmware with unknown security status."
+    },
+    "networkSegmentation": {
+      "term": "Network Segmentation",
+      "definition": "Dividing a network into isolated segments to limit the spread of security breaches. Critical for IoT security to prevent compromised devices from accessing sensitive systems.",
+      "example": "Factory floor sensors are on a separate network from office computers, so a hacked sensor can't access financial data."
+    },
+    "latency": {
+      "term": "Latency",
+      "definition": "The delay between when data is sent and when it arrives. Low latency is critical for real-time applications where quick response is essential.",
+      "example": "In autonomous vehicles, sensor data must have extremely low latency—even a 100ms delay could cause an accident."
+    }
+  },
+  "synergies": {
+    "visibilityMaintenance": {
+      "name": "Visibility-Driven Maintenance",
+      "description": "Digital twins and sensors provide the data foundation for effective predictive maintenance."
+    },
+    "sustainabilityFleet": {
+      "name": "Green Operations Bundle",
+      "description": "Energy monitoring combined with fleet optimization delivers compounding sustainability benefits."
+    },
+    "warehouseEfficiency": {
+      "name": "Smart Warehouse Suite",
+      "description": "Tracking, smart tools, and building automation create an integrated efficient environment."
+    },
+    "infrastructureSafety": {
+      "name": "Infrastructure Safety Net",
+      "description": "Comprehensive monitoring of water, power, and health creates early warning across critical systems."
+    },
+    "securityVisibility": {
+      "name": "Secure Visibility",
+      "description": "Security hardening protects your digital twin investment from cyber threats."
+    }
   }
 }

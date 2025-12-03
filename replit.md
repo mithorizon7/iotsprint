@@ -124,3 +124,23 @@ The application meets EU accessibility requirements (enforcement deadline June 2
 - `SocialShare.tsx`: Social media sharing buttons
 - `ExportSummary.tsx`: Print and download functionality
 - `PageTransition.tsx`: Framer Motion page transition wrapper
+- `TokenPool.tsx`: Animated token pool visualization with remaining/used token display
+- `IoTLoopDashboard.tsx`: Visual representation of IoT Sense→Share→Process→Act loop with investment indicators
+- `GlossaryPanel.tsx`: Searchable IoT terminology glossary in a sheet panel
+- `JourneyTimeline.tsx`: Visual timeline of player's journey through all rounds in Final Summary
+
+## Configuration Files
+
+- `client/public/config/cards.json`: Initiative card definitions with effects, IoT stages, and unlock conditions
+- `client/public/config/synergies.json`: Card synergy relationships and bonus effects
+- `client/public/config/glossary.json`: IoT terminology definitions and examples
+
+## Educational UI/UX Enhancements (December 2025)
+
+- **Animated Token Pool**: Visual representation of token spending with smooth animations
+- **Color-Coded Investment Levels**: Cards change appearance based on allocation (gray→yellow→orange→green)
+- **Card Synergy System**: Hover indicators show which cards work well together
+- **IoT Loop Dashboard**: Real-time visualization of how investments map to the Sense→Share→Process→Act loop
+- **Glossary System**: Searchable panel explaining IoT terminology with examples and related terms
+- **Reset Round Functionality**: Players can reset current round allocations without restarting game
+- **Journey Timeline**: Visual timeline in Final Summary showing key investments and metric changes per round

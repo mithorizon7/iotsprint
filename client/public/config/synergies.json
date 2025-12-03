@@ -1,0 +1,58 @@
+{
+  "synergies": [
+    {
+      "id": "visibility-maintenance",
+      "cards": ["digitalTwin", "predictiveMaintenance", "gridSensors"],
+      "nameKey": "synergies.visibilityMaintenance.name",
+      "descriptionKey": "synergies.visibilityMaintenance.description",
+      "bonusEffect": "early_warning_prevention",
+      "bonusAmount": 2
+    },
+    {
+      "id": "sustainability-fleet",
+      "cards": ["energyMonitoring", "fleetOptimization", "emissionsDetection"],
+      "nameKey": "synergies.sustainabilityFleet.name",
+      "descriptionKey": "synergies.sustainabilityFleet.description",
+      "bonusEffect": "sustainability_emissions",
+      "bonusAmount": 3
+    },
+    {
+      "id": "warehouse-efficiency",
+      "cards": ["warehouseFlow", "smartTools", "smartBuilding"],
+      "nameKey": "synergies.warehouseEfficiency.name",
+      "descriptionKey": "synergies.warehouseEfficiency.description",
+      "bonusEffect": "efficiency_throughput",
+      "bonusAmount": 2
+    },
+    {
+      "id": "infrastructure-safety",
+      "cards": ["waterMonitoring", "gridSensors", "healthMonitoring"],
+      "nameKey": "synergies.infrastructureSafety.name",
+      "descriptionKey": "synergies.infrastructureSafety.description",
+      "bonusEffect": "early_warning_prevention",
+      "bonusAmount": 3
+    },
+    {
+      "id": "security-visibility",
+      "cards": ["securityHardening", "digitalTwin"],
+      "nameKey": "synergies.securityVisibility.name",
+      "descriptionKey": "synergies.securityVisibility.description",
+      "bonusEffect": "complexity_risk",
+      "bonusAmount": -3
+    }
+  ],
+  "cardSynergies": {
+    "warehouseFlow": ["smartTools", "smartBuilding"],
+    "smartTools": ["warehouseFlow", "smartBuilding"],
+    "energyMonitoring": ["fleetOptimization", "emissionsDetection", "smartBuilding"],
+    "smartBuilding": ["energyMonitoring", "warehouseFlow", "smartTools"],
+    "fleetOptimization": ["energyMonitoring", "emissionsDetection"],
+    "predictiveMaintenance": ["digitalTwin", "gridSensors", "healthMonitoring"],
+    "digitalTwin": ["predictiveMaintenance", "gridSensors", "securityHardening"],
+    "emissionsDetection": ["energyMonitoring", "fleetOptimization", "waterMonitoring"],
+    "waterMonitoring": ["gridSensors", "emissionsDetection", "healthMonitoring"],
+    "gridSensors": ["digitalTwin", "predictiveMaintenance", "waterMonitoring"],
+    "securityHardening": ["digitalTwin"],
+    "healthMonitoring": ["predictiveMaintenance", "waterMonitoring"]
+  }
+}

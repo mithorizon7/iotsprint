@@ -1,0 +1,88 @@
+{
+  "terms": [
+    {
+      "id": "digital-twin",
+      "termKey": "glossary.digitalTwin.term",
+      "definitionKey": "glossary.digitalTwin.definition",
+      "exampleKey": "glossary.digitalTwin.example",
+      "relatedTerms": ["sensor", "real-time-data"]
+    },
+    {
+      "id": "predictive-maintenance",
+      "termKey": "glossary.predictiveMaintenance.term",
+      "definitionKey": "glossary.predictiveMaintenance.definition",
+      "exampleKey": "glossary.predictiveMaintenance.example",
+      "relatedTerms": ["sensor", "machine-learning"]
+    },
+    {
+      "id": "sensor",
+      "termKey": "glossary.sensor.term",
+      "definitionKey": "glossary.sensor.definition",
+      "exampleKey": "glossary.sensor.example",
+      "relatedTerms": ["iot-device", "real-time-data"]
+    },
+    {
+      "id": "edge-computing",
+      "termKey": "glossary.edgeComputing.term",
+      "definitionKey": "glossary.edgeComputing.definition",
+      "exampleKey": "glossary.edgeComputing.example",
+      "relatedTerms": ["latency", "real-time-data"]
+    },
+    {
+      "id": "iot-device",
+      "termKey": "glossary.iotDevice.term",
+      "definitionKey": "glossary.iotDevice.definition",
+      "exampleKey": "glossary.iotDevice.example",
+      "relatedTerms": ["sensor", "connectivity"]
+    },
+    {
+      "id": "real-time-data",
+      "termKey": "glossary.realTimeData.term",
+      "definitionKey": "glossary.realTimeData.definition",
+      "exampleKey": "glossary.realTimeData.example",
+      "relatedTerms": ["sensor", "visibility"]
+    },
+    {
+      "id": "connectivity",
+      "termKey": "glossary.connectivity.term",
+      "definitionKey": "glossary.connectivity.definition",
+      "exampleKey": "glossary.connectivity.example",
+      "relatedTerms": ["iot-device", "network"]
+    },
+    {
+      "id": "machine-learning",
+      "termKey": "glossary.machineLearning.term",
+      "definitionKey": "glossary.machineLearning.definition",
+      "exampleKey": "glossary.machineLearning.example",
+      "relatedTerms": ["predictive-maintenance", "automation"]
+    },
+    {
+      "id": "automation",
+      "termKey": "glossary.automation.term",
+      "definitionKey": "glossary.automation.definition",
+      "exampleKey": "glossary.automation.example",
+      "relatedTerms": ["efficiency", "machine-learning"]
+    },
+    {
+      "id": "iot-sprawl",
+      "termKey": "glossary.iotSprawl.term",
+      "definitionKey": "glossary.iotSprawl.definition",
+      "exampleKey": "glossary.iotSprawl.example",
+      "relatedTerms": ["complexity", "security"]
+    },
+    {
+      "id": "network-segmentation",
+      "termKey": "glossary.networkSegmentation.term",
+      "definitionKey": "glossary.networkSegmentation.definition",
+      "exampleKey": "glossary.networkSegmentation.example",
+      "relatedTerms": ["security", "iot-sprawl"]
+    },
+    {
+      "id": "latency",
+      "termKey": "glossary.latency.term",
+      "definitionKey": "glossary.latency.definition",
+      "exampleKey": "glossary.latency.example",
+      "relatedTerms": ["real-time-data", "edge-computing"]
+    }
+  ]
+}

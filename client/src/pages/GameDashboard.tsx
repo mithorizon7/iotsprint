@@ -6,9 +6,12 @@ import { InitiativeCard } from '@/components/InitiativeCard';
 import { ProgressIndicator } from '@/components/ProgressIndicator';
 import { StrategyHints } from '@/components/StrategyHints';
 import { TutorialTrigger } from '@/components/Tutorial';
+import { TokenPool } from '@/components/TokenPool';
+import { IoTLoopDashboard } from '@/components/IoTLoopDashboard';
+import { GlossaryPanel } from '@/components/GlossaryPanel';
 import { Button } from '@/components/ui/button';
-import { Coins, Info } from 'lucide-react';
-import { useState } from 'react';
+import { Info, RotateCcw } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
 import { RoundFeedback } from '@/components/RoundFeedback';
 import { GameMetrics, RoundHistoryEntry } from '@shared/schema';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -19,16 +22,28 @@ interface GameDashboardProps {
   onComplete: (metrics: GameMetrics, roundHistory: RoundHistoryEntry[], finalAllocations: Record<string, number>) => void;
 }
 
+interface SynergyConfig {
+  cardSynergies: Record<string, string[]>;
+}
+
 export function GameDashboard({ onComplete }: GameDashboardProps) {
   const { t } = useTranslation();
-  const { gameState, availableCards, allocateTokens, runPlan, nextRound, canRunPlan } = useGame();
+  const { gameState, availableCards, allCards, allocateTokens, runPlan, nextRound, canRunPlan, resetRound } = useGame();
   const [showFeedback, setShowFeedback] = useState(false);
   const [previousMetrics, setPreviousMetrics] = useState(gameState.metrics);
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+  const [synergies, setSynergies] = useState<SynergyConfig>({ cardSynergies: {} });
+
+  useEffect(() => {
+    fetch('/config/synergies.json')
+      .then(res => res.json())
+      .then(data => setSynergies(data))
+      .catch(err => console.error('Failed to load synergies:', err));
+  }, []);
 
   const tokensUsed = Object.values(gameState.allocations).reduce((sum, t) => sum + t, 0);
   const tokensRemaining = gameState.tokensAvailable - tokensUsed;
 
-  // Calculate actual carryover tokens from previous round (50% of previous allocations)
   const previousRoundAllocations = gameState.roundHistory.length > 0
     ? gameState.roundHistory[gameState.roundHistory.length - 1].allocations
     : {};
@@ -36,12 +51,15 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
     ? Object.values(previousRoundAllocations).reduce((sum, t) => sum + Math.floor(t * 0.5), 0)
     : 0;
   
-  const baseTokens = gameState.currentRound === 1 
-    ? 10 
-    : 5;
-  const newTokensThisRound = gameState.currentRound > 1 
-    ? baseTokens 
-    : 0;
+  const baseTokens = gameState.currentRound === 1 ? 10 : 5;
+  const newTokensThisRound = gameState.currentRound > 1 ? baseTokens : 0;
+
+  const highlightedCards = useMemo(() => {
+    if (!hoveredCardId || !synergies.cardSynergies[hoveredCardId]) {
+      return new Set<string>();
+    }
+    return new Set(synergies.cardSynergies[hoveredCardId]);
+  }, [hoveredCardId, synergies]);
 
   const handleRunPlan = () => {
     setPreviousMetrics(gameState.metrics);
@@ -52,21 +70,22 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
   const handleNextRound = () => {
     setShowFeedback(false);
     
-    // Check if game is complete using explicit flag (not brittle round count)
     if (gameState.isGameComplete) {
-      // All rounds complete, show final summary
-      // Pass final allocations (current state after Round 3)
       onComplete(gameState.metrics, gameState.roundHistory, gameState.allocations);
     } else {
-      // Move to next round
       nextRound();
     }
   };
 
-  // Get event message for current round
+  const handleResetRound = () => {
+    if (resetRound) {
+      resetRound();
+    }
+  };
+
   const getEventMessage = () => {
     if (gameState.currentRound === 1) {
-      return null; // No event for round 1
+      return null;
     }
 
     const { metrics } = gameState;
@@ -140,30 +159,18 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
                 <ProgressIndicator currentRound={gameState.currentRound} showLabels={false} />
               </div>
             </div>
-            <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
               <TutorialTrigger />
+              <GlossaryPanel variant="icon" />
               <ThemeToggle />
               <LanguageSwitcher />
-              <div className="flex flex-col items-end gap-1">
-              <div className="flex items-center gap-2">
-                <Coins className="w-5 h-5 text-primary" data-testid="icon-coins" />
-                <span className="text-lg font-mono font-bold" data-testid="text-tokens-remaining">
-                  {tokensRemaining}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  {t('dashboard.tokensAvailable', { count: tokensRemaining })}
-                </span>
-              </div>
-              {gameState.currentRound > 1 && (
-                <div className="text-xs text-muted-foreground" data-testid="text-token-breakdown">
-                  {t('dashboard.tokenBreakdown', { 
-                    carryover: carryoverTokens, 
-                    newTokens: newTokensThisRound, 
-                    total: gameState.tokensAvailable 
-                  })}
-                </div>
-              )}
-              </div>
+              <TokenPool
+                total={gameState.tokensAvailable}
+                remaining={tokensRemaining}
+                showBreakdown={gameState.currentRound > 1}
+                carryover={carryoverTokens}
+                newTokens={newTokensThisRound}
+              />
             </div>
           </div>
         </div>
@@ -178,32 +185,52 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
         )}
 
         <div className="grid lg:grid-cols-[350px_1fr] gap-8">
-          <div className="lg:sticky lg:top-24 lg:self-start">
+          <div className="lg:sticky lg:top-24 lg:self-start space-y-4">
             <div className="bg-card border border-card-border rounded-lg p-6">
               <h3 className="text-lg font-semibold mb-6" data-testid="text-metrics-title">
                 {t('dashboard.metricsTitle')}
               </h3>
               <MetricsPanel metrics={gameState.metrics} />
             </div>
+
+            <IoTLoopDashboard 
+              allocations={gameState.allocations} 
+              cards={allCards} 
+            />
           </div>
 
           <div className="space-y-6">
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold" data-testid="text-initiatives-title">
-                {t('dashboard.initiativesTitle')}
-              </h3>
-              <p className="text-sm text-muted-foreground" data-testid="text-instructions">
-                {t('dashboard.instructions')}
-              </p>
-              {gameState.currentRound > 1 && (
-                <Alert className="mt-2" data-testid="alert-reallocation">
-                  <Info className="h-4 w-4" data-testid="icon-info" />
-                  <AlertDescription className="text-xs">
-                    {t('dashboard.reallocationAlert', { newTokens: newTokensThisRound })}
-                  </AlertDescription>
-                </Alert>
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold" data-testid="text-initiatives-title">
+                  {t('dashboard.initiativesTitle')}
+                </h3>
+                <p className="text-sm text-muted-foreground" data-testid="text-instructions">
+                  {t('dashboard.instructions')}
+                </p>
+              </div>
+              {tokensUsed > 0 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleResetRound}
+                  className="gap-2 shrink-0"
+                  data-testid="button-reset-round"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  {t('dashboard.resetRound')}
+                </Button>
               )}
             </div>
+
+            {gameState.currentRound > 1 && (
+              <Alert data-testid="alert-reallocation">
+                <Info className="h-4 w-4" data-testid="icon-info" />
+                <AlertDescription className="text-xs">
+                  {t('dashboard.reallocationAlert', { newTokens: newTokensThisRound })}
+                </AlertDescription>
+              </Alert>
+            )}
 
             <StrategyHints 
               metrics={gameState.metrics} 
@@ -227,6 +254,10 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
                       tokensRemaining === 0 &&
                       (gameState.allocations[card.id] || 0) === 0
                     }
+                    synergies={synergies.cardSynergies[card.id] || []}
+                    onHover={setHoveredCardId}
+                    isHighlighted={highlightedCards.has(card.id)}
+                    allCards={allCards}
                   />
                 </motion.div>
               ))}

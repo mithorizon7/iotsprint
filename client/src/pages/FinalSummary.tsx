@@ -6,6 +6,7 @@ import { SocialShare } from '@/components/SocialShare';
 import { ExportSummary } from '@/components/ExportSummary';
 import { Achievements } from '@/components/Achievements';
 import { ComparisonStats } from '@/components/ComparisonStats';
+import { JourneyTimeline } from '@/components/JourneyTimeline';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -190,10 +191,24 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
           </div>
         </Card>
 
+        {roundHistory.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <JourneyTimeline 
+              roundHistory={roundHistory} 
+              cards={allCards}
+              finalMetrics={metrics}
+            />
+          </motion.div>
+        )}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.4 }}
         >
           <Achievements 
             metrics={metrics} 
@@ -205,7 +220,7 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.5 }}
         >
           <ComparisonStats metrics={metrics} />
         </motion.div>
@@ -214,7 +229,7 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
           className="flex flex-col sm:flex-row justify-center items-center gap-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.6 }}
         >
           <div className="flex gap-2">
             <SocialShare 
