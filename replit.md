@@ -23,6 +23,7 @@ Preferred communication style: Simple, everyday language.
 ### Internationalization (i18n)
 
 **Framework**: react-i18next with JSON resource files. Supports English, Russian, Latvian, and a pseudo-locale for testing. Dynamic locale loading with localStorage persistence. All UI text is externalized to translation keys.
+**Accessibility Compliance**: All aria-labels are translated using `t('accessibility.*')` keys. Document language attribute (`<html lang="...">`) updates automatically when language changes. Date formatting uses locale-aware `Intl.DateTimeFormat` with proper CLDR locale mappings.
 
 ### Game Mechanics
 
@@ -83,6 +84,11 @@ Preferred communication style: Simple, everyday language.
 - Added dark mode toggle with ThemeProvider and localStorage persistence
 - Added localStorage persistence for game state (auto-save during gameplay, cleared on game reset)
 - Enhanced accessibility with ARIA labels and keyboard navigation for token allocation
+- **i18n Accessibility Improvements** (December 2025):
+  - Translated all hardcoded aria-labels in ThemeToggle, InitiativeCard, and MetricsPanel components
+  - Added `document.documentElement.lang` updates when language changes (mapped 'en-ps' pseudo-locale to 'en')
+  - Created locale-aware date formatting utility (`client/src/lib/dateFormat.ts`) with proper CLDR locale mappings
+  - ExportSummary now renders localized dates based on current language
 - Improved TypeScript type safety (replaced `any` types, consolidated `RoundHistoryEntry` in shared schema)
 - Memoized available cards filtering for performance
 
