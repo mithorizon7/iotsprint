@@ -62,8 +62,8 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
   const weaknesses = sortedMetrics.slice(-2);
 
   return (
-    <div className="min-h-screen bg-background py-8 px-6">
-      <div className="fixed top-4 right-4 flex items-center gap-2 z-10">
+    <div className="min-h-screen bg-background py-6 sm:py-8 px-4 sm:px-6 overflow-y-auto">
+      <div className="fixed top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-2 z-10">
         <ThemeToggle />
         <LanguageSwitcher />
       </div>
@@ -89,7 +89,7 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
           </h1>
         </motion.div>
 
-        <Card className="p-8 space-y-6">
+        <Card className="p-4 sm:p-8 space-y-6">
           <div className="text-center space-y-3">
             <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
               {t('summary.archetypeLabel')}

@@ -24,8 +24,8 @@ export function OnboardingScreen({ onStart }: OnboardingScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-6">
-      <div className="absolute top-4 right-4 flex items-center gap-2">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-2 z-10">
         <ThemeToggle />
         <LanguageSwitcher />
       </div>
@@ -44,7 +44,7 @@ export function OnboardingScreen({ onStart }: OnboardingScreenProps) {
           </p>
         </motion.div>
 
-        <div className="bg-card border border-card-border rounded-lg p-8 space-y-6">
+        <div className="bg-card border border-card-border rounded-lg p-4 sm:p-8 space-y-6">
           <div className="prose prose-sm max-w-none">
             <p className="text-base leading-relaxed" data-testid="text-intro">
               {t('onboarding.intro')}

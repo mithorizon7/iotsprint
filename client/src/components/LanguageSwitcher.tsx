@@ -43,7 +43,7 @@ export function LanguageSwitcher() {
           disabled={isChanging}
           data-testid="button-language-switcher"
         >
-          <Globe className="h-4 w-4" data-testid="icon-globe" />
+          <Globe className="h-5 w-5 md:h-4 md:w-4" data-testid="icon-globe" />
           <span className="text-sm">{currentLanguageName}</span>
         </Button>
       </DropdownMenuTrigger>

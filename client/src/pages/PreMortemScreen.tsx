@@ -48,8 +48,8 @@ export default function PreMortemScreen({ onComplete }: PreMortemScreenProps) {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-4 relative">
-      <div className="absolute top-0 right-0 flex items-center gap-2">
+    <div className="container max-w-4xl mx-auto py-6 sm:py-8 px-4 relative min-h-screen overflow-y-auto">
+      <div className="absolute top-0 right-0 flex items-center gap-2 z-10">
         <ThemeToggle />
         <LanguageSwitcher />
       </div>

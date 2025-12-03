@@ -128,19 +128,19 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-y-auto">
       <div className="sticky top-0 z-10 bg-background border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <div className="flex items-center gap-4">
-              <h2 className="text-2xl font-bold" data-testid="text-round-title">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-2 sm:gap-4 flex-wrap">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+              <h2 className="text-xl sm:text-2xl font-bold truncate" data-testid="text-round-title">
                 {t('dashboard.roundTitle', { round: gameState.currentRound })}
               </h2>
               <div className="hidden md:block">
                 <ProgressIndicator currentRound={gameState.currentRound} showLabels={false} />
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
               <TutorialTrigger />
               <ThemeToggle />
               <LanguageSwitcher />
@@ -169,7 +169,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {eventMessage && (
           <Alert className="mb-6" data-testid="alert-event">
             <Info className="h-4 w-4" data-testid="icon-info" />

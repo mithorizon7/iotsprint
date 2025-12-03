@@ -166,7 +166,7 @@ function TutorialOverlay() {
                 aria-label={t('tutorial.skip')}
                 data-testid="button-tutorial-skip"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5 md:w-4 md:h-4" />
               </Button>
             </div>
 
@@ -218,7 +218,7 @@ export function TutorialTrigger() {
       className="gap-2"
       data-testid="button-tutorial-start"
     >
-      <Lightbulb className="w-4 h-4" />
+      <Lightbulb className="w-5 h-5 md:w-4 md:h-4" />
       {t('tutorial.helpButton')}
     </Button>
   );

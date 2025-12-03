@@ -71,7 +71,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
                   aria-label={t('accessibility.moreInfoAbout', { title })}
                   data-testid={`button-info-${card.id}`}
                 >
-                  <Info className="h-4 w-4" />
+                  <Info className="h-5 w-5 md:h-4 md:w-4" />
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-4xl">
@@ -115,7 +115,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
               aria-label={t('accessibility.removeTokenFrom', { title })}
               data-testid={`button-decrement-${card.id}`}
             >
-              <Minus className="h-4 w-4" />
+              <Minus className="h-5 w-5 md:h-4 md:w-4" />
             </Button>
             <span
               className="text-xl font-bold font-mono w-8 text-center"
@@ -131,7 +131,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
               aria-label={t('accessibility.addTokenTo', { title })}
               data-testid={`button-increment-${card.id}`}
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-5 w-5 md:h-4 md:w-4" />
             </Button>
           </div>
         </div>
