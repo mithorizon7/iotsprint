@@ -54,7 +54,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
       tabIndex={0}
       onKeyDown={handleKeyDown}
       role="group"
-      aria-label={`${title}: ${allocation} tokens allocated. Use arrow keys to adjust.`}
+      aria-label={t('accessibility.cardStatus', { title, count: allocation })}
       data-testid={`card-initiative-${card.id}`}
     >
       <CardHeader className="pb-3">
@@ -68,7 +68,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
                 <Button
                   size="icon"
                   variant="ghost"
-                  aria-label={`More info about ${title}`}
+                  aria-label={t('accessibility.moreInfoAbout', { title })}
                   data-testid={`button-info-${card.id}`}
                 >
                   <Info className="h-4 w-4" />
@@ -112,7 +112,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
               variant="outline"
               onClick={() => onAllocate(allocation - 1)}
               disabled={!canDecrement || disabled}
-              aria-label={`Remove token from ${title}`}
+              aria-label={t('accessibility.removeTokenFrom', { title })}
               data-testid={`button-decrement-${card.id}`}
             >
               <Minus className="h-4 w-4" />
@@ -128,7 +128,7 @@ export function InitiativeCard({ card, allocation, onAllocate, disabled = false 
               variant="outline"
               onClick={() => onAllocate(allocation + 1)}
               disabled={!canIncrement}
-              aria-label={`Add token to ${title}`}
+              aria-label={t('accessibility.addTokenTo', { title })}
               data-testid={`button-increment-${card.id}`}
             >
               <Plus className="h-4 w-4" />

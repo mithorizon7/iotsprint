@@ -101,6 +101,7 @@ function MetricBar({
   inverse = false,
   animate = false,
 }: MetricBarProps) {
+  const { t } = useTranslation();
   const [displayValue, setDisplayValue] = useState(previousValue);
 
   useEffect(() => {
@@ -140,7 +141,7 @@ function MetricBar({
             <TooltipTrigger asChild>
               <button
                 className="text-muted-foreground hover:text-foreground transition-colors"
-                aria-label={`Information about ${label}`}
+                aria-label={t('accessibility.metricInfo', { label })}
                 data-testid={`button-info-${testId}`}
               >
                 <Info className="w-4 h-4" />
