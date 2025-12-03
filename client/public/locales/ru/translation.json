@@ -253,7 +253,15 @@
     "nextSlide": "Следующий слайд",
     "morePages": "Больше страниц",
     "sidebar": "Боковая панель",
-    "sidebarDescription": "Отображает мобильную боковую панель."
+    "sidebarDescription": "Отображает мобильную боковую панель.",
+    "switchToLightMode": "Переключить на светлую тему",
+    "switchToDarkMode": "Переключить на тёмную тему",
+    "cardStatus": "{{title}}: выделен {{count}} токен. Используйте стрелки для настройки.",
+    "cardStatus_other": "{{title}}: выделено {{count}} токенов. Используйте стрелки для настройки.",
+    "moreInfoAbout": "Подробнее о {{title}}",
+    "removeTokenFrom": "Убрать токен из {{title}}",
+    "addTokenTo": "Добавить токен к {{title}}",
+    "metricInfo": "Информация о {{label}}"
   },
   "iotProcess": {
     "sense": {

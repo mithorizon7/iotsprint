@@ -253,7 +253,15 @@
     "nextSlide": "Next slide",
     "morePages": "More pages",
     "sidebar": "Sidebar",
-    "sidebarDescription": "Displays the mobile sidebar."
+    "sidebarDescription": "Displays the mobile sidebar.",
+    "switchToLightMode": "Switch to light mode",
+    "switchToDarkMode": "Switch to dark mode",
+    "cardStatus": "{{title}}: {{count}} token allocated. Use arrow keys to adjust.",
+    "cardStatus_other": "{{title}}: {{count}} tokens allocated. Use arrow keys to adjust.",
+    "moreInfoAbout": "More info about {{title}}",
+    "removeTokenFrom": "Remove token from {{title}}",
+    "addTokenTo": "Add token to {{title}}",
+    "metricInfo": "Information about {{label}}"
   },
   "iotProcess": {
     "sense": {

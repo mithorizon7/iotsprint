@@ -253,7 +253,15 @@
     "nextSlide": "Nākamais slaids",
     "morePages": "Vairāk lapu",
     "sidebar": "Sānjosla",
-    "sidebarDescription": "Parāda mobilo sānjoslu."
+    "sidebarDescription": "Parāda mobilo sānjoslu.",
+    "switchToLightMode": "Pārslēgt uz gaišo režīmu",
+    "switchToDarkMode": "Pārslēgt uz tumšo režīmu",
+    "cardStatus": "{{title}}: piešķirts {{count}} žetons. Izmantojiet bulttaustiņus, lai pielāgotu.",
+    "cardStatus_other": "{{title}}: piešķirti {{count}} žetoni. Izmantojiet bulttaustiņus, lai pielāgotu.",
+    "moreInfoAbout": "Vairāk informācijas par {{title}}",
+    "removeTokenFrom": "Noņemt žetonu no {{title}}",
+    "addTokenTo": "Pievienot žetonu {{title}}",
+    "metricInfo": "Informācija par {{label}}"
   },
   "iotProcess": {
     "sense": {
