@@ -55,10 +55,11 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
   const newTokensThisRound = gameState.currentRound > 1 ? baseTokens : 0;
 
   const highlightedCards = useMemo(() => {
-    if (!hoveredCardId || !synergies.cardSynergies[hoveredCardId]) {
+    if (!hoveredCardId) {
       return new Set<string>();
     }
-    return new Set(synergies.cardSynergies[hoveredCardId]);
+    const partners = synergies.cardSynergies[hoveredCardId] || [];
+    return new Set([hoveredCardId, ...partners]);
   }, [hoveredCardId, synergies]);
 
   const handleRunPlan = () => {

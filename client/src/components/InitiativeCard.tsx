@@ -99,25 +99,19 @@ export function InitiativeCard({
   };
 
   return (
-    <motion.div
+    <div
       onMouseEnter={handleInteractionStart}
       onMouseLeave={handleInteractionEnd}
       onFocus={handleInteractionStart}
       onBlur={handleInteractionEnd}
-      animate={{
-        scale: isHighlighted ? 1.02 : 1,
-        boxShadow: isHighlighted 
-          ? '0 0 20px hsl(var(--primary) / 0.3)' 
-          : '0 0 0px transparent',
-      }}
-      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+      className="h-full"
     >
       <Card 
         className={`
           flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
           transition-all duration-300
           ${allocationStyle}
-          ${isHighlighted ? 'border-primary' : ''}
+          ${isHighlighted ? 'border-primary ring-2 ring-primary/30 shadow-lg shadow-primary/20' : ''}
         `}
         tabIndex={0}
         onKeyDown={handleKeyDown}
@@ -256,6 +250,6 @@ export function InitiativeCard({
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 }
