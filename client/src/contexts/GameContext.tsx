@@ -146,15 +146,13 @@ export function GameProvider({ children, cards, config: baseConfig, synergiesDat
 
   const allocateTokens = useCallback((cardId: string, tokens: number) => {
     setGameState((prev) => {
-      const currentAllocation = prev.allocations[cardId] || 0;
       const otherAllocations = Object.entries(prev.allocations)
         .filter(([id]) => id !== cardId)
         .reduce((sum, [, t]) => sum + t, 0);
 
-      const usedTokens = otherAllocations;
-      const available = prev.tokensAvailable - usedTokens;
+      const maxForThisCard = prev.tokensAvailable - otherAllocations;
 
-      const newTokens = Math.max(0, Math.min(3, Math.min(tokens, currentAllocation + available)));
+      const newTokens = Math.max(0, Math.min(3, Math.min(tokens, maxForThisCard)));
 
       return {
         ...prev,
