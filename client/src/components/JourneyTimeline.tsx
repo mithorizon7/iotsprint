@@ -77,8 +77,8 @@ export function JourneyTimeline({ roundHistory, cards, finalMetrics }: JourneyTi
                   <div className={`
                     w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
                     ${hadDisaster 
-                      ? 'bg-destructive/10 text-destructive border-2 border-destructive' 
-                      : 'bg-primary/10 text-primary border-2 border-primary'
+                      ? 'bg-destructive/10 dark:bg-destructive/25 text-destructive border-2 border-destructive' 
+                      : 'bg-primary/10 dark:bg-primary/25 text-primary border-2 border-primary'
                     }
                   `}>
                     {round.round}
@@ -164,7 +164,7 @@ export function JourneyTimeline({ roundHistory, cards, finalMetrics }: JourneyTi
                   key={metric}
                   className={`
                     p-2 rounded-lg text-center
-                    ${isGood ? 'bg-chart-3/10' : 'bg-muted'}
+                    ${isGood ? 'bg-chart-3/10 dark:bg-chart-3/25' : 'bg-muted'}
                   `}
                 >
                   <p className="text-xs text-muted-foreground truncate">

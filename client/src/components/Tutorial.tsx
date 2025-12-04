@@ -147,7 +147,7 @@ function TutorialOverlay() {
           <Card className="w-full max-w-md p-6 space-y-4">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-primary/10 dark:bg-primary/25 flex items-center justify-center">
                   <Lightbulb className="w-5 h-5 text-primary" />
                 </div>
                 <div>

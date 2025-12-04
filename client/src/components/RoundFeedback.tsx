@@ -185,9 +185,9 @@ export function RoundFeedback({
                   key={index}
                   className={`flex items-start gap-3 p-3 rounded-md ${
                     item.type === 'positive'
-                      ? 'bg-chart-3/10 text-chart-3'
+                      ? 'bg-chart-3/10 dark:bg-chart-3/25 text-chart-3'
                       : item.type === 'warning'
-                      ? 'bg-chart-5/10 text-chart-5'
+                      ? 'bg-chart-5/10 dark:bg-chart-5/25 text-chart-5'
                       : 'bg-muted'
                   }`}
                   data-testid={`feedback-item-${index}`}

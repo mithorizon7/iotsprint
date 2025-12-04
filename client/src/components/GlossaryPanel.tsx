@@ -178,7 +178,7 @@ export function GlossaryPanel({ variant = 'button' }: GlossaryPanelProps) {
                                             e.stopPropagation();
                                             setSelectedTerm(related);
                                           }}
-                                          className="text-xs px-2 py-1 rounded bg-primary/10 text-primary hover:bg-primary/20 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+                                          className="text-xs px-2 py-1 rounded bg-primary/10 dark:bg-primary/25 text-primary hover:bg-primary/20 dark:hover:bg-primary/35 transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
                                           data-testid={`button-related-${relatedId}`}
                                         >
                                           {t(related.termKey)}

@@ -77,7 +77,7 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
         >
           <div className="flex justify-center mb-4">
             <motion.div 
-              className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center"
+              className="w-20 h-20 rounded-full bg-primary/10 dark:bg-primary/25 flex items-center justify-center"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', delay: 0.2 }}
