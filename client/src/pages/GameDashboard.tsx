@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
+import iotLogo from '@assets/internet-of-things_1764882370466.png';
 import { MetricsPanel } from '@/components/MetricsPanel';
 import { InitiativeCard } from '@/components/InitiativeCard';
 import { ProgressIndicator } from '@/components/ProgressIndicator';
@@ -144,6 +145,12 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-2 sm:gap-4 flex-wrap">
             <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+              <img 
+                src={iotLogo} 
+                alt="IoT Strategy Sprint" 
+                className="w-8 h-8 sm:w-10 sm:h-10"
+                data-testid="img-logo"
+              />
               <h2 className="text-xl sm:text-2xl font-bold truncate" data-testid="text-round-title">
                 {t('dashboard.roundTitle', { round: gameState.currentRound })}
               </h2>
