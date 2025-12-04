@@ -61,6 +61,16 @@
     "complexity": {
       "label": "Complexity & Security Risk",
       "tooltip": "Operational complexity and cybersecurity vulnerabilities from IoT sprawl (lower is better)"
+    },
+    "higherIsBetter": "Higher is better",
+    "lowerIsBetter": "Lower is better",
+    "riskLevel": {
+      "low": "Low Risk",
+      "moderate": "Moderate Risk",
+      "high": "High Risk",
+      "critical": "Critical Risk",
+      "safe": "Safe",
+      "danger": "Danger Zone"
     }
   },
   "cards": {
