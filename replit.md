@@ -28,9 +28,27 @@ Preferred communication style: Simple, everyday language.
 ### Game Mechanics
 
 **Content Model**: IoT initiative cards with configurable effects on metrics, five tracked metrics, and six archetypes based on final metric distributions.
-**Token System**: Players allocate 10 tokens per round to initiatives, with diminishing returns for excessive allocation to a single card and a "IoT Sprawl Penalty" for using too many tokens, increasing complexity.
+**Token System**: Token allocation per round varies by difficulty mode (Easy: 12/7/7, Normal: 10/5/5, Hard: 8/4/4). Diminishing returns apply after threshold tokens on a single card. IoT Sprawl Penalty increases complexity when total tokens exceed threshold.
+**Synergy System**: Card combinations provide bonus effects when all cards in a synergy set have ≥1 token allocated. Bonus scales by minimum token count across participating cards. Active synergies recorded in round history.
+**Difficulty Modes**: Three modes (Easy, Normal, Hard) adjust token budget, diminishing returns threshold, sprawl penalties, and disaster penalty scaling. Selected on onboarding screen, persisted to localStorage.
 **Unlock Conditions**: Dynamic content unlock (e.g., Security Hardening card unlocks at high Complexity & Risk).
 **Scoring**: Multi-dimensional scoring across visibility, efficiency, sustainability, early warning capability, and complexity risk.
+
+### Game Engine Architecture
+
+**Pure Functions**: Core game logic extracted to `shared/gameLogic.ts` for testability and potential backend reuse:
+- `applyAllocationEffects`: Applies token effects with diminishing returns and sprawl penalties
+- `applySynergyBonuses`: Detects and applies synergy bonuses, returns active synergy entries
+- `applyDisasterPenalties`: Evaluates disaster triggers with mitigation and penalty scaling
+- `clampMetrics`: Ensures all metrics stay within 0-100 range
+- `calculateRoundEffects`: Orchestrates all effects for a complete round calculation
+
+**Unit Tests**: Comprehensive Vitest test suite (33 tests) covering:
+- Metric clamping edge cases
+- Diminishing returns and sprawl penalties
+- Synergy activation and scaling
+- Disaster triggering, mitigation, and scaling
+- Difficulty preset application
 
 ### Pedagogical Enhancements
 
