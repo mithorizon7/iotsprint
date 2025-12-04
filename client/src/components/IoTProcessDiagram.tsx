@@ -46,7 +46,7 @@ export function IoTProcessDiagram() {
           const Icon = step.icon;
           return (
             <div key={step.key} className="flex flex-col items-center text-center" data-testid={`card-process-${step.key}`}>
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary/25 flex items-center justify-center mb-4">
                 <Icon className="w-8 h-8 text-primary" />
               </div>
               <h4 className="text-base font-semibold mb-2" data-testid={`text-step-${step.key}`}>
@@ -69,7 +69,7 @@ export function IoTProcessDiagram() {
             return (
               <div key={step.key} className="contents">
                 {/* Circle with icon */}
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary/25 flex items-center justify-center shrink-0">
                   <Icon className="w-8 h-8 text-primary" />
                 </div>
                 {/* Connector line between circles */}
