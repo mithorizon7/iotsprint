@@ -30,7 +30,7 @@
     "instructions": "Allocate your tokens to IoT initiatives. Each card can receive 0-3 tokens.",
     "runPlanButton": "Run My Plan",
     "nextRoundButton": "Continue to Year {{round}}",
-    "viewSummaryButton": "View Final Results",
+    "viewSummaryButton": "Continue to Wrap-Up",
     "metricsTitle": "Organization Metrics",
     "tokenBreakdown": "{{carryover}} reallocatable + {{newTokens}} new = {{total}} total",
     "reallocationAlert": "You can reallocate 50% of your previous tokens (rounded down). You also receive {{newTokens}} new tokens. Adjust your strategy based on your results.",
