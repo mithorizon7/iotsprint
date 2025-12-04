@@ -90,7 +90,7 @@ export function IoTLoopDashboard({ allocations, cards }: IoTLoopDashboardProps) 
                     >
                       <motion.div
                         className={`
-                          w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center
+                          w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center
                           transition-all duration-300
                           ${hasInvestment 
                             ? `bg-${config.color}/20 ring-2 ring-${config.color}` 
@@ -107,7 +107,7 @@ export function IoTLoopDashboard({ allocations, cards }: IoTLoopDashboardProps) 
                         }}
                       >
                         <Icon 
-                          className={`w-5 h-5 sm:w-6 sm:h-6 ${
+                          className={`w-4 h-4 sm:w-5 sm:h-5 ${
                             hasInvestment ? `text-${config.color}` : 'text-muted-foreground'
                           }`}
                           style={{
@@ -125,16 +125,12 @@ export function IoTLoopDashboard({ allocations, cards }: IoTLoopDashboardProps) 
                     >
                       {stageLabel}
                     </span>
-                    {hasInvestment && (
-                      <motion.span
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-xs font-mono text-muted-foreground"
-                        data-testid={`text-stage-tokens-${stage}`}
-                      >
-                        {investment.tokens} {t('common.tokens')}
-                      </motion.span>
-                    )}
+                    <span
+                      className={`text-[10px] sm:text-xs font-mono ${hasInvestment ? 'text-foreground' : 'text-muted-foreground'}`}
+                      data-testid={`text-stage-tokens-${stage}`}
+                    >
+                      {investment.tokens} Inv.
+                    </span>
                   </button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" id={`stage-desc-${stage}`}>
@@ -157,15 +153,15 @@ export function IoTLoopDashboard({ allocations, cards }: IoTLoopDashboardProps) 
 
               {index < stages.length - 1 && (
                 <motion.div
-                  className="flex-shrink-0 flex items-center mx-0.5 sm:mx-1"
+                  className="flex-shrink-0 flex items-center"
                   animate={{
                     opacity: hasInvestment && stageInvestments[stages[index + 1]].tokens > 0 ? 1 : 0.3,
                   }}
                   aria-hidden="true"
                   data-testid={`connector-${stage}-${stages[index + 1]}`}
                 >
-                  <div className="w-3 sm:w-6 h-0.5 bg-border" />
-                  <div className="w-0 h-0 border-t-[3px] border-t-transparent border-b-[3px] border-b-transparent border-l-[3px] border-l-border" />
+                  <div className="w-2 sm:w-4 h-0.5 bg-border" />
+                  <div className="w-0 h-0 border-t-[2px] border-t-transparent border-b-[2px] border-b-transparent border-l-[2px] border-l-border" />
                 </motion.div>
               )}
             </div>
