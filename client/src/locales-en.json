@@ -305,6 +305,10 @@
       "title": "Allocating Tokens",
       "description": "Use the +/- buttons or arrow keys to add tokens to each card. You can allocate up to 3 tokens per initiative. More tokens = stronger effect, but watch for diminishing returns."
     },
+    "glossary": {
+      "title": "IoT Glossary",
+      "description": "Not sure what a term means? Click the book icon in the top bar to open the IoT Glossary. It explains key concepts like Digital Twin, Edge Computing, and more with real-world examples."
+    },
     "ready": {
       "title": "You're Ready!",
       "description": "Make strategic choices, learn from feedback, and see how your IoT strategy shapes the organization. Good luck!"

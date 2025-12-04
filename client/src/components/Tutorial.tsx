@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { X, ChevronRight, ChevronLeft, Lightbulb } from 'lucide-react';
+import { X, ChevronRight, ChevronLeft, Lightbulb, Book } from 'lucide-react';
 
 interface TutorialStep {
   id: string;
@@ -11,6 +11,7 @@ interface TutorialStep {
   descriptionKey: string;
   targetSelector?: string;
   position?: 'top' | 'bottom' | 'left' | 'right' | 'center';
+  icon?: 'lightbulb' | 'book';
 }
 
 const TUTORIAL_STEPS: TutorialStep[] = [
@@ -45,6 +46,14 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     titleKey: 'tutorial.allocation.title',
     descriptionKey: 'tutorial.allocation.description',
     position: 'center',
+  },
+  {
+    id: 'glossary',
+    titleKey: 'tutorial.glossary.title',
+    descriptionKey: 'tutorial.glossary.description',
+    targetSelector: '[data-testid="button-glossary"]',
+    position: 'bottom',
+    icon: 'book',
   },
   {
     id: 'ready',
@@ -148,7 +157,11 @@ function TutorialOverlay() {
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 rounded-full bg-primary/10 dark:bg-primary/25 flex items-center justify-center">
-                  <Lightbulb className="w-5 h-5 text-primary" />
+                  {step.icon === 'book' ? (
+                    <Book className="w-5 h-5 text-primary" />
+                  ) : (
+                    <Lightbulb className="w-5 h-5 text-primary" />
+                  )}
                 </div>
                 <div>
                   <h3 className="font-semibold" data-testid="tutorial-title">
