@@ -45,8 +45,8 @@ export function OnboardingScreen({ onStart }: OnboardingScreenProps) {
         </motion.div>
 
         <div className="bg-card border border-card-border rounded-lg p-4 sm:p-8 space-y-6">
-          <div className="prose prose-sm max-w-none">
-            <p className="text-base leading-relaxed" data-testid="text-intro">
+          <div className="prose prose-sm dark:prose-invert max-w-none">
+            <p className="text-base leading-relaxed text-foreground" data-testid="text-intro">
               {t('onboarding.intro')}
             </p>
           </div>
