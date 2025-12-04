@@ -10,6 +10,7 @@ import { Lightbulb, Smile, Target, Flame } from 'lucide-react';
 import { logger } from '@/lib/logger';
 import { DifficultyMode } from '@shared/schema';
 import { cn } from '@/lib/utils';
+import iotLogo from '@assets/internet-of-things_1764882370466.png';
 
 interface OnboardingScreenProps {
   onStart: () => void;
@@ -46,6 +47,15 @@ export function OnboardingScreen({ onStart }: OnboardingScreenProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
+          <motion.img 
+            src={iotLogo} 
+            alt="IoT Strategy Sprint" 
+            className="w-20 h-20 sm:w-24 sm:h-24 mx-auto"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+            data-testid="img-hero-logo"
+          />
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight" data-testid="text-game-title">
             {t('game.title')}
           </h1>
