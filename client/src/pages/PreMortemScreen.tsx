@@ -115,7 +115,7 @@ export default function PreMortemScreen({ onComplete }: PreMortemScreenProps) {
               size="lg"
               data-testid="button-submit-premortem"
             >
-              {t('premortem.continue')}
+              {t('premortem.submitButton')}
             </Button>
           </div>
         </CardContent>
