@@ -3,29 +3,42 @@ import {
   GameState,
   GameMetrics,
   INITIAL_METRICS,
-  TOKENS_PER_ROUND,
-  clampMetrics,
   CardConfig,
   GameConfig,
   evaluateUnlockCondition,
   PreMortemChoice,
   DisasterEvent,
+  DifficultyMode,
+  ActiveSynergyEntry,
 } from '@shared/schema';
+import {
+  SynergyConfig,
+  SynergiesData,
+  calculateRoundEffects,
+  getConfigForDifficulty,
+  getTokensPerRound,
+  getDisasterPenaltyScale,
+  DIFFICULTY_PRESETS,
+} from '@shared/gameLogic';
 
 const STORAGE_KEY = 'iot-game-state';
+const DIFFICULTY_KEY = 'iot-game-difficulty';
 
 interface GameContextType {
   gameState: GameState;
-  allCards: CardConfig[]; // All cards in the game
-  availableCards: CardConfig[]; // Cards available in current round
-  config: GameConfig; // Game configuration with tunable thresholds
+  allCards: CardConfig[];
+  availableCards: CardConfig[];
+  config: GameConfig;
+  synergies: SynergyConfig[];
   allocateTokens: (cardId: string, tokens: number) => void;
   runPlan: () => void;
   nextRound: () => void;
   reset: () => void;
-  resetRound: () => void; // Reset current round allocations only
+  resetRound: () => void;
   canRunPlan: boolean;
   setPreMortemAnswer: (answer: PreMortemChoice) => void;
+  setDifficulty: (difficulty: DifficultyMode) => void;
+  difficulty: DifficultyMode;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -42,18 +55,34 @@ interface GameProviderProps {
   children: ReactNode;
   cards: CardConfig[];
   config: GameConfig;
+  synergiesData: SynergiesData;
 }
 
-function getInitialGameState(): GameState {
+function getStoredDifficulty(): DifficultyMode {
+  try {
+    const stored = localStorage.getItem(DIFFICULTY_KEY);
+    if (stored && (stored === 'easy' || stored === 'normal' || stored === 'hard')) {
+      return stored;
+    }
+  } catch {
+    // Ignore localStorage errors
+  }
+  return 'normal';
+}
+
+function getInitialGameState(difficulty: DifficultyMode): GameState {
+  const tokensPerRound = getTokensPerRound(difficulty);
+  
   const defaultState: GameState = {
     currentRound: 1,
     metrics: { ...INITIAL_METRICS },
-    tokensAvailable: TOKENS_PER_ROUND[0],
+    tokensAvailable: tokensPerRound[0],
     allocations: {},
     roundHistory: [],
     disasterEvents: [],
     preMortemAnswer: null,
     isGameComplete: false,
+    difficulty,
   };
 
   try {
@@ -61,7 +90,7 @@ function getInitialGameState(): GameState {
     if (stored) {
       const parsed = JSON.parse(stored);
       if (parsed && typeof parsed === 'object' && !parsed.isGameComplete) {
-        return { ...defaultState, ...parsed };
+        return { ...defaultState, ...parsed, difficulty };
       }
     }
   } catch (e) {
@@ -71,8 +100,18 @@ function getInitialGameState(): GameState {
   return defaultState;
 }
 
-export function GameProvider({ children, cards, config }: GameProviderProps) {
-  const [gameState, setGameState] = useState<GameState>(getInitialGameState);
+export function GameProvider({ children, cards, config: baseConfig, synergiesData }: GameProviderProps) {
+  const [difficulty, setDifficultyState] = useState<DifficultyMode>(getStoredDifficulty);
+  const [gameState, setGameState] = useState<GameState>(() => getInitialGameState(difficulty));
+
+  const config = useMemo(() => 
+    getConfigForDifficulty(baseConfig, difficulty),
+    [baseConfig, difficulty]
+  );
+
+  const synergies = synergiesData.synergies;
+  const tokensPerRound = useMemo(() => getTokensPerRound(difficulty), [difficulty]);
+  const penaltyScale = useMemo(() => getDisasterPenaltyScale(difficulty), [difficulty]);
 
   useEffect(() => {
     try {
@@ -83,6 +122,18 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
       console.warn('Failed to save game state to localStorage:', e);
     }
   }, [gameState]);
+
+  const setDifficulty = useCallback((newDifficulty: DifficultyMode) => {
+    setDifficultyState(newDifficulty);
+    localStorage.setItem(DIFFICULTY_KEY, newDifficulty);
+    
+    const newTokensPerRound = getTokensPerRound(newDifficulty);
+    setGameState(prev => ({
+      ...prev,
+      tokensAvailable: newTokensPerRound[prev.currentRound - 1],
+      difficulty: newDifficulty,
+    }));
+  }, []);
 
   const availableCards = useMemo(() => {
     return cards.filter((card) => {
@@ -100,11 +151,9 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
         .filter(([id]) => id !== cardId)
         .reduce((sum, [, t]) => sum + t, 0);
 
-      // Calculate available tokens
       const usedTokens = otherAllocations;
       const available = prev.tokensAvailable - usedTokens;
 
-      // Clamp to 0-3 per card and available tokens
       const newTokens = Math.max(0, Math.min(3, Math.min(tokens, currentAllocation + available)));
 
       return {
@@ -119,113 +168,45 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
 
   const runPlan = useCallback(() => {
     setGameState((prev) => {
-      // Helper function to apply allocation effects to a metrics object
-      const applyAllocationEffects = (
-        metricsToUpdate: GameMetrics,
-        allocations: Record<string, number>
-      ): GameMetrics => {
-        const updated = { ...metricsToUpdate };
-        const totalTokensUsed = Object.values(allocations).reduce((sum, t) => sum + t, 0);
-
-        Object.entries(allocations).forEach(([cardId, tokens]) => {
-          if (tokens === 0) return;
-
-          const card = cards.find((c) => c.id === cardId);
-          if (!card) return;
-
-          // Apply effects with diminishing returns after threshold
-          for (let i = 0; i < tokens; i++) {
-            const multiplier = i >= config.tokenMechanics.diminishingReturnsThreshold 
-              ? config.tokenMechanics.diminishingReturnsMultiplier 
-              : 1;
-
-            updated.visibility_insight += card.perTokenEffects.visibility_insight * multiplier;
-            updated.efficiency_throughput += card.perTokenEffects.efficiency_throughput * multiplier;
-            updated.sustainability_emissions += card.perTokenEffects.sustainability_emissions * multiplier;
-            updated.early_warning_prevention += card.perTokenEffects.early_warning_prevention * multiplier;
-            updated.complexity_risk += card.perTokenEffects.complexity_risk * multiplier;
-          }
-        });
-
-        // Global complexity penalty for IoT sprawl (per round)
-        if (totalTokensUsed > config.tokenMechanics.iotSprawlThreshold) {
-          updated.complexity_risk += (totalTokensUsed - config.tokenMechanics.iotSprawlThreshold) * config.tokenMechanics.iotSprawlPenaltyPerToken;
-        }
-
-        return updated;
-      };
-
-      // Calculate metricsBefore by using stored metrics from previous round
-      // This is more robust than recalculating and immune to config changes
       let metricsBefore: GameMetrics;
       if (prev.currentRound === 1) {
-        // Round 1: start from baseline
         metricsBefore = { ...INITIAL_METRICS };
       } else {
-        // Rounds 2-3: use metricsAfter from previous round
         const previousRound = prev.roundHistory.find(
           (r) => r.round === prev.currentRound - 1
         );
         if (previousRound) {
           metricsBefore = { ...previousRound.metricsAfter };
         } else {
-          // Fallback (shouldn't happen in normal gameplay)
           metricsBefore = { ...INITIAL_METRICS };
         }
       }
 
-      // Calculate metricsAfter: metricsBefore + current round effects
-      let metricsAfter = applyAllocationEffects(metricsBefore, prev.allocations);
-      metricsAfter = clampMetrics(metricsAfter);
+      const { metricsAfter, activeSynergies, triggeredDisasters } = calculateRoundEffects(
+        metricsBefore,
+        prev.allocations,
+        cards,
+        config,
+        synergies,
+        prev.currentRound,
+        penaltyScale
+      );
 
-      // Check for disaster events
-      const triggeredDisasters: DisasterEvent[] = [];
-      config.disasters.forEach((disasterConfig) => {
-        // Only check disasters for matching round
-        if (disasterConfig.round !== prev.currentRound) return;
+      const activeSynergyEntries: ActiveSynergyEntry[] = activeSynergies.map(s => ({
+        id: s.id,
+        nameKey: s.nameKey,
+        bonusEffect: s.bonusEffect,
+        bonusAmount: s.bonusAmount,
+        participatingCards: s.participatingCards,
+        scaledBonus: s.scaledBonus,
+      }));
 
-        // Check if disaster is triggered
-        const metricValue = metricsAfter[disasterConfig.triggerMetric];
-        if (metricValue >= disasterConfig.threshold) {
-          // Check if disaster is mitigated by any allocated cards
-          const isMitigated = disasterConfig.mitigatedBy?.some(
-            (cardId) => (prev.allocations[cardId] || 0) > 0
-          );
-
-          if (!isMitigated) {
-            // Apply disaster penalties
-            const penalizedMetrics = { ...metricsAfter };
-            Object.entries(disasterConfig.penalties).forEach(([metric, penalty]) => {
-              if (penalty !== undefined) {
-                penalizedMetrics[metric as keyof GameMetrics] += penalty;
-              }
-            });
-            metricsAfter = clampMetrics(penalizedMetrics);
-
-            // Record the disaster event
-            triggeredDisasters.push({
-              id: disasterConfig.id,
-              round: prev.currentRound,
-              triggerMetric: disasterConfig.triggerMetric,
-              threshold: disasterConfig.threshold,
-              penalties: disasterConfig.penalties,
-              copyKey: disasterConfig.copyKey,
-              mitigatedBy: disasterConfig.mitigatedBy,
-            });
-          }
-        }
-      });
-
-      // Update or append roundHistory entry for this round
-      // If this round already exists in history (re-running), replace it
-      // Otherwise, append it
       const existingRoundIndex = prev.roundHistory.findIndex(
         (r) => r.round === prev.currentRound
       );
 
       let updatedHistory;
       if (existingRoundIndex >= 0) {
-        // Replace existing entry for this round
         updatedHistory = [...prev.roundHistory];
         updatedHistory[existingRoundIndex] = {
           round: prev.currentRound,
@@ -233,9 +214,9 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
           metricsAfter,
           allocations: { ...prev.allocations },
           events: triggeredDisasters.length > 0 ? triggeredDisasters : undefined,
+          activeSynergies: activeSynergyEntries.length > 0 ? activeSynergyEntries : undefined,
         };
       } else {
-        // Append new entry
         updatedHistory = [
           ...prev.roundHistory,
           {
@@ -244,14 +225,13 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
             metricsAfter,
             allocations: { ...prev.allocations },
             events: triggeredDisasters.length > 0 ? triggeredDisasters : undefined,
+            activeSynergies: activeSynergyEntries.length > 0 ? activeSynergyEntries : undefined,
           },
         ];
       }
 
-      // Update global disaster events list
       const updatedDisasterEvents = [...prev.disasterEvents];
-      triggeredDisasters.forEach((disaster) => {
-        // Only add if not already in the list (prevent duplicates on re-run)
+      triggeredDisasters.forEach((disaster: DisasterEvent) => {
         if (!updatedDisasterEvents.some((d) => d.id === disaster.id && d.round === disaster.round)) {
           updatedDisasterEvents.push(disaster);
         }
@@ -262,17 +242,16 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
         metrics: metricsAfter,
         roundHistory: updatedHistory,
         disasterEvents: updatedDisasterEvents,
-        isGameComplete: prev.currentRound === 3, // Mark game complete when Round 3 is run
+        isGameComplete: prev.currentRound === 3,
       };
     });
-  }, [cards, config]);
+  }, [cards, config, synergies, penaltyScale]);
 
   const nextRound = useCallback(() => {
     setGameState((prev) => {
       const nextRoundNum = prev.currentRound + 1;
       if (nextRoundNum > 3) return prev;
 
-      // Keep half of previous allocations for reallocation (rounds 2 and 3)
       const keptAllocations =
         nextRoundNum > 1
           ? Object.fromEntries(
@@ -283,12 +262,8 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
             )
           : {};
 
-      // Calculate how many tokens are in the carryover
       const carryoverTotal = Object.values(keptAllocations).reduce((sum, t) => sum + t, 0);
-
-      // Total tokens = base for this round + carryover tokens
-      // The carryover tokens are already allocated in keptAllocations
-      const totalBudget = TOKENS_PER_ROUND[nextRoundNum - 1] + carryoverTotal;
+      const totalBudget = tokensPerRound[nextRoundNum - 1] + carryoverTotal;
 
       return {
         ...prev,
@@ -297,7 +272,7 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
         allocations: keptAllocations,
       };
     });
-  }, []);
+  }, [tokensPerRound]);
 
   const reset = useCallback(() => {
     try {
@@ -308,14 +283,15 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
     setGameState({
       currentRound: 1,
       metrics: { ...INITIAL_METRICS },
-      tokensAvailable: TOKENS_PER_ROUND[0],
+      tokensAvailable: tokensPerRound[0],
       allocations: {},
       roundHistory: [],
       disasterEvents: [],
       preMortemAnswer: null,
       isGameComplete: false,
+      difficulty,
     });
-  }, []);
+  }, [tokensPerRound, difficulty]);
 
   const resetRound = useCallback(() => {
     setGameState((prev) => {
@@ -360,6 +336,7 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
         allCards: cards,
         availableCards,
         config,
+        synergies,
         allocateTokens,
         runPlan,
         nextRound,
@@ -367,6 +344,8 @@ export function GameProvider({ children, cards, config }: GameProviderProps) {
         resetRound,
         canRunPlan,
         setPreMortemAnswer,
+        setDifficulty,
+        difficulty,
       }}
     >
       {children}

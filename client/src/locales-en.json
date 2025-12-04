@@ -490,6 +490,37 @@
     "securityVisibility": {
       "name": "Secure Visibility",
       "description": "Security hardening protects your digital twin investment from cyber threats."
+    },
+    "activated": "Synergy Activated!",
+    "bonus": "+{{bonus}} {{metric}} bonus"
+  },
+  "difficulty": {
+    "selectTitle": "Select Difficulty",
+    "easy": {
+      "name": "Relaxed",
+      "description": "More tokens (12/7/7), reduced penalties, fewer disasters. Perfect for learning IoT concepts."
+    },
+    "normal": {
+      "name": "Standard",
+      "description": "Balanced tokens (10/5/5), standard penalties. The intended experience for strategic thinking."
+    },
+    "hard": {
+      "name": "Expert",
+      "description": "Fewer tokens (8/4/4), increased penalties, additional disasters. For those who want a real challenge."
+    }
+  },
+  "disasters": {
+    "ransomwareAttack": {
+      "name": "Ransomware Attack",
+      "description": "Your unprotected IoT network was breached. Operations halted while systems are restored."
+    },
+    "supplyChainDisruption": {
+      "name": "Supply Chain Disruption",
+      "description": "Lack of visibility into your supply chain left you unprepared for a major disruption."
+    },
+    "energyCrisis": {
+      "name": "Energy Crisis",
+      "description": "Without proper energy monitoring, your facilities were caught off-guard by power instability."
     }
   }
 }

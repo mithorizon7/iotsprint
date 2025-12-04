@@ -13,6 +13,7 @@ import { GameDashboard } from '@/pages/GameDashboard';
 import PreMortemScreen from '@/pages/PreMortemScreen';
 import { FinalSummary } from '@/pages/FinalSummary';
 import { CardConfig, GameConfig, GameMetrics, RoundHistoryEntry } from '@shared/schema';
+import { SynergiesData } from '@shared/gameLogic';
 import i18n from './lib/i18n';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { logger } from '@/lib/logger';
@@ -45,11 +46,11 @@ function AppContent() {
   const { t } = useTranslation();
   const [cards, setCards] = useState<CardConfig[]>([]);
   const [gameConfig, setGameConfig] = useState<GameConfig | null>(null);
+  const [synergiesData, setSynergiesData] = useState<SynergiesData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Load both card configurations and game config in parallel
     Promise.all([
       fetch('/config/cards.json').then((res) => {
         if (!res.ok) throw new Error('Failed to load cards configuration');
@@ -58,11 +59,16 @@ function AppContent() {
       fetch('/config/gameConfig.json').then((res) => {
         if (!res.ok) throw new Error('Failed to load game configuration');
         return res.json();
+      }),
+      fetch('/config/synergies.json').then((res) => {
+        if (!res.ok) throw new Error('Failed to load synergies configuration');
+        return res.json();
       })
     ])
-      .then(([cardsData, configData]) => {
+      .then(([cardsData, configData, synergiesJson]) => {
         setCards(cardsData);
         setGameConfig(configData);
+        setSynergiesData(synergiesJson);
         setLoading(false);
       })
       .catch((error) => {
@@ -100,15 +106,15 @@ function AppContent() {
     );
   }
 
-  if (!gameConfig) {
-    return null; // Should never happen since loading state handles this
+  if (!gameConfig || !synergiesData) {
+    return null;
   }
 
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <TutorialProvider>
-          <GameProvider cards={cards} config={gameConfig}>
+          <GameProvider cards={cards} config={gameConfig} synergiesData={synergiesData}>
             <GameFlow />
           </GameProvider>
         </TutorialProvider>

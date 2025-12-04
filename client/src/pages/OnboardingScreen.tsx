@@ -5,16 +5,26 @@ import { IoTProcessDiagram } from '@/components/IoTProcessDiagram';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useTutorial } from '@/components/Tutorial';
-import { Lightbulb } from 'lucide-react';
+import { useGame } from '@/contexts/GameContext';
+import { Lightbulb, Smile, Target, Flame } from 'lucide-react';
 import { logger } from '@/lib/logger';
+import { DifficultyMode } from '@shared/schema';
+import { cn } from '@/lib/utils';
 
 interface OnboardingScreenProps {
   onStart: () => void;
 }
 
+const difficultyOptions: { id: DifficultyMode; icon: typeof Smile }[] = [
+  { id: 'easy', icon: Smile },
+  { id: 'normal', icon: Target },
+  { id: 'hard', icon: Flame },
+];
+
 export function OnboardingScreen({ onStart }: OnboardingScreenProps) {
   const { t, i18n } = useTranslation();
   const { hasCompletedTutorial, startTutorial } = useTutorial();
+  const { difficulty, setDifficulty } = useGame();
   
   logger.log('[OnboardingScreen] Rendering with language:', i18n.language, 'title:', t('game.title'));
 
@@ -60,6 +70,45 @@ export function OnboardingScreen({ onStart }: OnboardingScreenProps) {
             <p className="text-sm text-muted-foreground leading-relaxed" data-testid="text-what-you-do-desc">
               {t('onboarding.whatYouDoDesc')}
             </p>
+          </div>
+
+          <div className="pt-6 border-t border-card-border space-y-4">
+            <h3 className="text-lg font-semibold" data-testid="text-difficulty-title">
+              {t('difficulty.selectTitle')}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {difficultyOptions.map(({ id, icon: Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => setDifficulty(id)}
+                  className={cn(
+                    "p-4 rounded-lg border-2 transition-all text-left",
+                    "hover-elevate active-elevate-2",
+                    difficulty === id
+                      ? "border-primary bg-primary/10 dark:bg-primary/20"
+                      : "border-card-border bg-card"
+                  )}
+                  data-testid={`button-difficulty-${id}`}
+                  aria-pressed={difficulty === id}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <Icon className={cn(
+                      "w-5 h-5",
+                      difficulty === id ? "text-primary" : "text-muted-foreground"
+                    )} />
+                    <span className={cn(
+                      "font-semibold",
+                      difficulty === id ? "text-primary" : "text-foreground"
+                    )}>
+                      {t(`difficulty.${id}.name`)}
+                    </span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {t(`difficulty.${id}.description`)}
+                  </p>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 

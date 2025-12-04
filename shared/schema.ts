@@ -54,13 +54,25 @@ export interface DisasterEvent {
   mitigatedBy?: string[]; // Card IDs that prevent this disaster (if allocated)
 }
 
+export interface ActiveSynergyEntry {
+  id: string;
+  nameKey: string;
+  bonusEffect: keyof GameMetrics;
+  bonusAmount: number;
+  participatingCards: string[];
+  scaledBonus: number;
+}
+
 export interface RoundHistoryEntry {
   round: number;
   metricsBefore: GameMetrics;
   metricsAfter: GameMetrics;
   allocations: Record<string, number>;
-  events?: DisasterEvent[]; // Disasters that occurred this round
+  events?: DisasterEvent[];
+  activeSynergies?: ActiveSynergyEntry[];
 }
+
+export type DifficultyMode = 'easy' | 'normal' | 'hard';
 
 export interface GameState {
   currentRound: number; // 0 = onboarding, 1-3 = game rounds
@@ -71,6 +83,7 @@ export interface GameState {
   disasterEvents: DisasterEvent[]; // All disasters encountered
   preMortemAnswer: PreMortemChoice | null; // Player's risk prediction
   isGameComplete: boolean; // Explicit flag indicating Round 3 has been completed
+  difficulty: DifficultyMode; // Selected difficulty level
 }
 
 export type ArchetypeId = 
