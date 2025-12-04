@@ -406,7 +406,8 @@
         "description": "We could face fines or penalties for not meeting sustainability targets."
       }
     },
-    "submitButton": "Continue to Results"
+    "submitButton": "Continue to Results",
+    "selectPrompt": "Select an option above to continue"
   },
   "iotProcess": {
     "dialogDescription": "See how this initiative maps to the IoT process loop."

@@ -108,7 +108,12 @@ export default function PreMortemScreen({ onComplete }: PreMortemScreenProps) {
             </div>
           </RadioGroup>
 
-          <div className="flex justify-center pt-4">
+          <div className="flex flex-col items-center gap-2 pt-4">
+            {!selectedChoice && (
+              <p className="text-sm text-muted-foreground">
+                {t('premortem.selectPrompt')}
+              </p>
+            )}
             <Button
               onClick={handleSubmit}
               disabled={!selectedChoice}
