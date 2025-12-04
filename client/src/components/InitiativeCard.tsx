@@ -27,8 +27,6 @@ interface InitiativeCardProps {
   onAllocate: (tokens: number) => void;
   disabled?: boolean;
   synergies?: string[];
-  onHover?: (cardId: string | null) => void;
-  isHighlighted?: boolean;
   allCards?: CardConfig[];
 }
 
@@ -52,8 +50,6 @@ export function InitiativeCard({
   onAllocate, 
   disabled = false,
   synergies = [],
-  onHover,
-  isHighlighted = false,
   allCards = [],
 }: InitiativeCardProps) {
   const { t } = useTranslation();
@@ -90,29 +86,13 @@ export function InitiativeCard({
 
   const allocationStyle = ALLOCATION_STYLES[allocation as keyof typeof ALLOCATION_STYLES] || '';
 
-  const handleInteractionStart = () => {
-    onHover?.(card.id);
-  };
-
-  const handleInteractionEnd = () => {
-    onHover?.(null);
-  };
-
   return (
-    <div
-      onMouseEnter={handleInteractionStart}
-      onMouseLeave={handleInteractionEnd}
-      onFocus={handleInteractionStart}
-      onBlur={handleInteractionEnd}
-      className="h-full"
-    >
-      <Card 
-        className={`
-          flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
-          transition-all duration-300
-          ${allocationStyle}
-          ${isHighlighted ? 'border-primary ring-2 ring-primary/30 shadow-lg shadow-primary/20' : ''}
-        `}
+    <Card 
+      className={`
+        flex flex-col h-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
+        transition-all duration-300
+        ${allocationStyle}
+      `}
         tabIndex={0}
         onKeyDown={handleKeyDown}
         role="group"
@@ -250,6 +230,5 @@ export function InitiativeCard({
           </div>
         </CardContent>
       </Card>
-    </div>
   );
 }

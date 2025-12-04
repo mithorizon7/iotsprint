@@ -11,7 +11,7 @@ import { IoTLoopDashboard } from '@/components/IoTLoopDashboard';
 import { GlossaryPanel } from '@/components/GlossaryPanel';
 import { Button } from '@/components/ui/button';
 import { Info, RotateCcw } from 'lucide-react';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { RoundFeedback } from '@/components/RoundFeedback';
 import { GameMetrics, RoundHistoryEntry } from '@shared/schema';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -31,7 +31,6 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
   const { gameState, availableCards, allCards, allocateTokens, runPlan, nextRound, canRunPlan, resetRound } = useGame();
   const [showFeedback, setShowFeedback] = useState(false);
   const [previousMetrics, setPreviousMetrics] = useState(gameState.metrics);
-  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [synergies, setSynergies] = useState<SynergyConfig>({ cardSynergies: {} });
 
   useEffect(() => {
@@ -53,14 +52,6 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
   
   const baseTokens = gameState.currentRound === 1 ? 10 : 5;
   const newTokensThisRound = gameState.currentRound > 1 ? baseTokens : 0;
-
-  const highlightedCards = useMemo(() => {
-    if (!hoveredCardId) {
-      return new Set<string>();
-    }
-    const partners = synergies.cardSynergies[hoveredCardId] || [];
-    return new Set([hoveredCardId, ...partners]);
-  }, [hoveredCardId, synergies]);
 
   const handleRunPlan = () => {
     setPreviousMetrics(gameState.metrics);
@@ -256,8 +247,6 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
                       (gameState.allocations[card.id] || 0) === 0
                     }
                     synergies={synergies.cardSynergies[card.id] || []}
-                    onHover={setHoveredCardId}
-                    isHighlighted={highlightedCards.has(card.id)}
                     allCards={allCards}
                   />
                 </motion.div>
