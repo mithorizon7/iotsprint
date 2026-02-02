@@ -1,4 +1,12 @@
-import { createContext, useContext, useState, useCallback, useMemo, useEffect, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+  ReactNode,
+} from 'react';
 import {
   GameState,
   GameMetrics,
@@ -18,7 +26,6 @@ import {
   getConfigForDifficulty,
   getTokensPerRound,
   getDisasterPenaltyScale,
-  DIFFICULTY_PRESETS,
 } from '@shared/gameLogic';
 
 const STORAGE_KEY = 'iot-game-state';
@@ -29,6 +36,7 @@ interface GameContextType {
   allCards: CardConfig[];
   availableCards: CardConfig[];
   config: GameConfig;
+  maxTokensPerCard: number;
   synergies: SynergyConfig[];
   allocateTokens: (cardId: string, tokens: number) => void;
   runPlan: () => void;
@@ -72,7 +80,7 @@ function getStoredDifficulty(): DifficultyMode {
 
 function getInitialGameState(difficulty: DifficultyMode): GameState {
   const tokensPerRound = getTokensPerRound(difficulty);
-  
+
   const defaultState: GameState = {
     currentRound: 1,
     metrics: { ...INITIAL_METRICS },
@@ -100,18 +108,24 @@ function getInitialGameState(difficulty: DifficultyMode): GameState {
   return defaultState;
 }
 
-export function GameProvider({ children, cards, config: baseConfig, synergiesData }: GameProviderProps) {
+export function GameProvider({
+  children,
+  cards,
+  config: baseConfig,
+  synergiesData,
+}: GameProviderProps) {
   const [difficulty, setDifficultyState] = useState<DifficultyMode>(getStoredDifficulty);
   const [gameState, setGameState] = useState<GameState>(() => getInitialGameState(difficulty));
 
-  const config = useMemo(() => 
-    getConfigForDifficulty(baseConfig, difficulty),
-    [baseConfig, difficulty]
+  const config = useMemo(
+    () => getConfigForDifficulty(baseConfig, difficulty),
+    [baseConfig, difficulty],
   );
 
   const synergies = synergiesData.synergies;
   const tokensPerRound = useMemo(() => getTokensPerRound(difficulty), [difficulty]);
   const penaltyScale = useMemo(() => getDisasterPenaltyScale(difficulty), [difficulty]);
+  const maxTokensPerCard = config.maxTokensPerCard ?? 3;
 
   useEffect(() => {
     try {
@@ -126,9 +140,9 @@ export function GameProvider({ children, cards, config: baseConfig, synergiesDat
   const setDifficulty = useCallback((newDifficulty: DifficultyMode) => {
     setDifficultyState(newDifficulty);
     localStorage.setItem(DIFFICULTY_KEY, newDifficulty);
-    
+
     const newTokensPerRound = getTokensPerRound(newDifficulty);
-    setGameState(prev => ({
+    setGameState((prev) => ({
       ...prev,
       tokensAvailable: newTokensPerRound[prev.currentRound - 1],
       difficulty: newDifficulty,
@@ -140,29 +154,37 @@ export function GameProvider({ children, cards, config: baseConfig, synergiesDat
       if (!card.roundsAvailable.includes(gameState.currentRound)) {
         return false;
       }
-      return evaluateUnlockCondition(card.unlockCondition, gameState.metrics, gameState.allocations, config);
+      return evaluateUnlockCondition(
+        card.unlockCondition,
+        gameState.metrics,
+        gameState.allocations,
+        config,
+      );
     });
   }, [cards, gameState.currentRound, gameState.metrics, gameState.allocations, config]);
 
-  const allocateTokens = useCallback((cardId: string, tokens: number) => {
-    setGameState((prev) => {
-      const otherAllocations = Object.entries(prev.allocations)
-        .filter(([id]) => id !== cardId)
-        .reduce((sum, [, t]) => sum + t, 0);
+  const allocateTokens = useCallback(
+    (cardId: string, tokens: number) => {
+      setGameState((prev) => {
+        const otherAllocations = Object.entries(prev.allocations)
+          .filter(([id]) => id !== cardId)
+          .reduce((sum, [, t]) => sum + t, 0);
 
-      const maxForThisCard = prev.tokensAvailable - otherAllocations;
+        const maxForThisCard = prev.tokensAvailable - otherAllocations;
 
-      const newTokens = Math.max(0, Math.min(3, Math.min(tokens, maxForThisCard)));
+        const newTokens = Math.max(0, Math.min(maxTokensPerCard, Math.min(tokens, maxForThisCard)));
 
-      return {
-        ...prev,
-        allocations: {
-          ...prev.allocations,
-          [cardId]: newTokens,
-        },
-      };
-    });
-  }, []);
+        return {
+          ...prev,
+          allocations: {
+            ...prev.allocations,
+            [cardId]: newTokens,
+          },
+        };
+      });
+    },
+    [maxTokensPerCard],
+  );
 
   const runPlan = useCallback(() => {
     setGameState((prev) => {
@@ -170,9 +192,7 @@ export function GameProvider({ children, cards, config: baseConfig, synergiesDat
       if (prev.currentRound === 1) {
         metricsBefore = { ...INITIAL_METRICS };
       } else {
-        const previousRound = prev.roundHistory.find(
-          (r) => r.round === prev.currentRound - 1
-        );
+        const previousRound = prev.roundHistory.find((r) => r.round === prev.currentRound - 1);
         if (previousRound) {
           metricsBefore = { ...previousRound.metricsAfter };
         } else {
@@ -187,10 +207,10 @@ export function GameProvider({ children, cards, config: baseConfig, synergiesDat
         config,
         synergies,
         prev.currentRound,
-        penaltyScale
+        penaltyScale,
       );
 
-      const activeSynergyEntries: ActiveSynergyEntry[] = activeSynergies.map(s => ({
+      const activeSynergyEntries: ActiveSynergyEntry[] = activeSynergies.map((s) => ({
         id: s.id,
         nameKey: s.nameKey,
         bonusEffect: s.bonusEffect,
@@ -199,9 +219,7 @@ export function GameProvider({ children, cards, config: baseConfig, synergiesDat
         scaledBonus: s.scaledBonus,
       }));
 
-      const existingRoundIndex = prev.roundHistory.findIndex(
-        (r) => r.round === prev.currentRound
-      );
+      const existingRoundIndex = prev.roundHistory.findIndex((r) => r.round === prev.currentRound);
 
       let updatedHistory;
       if (existingRoundIndex >= 0) {
@@ -230,7 +248,9 @@ export function GameProvider({ children, cards, config: baseConfig, synergiesDat
 
       const updatedDisasterEvents = [...prev.disasterEvents];
       triggeredDisasters.forEach((disaster: DisasterEvent) => {
-        if (!updatedDisasterEvents.some((d) => d.id === disaster.id && d.round === disaster.round)) {
+        if (
+          !updatedDisasterEvents.some((d) => d.id === disaster.id && d.round === disaster.round)
+        ) {
           updatedDisasterEvents.push(disaster);
         }
       });
@@ -256,7 +276,7 @@ export function GameProvider({ children, cards, config: baseConfig, synergiesDat
               Object.entries(prev.allocations).map(([cardId, tokens]) => [
                 cardId,
                 Math.floor(tokens * 0.5),
-              ])
+              ]),
             )
           : {};
 
@@ -306,7 +326,7 @@ export function GameProvider({ children, cards, config: baseConfig, synergiesDat
             Object.entries(previousRound.allocations).map(([cardId, tokens]) => [
               cardId,
               Math.floor(tokens * 0.5),
-            ])
+            ]),
           )
         : {};
 
@@ -334,6 +354,7 @@ export function GameProvider({ children, cards, config: baseConfig, synergiesDat
         allCards: cards,
         availableCards,
         config,
+        maxTokensPerCard,
         synergies,
         allocateTokens,
         runPlan,

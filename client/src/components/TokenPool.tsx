@@ -11,9 +11,15 @@ interface TokenPoolProps {
   newTokens?: number;
 }
 
-export function TokenPool({ total, remaining, showBreakdown, carryover = 0, newTokens = 0 }: TokenPoolProps) {
+export function TokenPool({
+  total,
+  remaining,
+  showBreakdown,
+  carryover = 0,
+  newTokens = 0,
+}: TokenPoolProps) {
   const { t } = useTranslation();
-  
+
   const tokens = useMemo(() => {
     return Array.from({ length: total }, (_, i) => ({
       id: i,
@@ -30,23 +36,24 @@ export function TokenPool({ total, remaining, showBreakdown, carryover = 0, newT
               <motion.div
                 key={token.id}
                 initial={{ scale: 0, opacity: 0 }}
-                animate={{ 
-                  scale: token.isUsed ? 0.7 : 1, 
+                animate={{
+                  scale: token.isUsed ? 0.7 : 1,
                   opacity: token.isUsed ? 0.3 : 1,
                 }}
                 exit={{ scale: 0, opacity: 0, y: -20 }}
-                transition={{ 
-                  type: 'spring', 
-                  stiffness: 500, 
+                transition={{
+                  type: 'spring',
+                  stiffness: 500,
                   damping: 30,
-                  delay: token.id * 0.02 
+                  delay: token.id * 0.02,
                 }}
                 className={`
                   w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center
                   transition-colors duration-200
-                  ${token.isUsed 
-                    ? 'bg-muted text-muted-foreground' 
-                    : 'bg-primary/20 text-primary border-2 border-primary/50'
+                  ${
+                    token.isUsed
+                      ? 'bg-muted text-muted-foreground'
+                      : 'bg-primary/20 text-primary border-2 border-primary/50'
                   }
                 `}
               >
@@ -56,7 +63,7 @@ export function TokenPool({ total, remaining, showBreakdown, carryover = 0, newT
           </AnimatePresence>
         </div>
         <div className="flex items-center gap-2">
-          <motion.span 
+          <motion.span
             key={remaining}
             initial={{ scale: 1.2, color: 'hsl(var(--primary))' }}
             animate={{ scale: 1, color: 'hsl(var(--foreground))' }}
@@ -71,16 +78,16 @@ export function TokenPool({ total, remaining, showBreakdown, carryover = 0, newT
         </div>
       </div>
       {showBreakdown && (carryover > 0 || newTokens > 0) && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-xs text-muted-foreground"
           data-testid="text-token-breakdown"
         >
-          {t('dashboard.tokenBreakdown', { 
-            carryover, 
-            newTokens, 
-            total 
+          {t('dashboard.tokenBreakdown', {
+            carryover,
+            newTokens,
+            total,
           })}
         </motion.div>
       )}

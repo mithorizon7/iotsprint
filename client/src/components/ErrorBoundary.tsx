@@ -50,7 +50,7 @@ function ErrorFallback({ error }: { error: Error | null }) {
             <AlertCircle className="w-8 h-8 text-destructive" />
           </div>
         </div>
-        
+
         <div className="space-y-2">
           <h1 className="text-2xl font-bold" data-testid="text-error-title">
             {t('app.errorTitle')}
@@ -62,9 +62,7 @@ function ErrorFallback({ error }: { error: Error | null }) {
 
         {error && import.meta.env.DEV && (
           <div className="mt-4 p-4 bg-card border border-card-border rounded-lg text-left">
-            <p className="text-sm font-mono text-destructive break-all">
-              {error.message}
-            </p>
+            <p className="text-sm font-mono text-destructive break-all">{error.message}</p>
           </div>
         )}
 

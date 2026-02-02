@@ -23,9 +23,14 @@ interface FinalSummaryProps {
   onReplay: () => void;
 }
 
-export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}, onReplay }: FinalSummaryProps) {
+export function FinalSummary({
+  metrics,
+  roundHistory = [],
+  finalAllocations = {},
+  onReplay,
+}: FinalSummaryProps) {
   const { t } = useTranslation();
-  const { allCards } = useGame();
+  const { allCards, gameState } = useGame();
 
   const archetypeId = classifyArchetype(metrics);
   const archetypeTitle = t(`archetypes.${archetypeId}.title`);
@@ -33,10 +38,13 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
   const archetypeSuggestions = t(`archetypes.${archetypeId}.suggestions`);
 
   // Build dynamic mapping from card data
-  const cardToCompany: Record<string, string> = allCards.reduce((acc, card) => {
-    acc[card.id] = card.companyName;
-    return acc;
-  }, {} as Record<string, string>);
+  const cardToCompany: Record<string, string> = allCards.reduce(
+    (acc, card) => {
+      acc[card.id] = card.companyName;
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
 
   // Use the explicitly passed final allocations (true end state after all rounds)
   const topInvestments = Object.entries(finalAllocations || {})
@@ -53,14 +61,53 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
   // Identify strengths and weaknesses
   const metricScores = [
     { key: 'visibility', value: metrics.visibility_insight, label: t('metrics.visibility.label') },
-    { key: 'efficiency', value: metrics.efficiency_throughput, label: t('metrics.efficiency.label') },
-    { key: 'sustainability', value: metrics.sustainability_emissions, label: t('metrics.sustainability.label') },
-    { key: 'earlyWarning', value: metrics.early_warning_prevention, label: t('metrics.earlyWarning.label') },
+    {
+      key: 'efficiency',
+      value: metrics.efficiency_throughput,
+      label: t('metrics.efficiency.label'),
+    },
+    {
+      key: 'sustainability',
+      value: metrics.sustainability_emissions,
+      label: t('metrics.sustainability.label'),
+    },
+    {
+      key: 'earlyWarning',
+      value: metrics.early_warning_prevention,
+      label: t('metrics.earlyWarning.label'),
+    },
   ];
 
   const sortedMetrics = [...metricScores].sort((a, b) => b.value - a.value);
   const strengths = sortedMetrics.slice(0, 2);
   const weaknesses = sortedMetrics.slice(-2);
+
+  const preMortemChoice = gameState.preMortemAnswer;
+  const riskLabels = {
+    security_risk: t('premortem.choices.securityRisk.label'),
+    inefficiency: t('premortem.choices.inefficiency.label'),
+    environmental_fine: t('premortem.choices.environmentalFine.label'),
+  };
+  const observedRisk = (() => {
+    const disasterIds = new Set(gameState.disasterEvents.map((d) => d.id));
+    const securityScore =
+      metrics.complexity_risk +
+      (disasterIds.has('ransomware_attack') ? 20 : 0) +
+      (metrics.early_warning_prevention < 35 ? 10 : 0);
+    const inefficiencyScore =
+      100 - metrics.efficiency_throughput + (metrics.efficiency_throughput < 40 ? 10 : 0);
+    const environmentScore =
+      100 - metrics.sustainability_emissions + (disasterIds.has('energy_crisis') ? 20 : 0);
+
+    const scores = [
+      { id: 'security_risk', score: securityScore },
+      { id: 'inefficiency', score: inefficiencyScore },
+      { id: 'environmental_fine', score: environmentScore },
+    ];
+    scores.sort((a, b) => b.score - a.score);
+    return scores[0]?.id as keyof typeof riskLabels;
+  })();
+  const preMortemMatch = preMortemChoice && observedRisk ? preMortemChoice === observedRisk : null;
 
   return (
     <div className="min-h-screen bg-background py-6 sm:py-8 px-4 sm:px-6 overflow-y-auto">
@@ -69,14 +116,14 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
         <LanguageSwitcher />
       </div>
       <div className="w-full max-w-5xl mx-auto space-y-8">
-        <motion.div 
+        <motion.div
           className="text-center space-y-4"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <div className="flex justify-center mb-4">
-            <motion.div 
+            <motion.div
               className="w-20 h-20 rounded-full bg-primary/10 dark:bg-primary/25 flex items-center justify-center"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -98,7 +145,10 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
             <h2 className="text-3xl font-bold text-primary" data-testid="text-archetype-title">
               {archetypeTitle}
             </h2>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed" data-testid="text-archetype-description">
+            <p
+              className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+              data-testid="text-archetype-description"
+            >
               {archetypeDescription}
             </p>
           </div>
@@ -109,6 +159,28 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
             </h3>
             <MetricsPanel metrics={metrics} />
           </div>
+
+          {preMortemChoice && observedRisk && (
+            <div className="pt-6 border-t border-card-border">
+              <h3 className="text-lg font-semibold mb-3" data-testid="text-premortem-summary-title">
+                {t('summary.premortemTitle')}
+              </h3>
+              <div className="space-y-2 text-sm">
+                <p data-testid="text-premortem-choice">
+                  {t('summary.premortemYourChoice', { choice: riskLabels[preMortemChoice] })}
+                </p>
+                <p data-testid="text-premortem-observed">
+                  {t('summary.premortemObserved', { observed: riskLabels[observedRisk] })}
+                </p>
+                <p
+                  className={preMortemMatch ? 'text-chart-3' : 'text-muted-foreground'}
+                  data-testid="text-premortem-match"
+                >
+                  {preMortemMatch ? t('summary.premortemMatch') : t('summary.premortemMismatch')}
+                </p>
+              </div>
+            </div>
+          )}
 
           <div className="grid md:grid-cols-2 gap-6 pt-4">
             <div className="space-y-3">
@@ -154,8 +226,8 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
               </h4>
               <div className="space-y-2">
                 {topInvestments.map((investment) => (
-                  <div 
-                    key={investment.cardId} 
+                  <div
+                    key={investment.cardId}
                     className="flex items-center justify-between text-sm py-2 px-3 rounded-md bg-accent/20"
                     data-testid={`strategy-${investment.cardId}`}
                   >
@@ -185,7 +257,10 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
           </div>
 
           <div className="pt-4">
-            <p className="text-center text-sm text-muted-foreground italic mb-4" data-testid="text-reflection">
+            <p
+              className="text-center text-sm text-muted-foreground italic mb-4"
+              data-testid="text-reflection"
+            >
               {t('summary.reflectionPrompt')}
             </p>
           </div>
@@ -197,11 +272,7 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <JourneyTimeline 
-              roundHistory={roundHistory} 
-              cards={allCards}
-              finalMetrics={metrics}
-            />
+            <JourneyTimeline roundHistory={roundHistory} cards={allCards} finalMetrics={metrics} />
           </motion.div>
         )}
 
@@ -210,10 +281,10 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <Achievements 
-            metrics={metrics} 
-            roundHistory={roundHistory} 
-            allocations={finalAllocations} 
+          <Achievements
+            metrics={metrics}
+            roundHistory={roundHistory}
+            allocations={finalAllocations}
           />
         </motion.div>
 
@@ -225,19 +296,15 @@ export function FinalSummary({ metrics, roundHistory = [], finalAllocations = {}
           <ComparisonStats metrics={metrics} />
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="flex flex-col sm:flex-row justify-center items-center gap-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
           <div className="flex gap-2">
-            <SocialShare 
-              archetypeTitle={archetypeTitle} 
-              archetypeId={archetypeId}
-              metrics={metrics} 
-            />
-            <ExportSummary 
+            <SocialShare archetypeTitle={archetypeTitle} metrics={metrics} />
+            <ExportSummary
               metrics={metrics}
               archetypeTitle={archetypeTitle}
               archetypeDescription={archetypeDescription}

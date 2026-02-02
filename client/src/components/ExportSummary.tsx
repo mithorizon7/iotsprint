@@ -12,18 +12,18 @@ interface ExportSummaryProps {
   topInvestments: { cardId: string; tokens: number; title: string; company: string }[];
 }
 
-export function ExportSummary({ 
-  metrics, 
-  archetypeTitle, 
-  archetypeDescription, 
+export function ExportSummary({
+  metrics,
+  archetypeTitle,
+  archetypeDescription,
   roundHistory,
-  topInvestments 
+  topInvestments,
 }: ExportSummaryProps) {
   const { t } = useTranslation();
 
   const generatePrintContent = () => {
     const date = formatDate(new Date(), 'long');
-    
+
     return `
       <!DOCTYPE html>
       <html>
@@ -128,17 +128,23 @@ export function ExportSummary({
 
         <h2>${t('export.topInvestments')}</h2>
         <div class="investments">
-          ${topInvestments.map((inv) => `
+          ${topInvestments
+            .map(
+              (inv) => `
             <div class="investment">
               <span>${inv.title} ${inv.company ? `(${inv.company})` : ''}</span>
               <span><strong>${inv.tokens}</strong> ${t('common.tokens')}</span>
             </div>
-          `).join('')}
+          `,
+            )
+            .join('')}
         </div>
 
         <h2>${t('export.roundByRound')}</h2>
         <div class="rounds">
-          ${roundHistory.map((round, index) => `
+          ${roundHistory
+            .map(
+              (round, index) => `
             <div class="round">
               <div class="round-header">${t('progress.round', { number: index + 1 })}</div>
               <div class="metrics-grid" style="grid-template-columns: repeat(3, 1fr); gap: 8px;">
@@ -156,7 +162,9 @@ export function ExportSummary({
                 </div>
               </div>
             </div>
-          `).join('')}
+          `,
+            )
+            .join('')}
         </div>
 
         <div class="footer">

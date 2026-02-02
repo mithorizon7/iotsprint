@@ -122,9 +122,7 @@ export function StrategyHints({ metrics, allocations, currentRound }: StrategyHi
               data-testid={`hint-${hint.id}`}
             >
               <Icon className={`w-5 h-5 mt-0.5 shrink-0 ${hint.color}`} />
-              <p className="text-sm text-muted-foreground">
-                {t(hint.messageKey)}
-              </p>
+              <p className="text-sm text-muted-foreground">{t(hint.messageKey)}</p>
             </motion.div>
           );
         })}

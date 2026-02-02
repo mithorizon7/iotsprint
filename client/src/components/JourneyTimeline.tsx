@@ -16,10 +16,13 @@ export function JourneyTimeline({ roundHistory, cards, finalMetrics }: JourneyTi
   const { t } = useTranslation();
 
   const cardTitleMap = useMemo(() => {
-    return cards.reduce((acc, card) => {
-      acc[card.id] = t(card.copyKeys.title);
-      return acc;
-    }, {} as Record<string, string>);
+    return cards.reduce(
+      (acc, card) => {
+        acc[card.id] = t(card.copyKeys.title);
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
   }, [cards, t]);
 
   const metricKeys: (keyof GameMetrics)[] = [
@@ -74,13 +77,16 @@ export function JourneyTimeline({ roundHistory, cards, finalMetrics }: JourneyTi
             >
               <div className="flex gap-4">
                 <div className="flex flex-col items-center">
-                  <div className={`
+                  <div
+                    className={`
                     w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
-                    ${hadDisaster 
-                      ? 'bg-destructive/10 dark:bg-destructive/25 text-destructive border-2 border-destructive' 
-                      : 'bg-primary/10 dark:bg-primary/25 text-primary border-2 border-primary'
+                    ${
+                      hadDisaster
+                        ? 'bg-destructive/10 dark:bg-destructive/25 text-destructive border-2 border-destructive'
+                        : 'bg-primary/10 dark:bg-primary/25 text-primary border-2 border-primary'
                     }
-                  `}>
+                  `}
+                  >
                     {round.round}
                   </div>
                   {roundIndex < roundHistory.length - 1 && (
@@ -117,25 +123,23 @@ export function JourneyTimeline({ roundHistory, cards, finalMetrics }: JourneyTi
                   )}
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
-                    {metricKeys.map(metric => {
+                    {metricKeys.map((metric) => {
                       const trend = getMetricTrend(
                         round.metricsBefore[metric],
                         round.metricsAfter[metric],
-                        metric === 'complexity_risk'
+                        metric === 'complexity_risk',
                       );
                       const TrendIcon = trend.icon;
 
                       return (
-                        <div
-                          key={metric}
-                          className="flex items-center gap-1 text-xs"
-                        >
+                        <div key={metric} className="flex items-center gap-1 text-xs">
                           <TrendIcon className={`w-3 h-3 ${trend.color}`} />
                           <span className="text-muted-foreground truncate">
                             {metricLabels[metric].split(' ')[0]}
                           </span>
                           <span className={`font-mono ${trend.color}`}>
-                            {trend.delta > 0 ? '+' : ''}{trend.delta}
+                            {trend.delta > 0 ? '+' : ''}
+                            {trend.delta}
                           </span>
                         </div>
                       );
@@ -155,7 +159,7 @@ export function JourneyTimeline({ roundHistory, cards, finalMetrics }: JourneyTi
         >
           <h4 className="font-medium mb-3">{t('summary.finalState')}</h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {metricKeys.map(metric => {
+            {metricKeys.map((metric) => {
               const value = Math.round(finalMetrics[metric]);
               const isGood = metric === 'complexity_risk' ? value < 40 : value > 50;
 
@@ -170,9 +174,11 @@ export function JourneyTimeline({ roundHistory, cards, finalMetrics }: JourneyTi
                   <p className="text-xs text-muted-foreground truncate">
                     {metricLabels[metric].split('&')[0].trim()}
                   </p>
-                  <p className={`text-lg font-bold font-mono ${
-                    isGood ? 'text-chart-3' : 'text-foreground'
-                  }`}>
+                  <p
+                    className={`text-lg font-bold font-mono ${
+                      isGood ? 'text-chart-3' : 'text-foreground'
+                    }`}
+                  >
                     {value}
                   </p>
                 </div>

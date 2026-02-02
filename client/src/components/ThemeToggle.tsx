@@ -12,7 +12,11 @@ export function ThemeToggle() {
       size="icon"
       variant="ghost"
       onClick={toggleTheme}
-      aria-label={theme === 'dark' ? t('accessibility.switchToLightMode') : t('accessibility.switchToDarkMode')}
+      aria-label={
+        theme === 'dark'
+          ? t('accessibility.switchToLightMode')
+          : t('accessibility.switchToDarkMode')
+      }
       data-testid="button-theme-toggle"
     >
       {theme === 'dark' ? (

@@ -63,7 +63,7 @@ function AppContent() {
       fetch('/config/synergies.json').then((res) => {
         if (!res.ok) throw new Error('Failed to load synergies configuration');
         return res.json();
-      })
+      }),
     ])
       .then(([cardsData, configData, synergiesJson]) => {
         setCards(cardsData);
@@ -125,17 +125,35 @@ function AppContent() {
 }
 
 function GameFlow() {
-  const [gameState, setGameState] = useState<'onboarding' | 'playing' | 'premortem' | 'summary'>('onboarding');
+  const [gameState, setGameState] = useState<'onboarding' | 'playing' | 'premortem' | 'summary'>(
+    'onboarding',
+  );
   const [finalMetrics, setFinalMetrics] = useState<GameMetrics | null>(null);
   const [finalRoundHistory, setFinalRoundHistory] = useState<RoundHistoryEntry[]>([]);
   const [finalAllocations, setFinalAllocations] = useState<Record<string, number>>({});
-  const { reset } = useGame();
+  const { reset, gameState: persistedGameState } = useGame();
+  const hasSavedGame =
+    !persistedGameState.isGameComplete &&
+    (persistedGameState.roundHistory.length > 0 ||
+      Object.values(persistedGameState.allocations).some((t) => t > 0));
 
   const handleStart = () => {
     setGameState('playing');
   };
 
-  const handleComplete = (metrics: GameMetrics, roundHistory: RoundHistoryEntry[], allocations: Record<string, number>) => {
+  const handleStartNew = () => {
+    reset();
+    setFinalMetrics(null);
+    setFinalRoundHistory([]);
+    setFinalAllocations({});
+    setGameState('playing');
+  };
+
+  const handleComplete = (
+    metrics: GameMetrics,
+    roundHistory: RoundHistoryEntry[],
+    allocations: Record<string, number>,
+  ) => {
     setFinalMetrics(metrics);
     setFinalRoundHistory(roundHistory);
     setFinalAllocations(allocations);
@@ -158,7 +176,14 @@ function GameFlow() {
 
   const renderScreen = () => {
     if (gameState === 'onboarding') {
-      return <OnboardingScreen onStart={handleStart} />;
+      return (
+        <OnboardingScreen
+          onStart={hasSavedGame ? handleStartNew : handleStart}
+          onResume={handleStart}
+          hasSavedGame={hasSavedGame}
+          resumeRound={persistedGameState.currentRound}
+        />
+      );
     }
 
     if (gameState === 'playing') {
@@ -173,7 +198,14 @@ function GameFlow() {
       return null;
     }
 
-    return <FinalSummary metrics={finalMetrics} roundHistory={finalRoundHistory} finalAllocations={finalAllocations} onReplay={handleReplay} />;
+    return (
+      <FinalSummary
+        metrics={finalMetrics}
+        roundHistory={finalRoundHistory}
+        finalAllocations={finalAllocations}
+        onReplay={handleReplay}
+      />
+    );
   };
 
   return (

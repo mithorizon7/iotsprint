@@ -23,7 +23,7 @@ export function classifyArchetype(metrics: GameMetrics): ArchetypeId {
     scores.visibility,
     scores.efficiency,
     scores.sustainability,
-    scores.earlyWarning
+    scores.earlyWarning,
   );
 
   // Check for over-connected risk-taker
@@ -32,7 +32,7 @@ export function classifyArchetype(metrics: GameMetrics): ArchetypeId {
   }
 
   // Check for balanced approach
-  const allScoresHigh = Object.values(scores).filter(s => s >= 45).length >= 3;
+  const allScoresHigh = Object.values(scores).filter((s) => s >= 45).length >= 3;
   const variance = calculateVariance([
     scores.visibility,
     scores.efficiency,
@@ -41,7 +41,7 @@ export function classifyArchetype(metrics: GameMetrics): ArchetypeId {
   ]);
 
   if (allScoresHigh && variance < 200) {
-    return 'BALANCED_ARCHITECT';
+    return 'RESILIENT_OPERATOR';
   }
 
   // Determine primary focus
@@ -62,11 +62,11 @@ export function classifyArchetype(metrics: GameMetrics): ArchetypeId {
   }
 
   // Default to balanced
-  return 'BALANCED_ARCHITECT';
+  return 'RESILIENT_OPERATOR';
 }
 
 function calculateVariance(values: number[]): number {
   const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
-  const squaredDiffs = values.map(v => Math.pow(v - mean, 2));
+  const squaredDiffs = values.map((v) => Math.pow(v - mean, 2));
   return squaredDiffs.reduce((sum, v) => sum + v, 0) / values.length;
 }

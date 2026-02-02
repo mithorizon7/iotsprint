@@ -3,17 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Shield, 
-  Leaf, 
-  Eye, 
-  Zap, 
-  Target, 
-  Award,
-  Trophy,
-  Star,
-  Lock
-} from 'lucide-react';
+import { Shield, Leaf, Eye, Zap, Target, Award, Trophy, Star, Lock } from 'lucide-react';
 import { GameMetrics, RoundHistoryEntry } from '@shared/schema';
 
 interface AchievementsProps {
@@ -36,9 +26,23 @@ export function Achievements({ metrics, roundHistory, allocations }: Achievement
   const { t } = useTranslation();
 
   const achievements = useMemo((): Achievement[] => {
-    const totalTokensUsed = Object.values(allocations).reduce((sum, t) => sum + t, 0);
-    const uniqueCards = Object.keys(allocations).filter((k) => allocations[k] > 0).length;
-    
+    const hasRoundHistory = roundHistory.length > 0;
+    const totalTokensUsed = hasRoundHistory
+      ? roundHistory.reduce(
+          (sum, round) => sum + Object.values(round.allocations).reduce((s, t) => s + t, 0),
+          0,
+        )
+      : Object.values(allocations).reduce((sum, t) => sum + t, 0);
+    const uniqueCards = hasRoundHistory
+      ? new Set(
+          roundHistory.flatMap((round) =>
+            Object.entries(round.allocations)
+              .filter(([, tokens]) => tokens > 0)
+              .map(([cardId]) => cardId),
+          ),
+        ).size
+      : Object.keys(allocations).filter((k) => allocations[k] > 0).length;
+
     const allRoundsComplete = roundHistory.length >= 3;
 
     return [
@@ -85,7 +89,7 @@ export function Achievements({ metrics, roundHistory, allocations }: Achievement
         icon: Target,
         color: 'text-indigo-600 dark:text-indigo-400',
         bgColor: 'bg-indigo-100 dark:bg-indigo-900/30',
-        unlocked: 
+        unlocked:
           metrics.visibility_insight >= 40 &&
           metrics.efficiency_throughput >= 40 &&
           metrics.sustainability_emissions >= 40 &&
@@ -117,7 +121,7 @@ export function Achievements({ metrics, roundHistory, allocations }: Achievement
         icon: Star,
         color: 'text-pink-600 dark:text-pink-400',
         bgColor: 'bg-pink-100 dark:bg-pink-900/30',
-        unlocked: 
+        unlocked:
           metrics.visibility_insight >= 60 &&
           metrics.efficiency_throughput >= 60 &&
           metrics.sustainability_emissions >= 60 &&
@@ -149,7 +153,7 @@ export function Achievements({ metrics, roundHistory, allocations }: Achievement
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
             >
-              <Card 
+              <Card
                 className={`
                   p-4 text-center relative overflow-hidden
                   ${achievement.unlocked ? '' : 'opacity-50 grayscale'}
@@ -161,15 +165,17 @@ export function Achievements({ metrics, roundHistory, allocations }: Achievement
                     <Lock className="w-3 h-3 text-muted-foreground" />
                   </div>
                 )}
-                <div className={`
+                <div
+                  className={`
                   w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center
                   ${achievement.unlocked ? achievement.bgColor : 'bg-muted'}
-                `}>
-                  <Icon className={`w-6 h-6 ${achievement.unlocked ? achievement.color : 'text-muted-foreground'}`} />
+                `}
+                >
+                  <Icon
+                    className={`w-6 h-6 ${achievement.unlocked ? achievement.color : 'text-muted-foreground'}`}
+                  />
                 </div>
-                <h4 className="text-xs font-medium mb-1 line-clamp-2">
-                  {t(achievement.titleKey)}
-                </h4>
+                <h4 className="text-xs font-medium mb-1 line-clamp-2">{t(achievement.titleKey)}</h4>
                 <p className="text-xs text-muted-foreground line-clamp-2">
                   {t(achievement.descriptionKey)}
                 </p>

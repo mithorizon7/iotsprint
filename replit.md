@@ -37,6 +37,7 @@ Preferred communication style: Simple, everyday language.
 ### Game Engine Architecture
 
 **Pure Functions**: Core game logic extracted to `shared/gameLogic.ts` for testability and potential backend reuse:
+
 - `applyAllocationEffects`: Applies token effects with diminishing returns and sprawl penalties
 - `applySynergyBonuses`: Detects and applies synergy bonuses, returns active synergy entries
 - `applyDisasterPenalties`: Evaluates disaster triggers with mitigation and penalty scaling
@@ -44,6 +45,7 @@ Preferred communication style: Simple, everyday language.
 - `calculateRoundEffects`: Orchestrates all effects for a complete round calculation
 
 **Unit Tests**: Comprehensive Vitest test suite (33 tests) covering:
+
 - Metric clamping edge cases
 - Diminishing returns and sprawl penalties
 - Synergy activation and scaling
@@ -66,23 +68,28 @@ Preferred communication style: Simple, everyday language.
 ## External Dependencies
 
 ### UI Framework
+
 - **Radix UI**: Accessible component primitives.
 - **Tailwind CSS**: Utility-first CSS framework.
 - **Shadcn/ui**: Pre-built components.
 
 ### State and Data
+
 - **React Query**: Scaffolded for future API features.
 - **React Hook Form**: Form management with Zod validation.
 - **date-fns**: Date utilities.
 
 ### Internationalization
+
 - **i18next + react-i18next**: Multi-language support.
 
 ### Database (Configured but Not Actively Used)
+
 - **Drizzle ORM**: TypeScript ORM for PostgreSQL.
 - **@neondatabase/serverless**: Serverless PostgreSQL driver.
 
 ### Development Tools
+
 - **Vite**: Build tool and dev server.
 - **esbuild**: Production server bundling.
 - **TypeScript**: Type safety with proper typing throughout (no `any` types).
@@ -93,6 +100,7 @@ Preferred communication style: Simple, everyday language.
 The application meets EU accessibility requirements (enforcement deadline June 28, 2025):
 
 **Touch Targets**: All interactive elements use the Button component's responsive sizing:
+
 - Mobile (< 768px): 44×44px minimum touch targets (`h-11 w-11` or `min-h-11`)
 - Desktop (≥ 768px): Standard 36px sizing (`h-9 w-9` or `min-h-9`)
 - Implementation: `client/src/components/ui/button.tsx` defines responsive variants for all button sizes

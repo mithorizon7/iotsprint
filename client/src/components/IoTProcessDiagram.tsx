@@ -4,7 +4,7 @@ import { logger } from '@/lib/logger';
 
 export function IoTProcessDiagram() {
   const { t, i18n } = useTranslation();
-  
+
   logger.log('[IoTProcessDiagram] Rendering with language:', i18n.language);
 
   const steps = [
@@ -39,13 +39,17 @@ export function IoTProcessDiagram() {
       <h3 className="text-xl font-semibold text-center mb-8" data-testid="text-process-title">
         {t('onboarding.processTitle')}
       </h3>
-      
+
       {/* Mobile: Vertical layout */}
       <div className="flex flex-col gap-6 md:hidden">
         {steps.map((step) => {
           const Icon = step.icon;
           return (
-            <div key={step.key} className="flex flex-col items-center text-center" data-testid={`card-process-${step.key}`}>
+            <div
+              key={step.key}
+              className="flex flex-col items-center text-center"
+              data-testid={`card-process-${step.key}`}
+            >
               <div className="w-16 h-16 rounded-full bg-primary/10 dark:bg-primary/25 flex items-center justify-center mb-4">
                 <Icon className="w-8 h-8 text-primary" />
               </div>

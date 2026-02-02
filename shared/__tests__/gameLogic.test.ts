@@ -93,22 +93,18 @@ describe('clampMetrics', () => {
 describe('applyAllocationEffects', () => {
   it('should apply basic token effects correctly', () => {
     const metrics = createMockMetrics();
-    const cards = [
-      createMockCard('card1', { visibility_insight: 5, complexity_risk: 2 }),
-    ];
+    const cards = [createMockCard('card1', { visibility_insight: 5, complexity_risk: 2 })];
     const allocations = { card1: 2 };
 
     const result = applyAllocationEffects(metrics, allocations, cards, defaultTokenMechanics);
-    
+
     expect(result.visibility_insight).toBe(35); // 25 + (5 * 2)
     expect(result.complexity_risk).toBe(24); // 20 + (2 * 2)
   });
 
   it('should apply diminishing returns after threshold', () => {
     const metrics = createMockMetrics();
-    const cards = [
-      createMockCard('card1', { visibility_insight: 10 }),
-    ];
+    const cards = [createMockCard('card1', { visibility_insight: 10 })];
     const allocations = { card1: 3 };
     const tokenMechanics: TokenMechanics = {
       diminishingReturnsThreshold: 2,
@@ -118,7 +114,7 @@ describe('applyAllocationEffects', () => {
     };
 
     const result = applyAllocationEffects(metrics, allocations, cards, tokenMechanics);
-    
+
     // Token 0: full effect (10), Token 1: full effect (10), Token 2: diminished (5)
     expect(result.visibility_insight).toBe(50); // 25 + 10 + 10 + 5
   });
@@ -147,7 +143,7 @@ describe('applyAllocationEffects', () => {
     };
 
     const result = applyAllocationEffects(metrics, allocations, cards, tokenMechanics);
-    
+
     // 15 tokens - 12 threshold = 3 excess * 2 penalty = 6 complexity added
     expect(result.complexity_risk).toBe(26); // 20 + 6
   });
@@ -194,7 +190,7 @@ describe('applyAllocationEffects', () => {
     const allocations = { card1: 1, card2: 2 };
 
     const result = applyAllocationEffects(metrics, allocations, cards, defaultTokenMechanics);
-    
+
     expect(result.visibility_insight).toBe(30); // 25 + 5
     expect(result.complexity_risk).toBe(21); // 20 + 1
     expect(result.efficiency_throughput).toBe(36); // 30 + 6
@@ -227,7 +223,7 @@ describe('applySynergyBonuses', () => {
     const allocations = { card1: 2, card2: 1 };
 
     const result = applySynergyBonuses(metrics, allocations, synergies);
-    
+
     // Synergy1 triggers: min(2,1) = 1 * 5 = 5 bonus
     expect(result.metrics.visibility_insight).toBe(30); // 25 + 5
     expect(result.activeSynergies).toHaveLength(1);
@@ -240,7 +236,7 @@ describe('applySynergyBonuses', () => {
     const allocations = { card1: 3, card2: 2 };
 
     const result = applySynergyBonuses(metrics, allocations, synergies);
-    
+
     // Synergy1 triggers: min(3,2) = 2 * 5 = 10 bonus
     expect(result.metrics.visibility_insight).toBe(35); // 25 + 10
     expect(result.activeSynergies[0].scaledBonus).toBe(10);
@@ -251,7 +247,7 @@ describe('applySynergyBonuses', () => {
     const allocations = { card1: 2 }; // Missing card2
 
     const result = applySynergyBonuses(metrics, allocations, synergies);
-    
+
     expect(result.metrics).toEqual(metrics);
     expect(result.activeSynergies).toHaveLength(0);
   });
@@ -261,7 +257,7 @@ describe('applySynergyBonuses', () => {
     const allocations = { card1: 2, card2: 0 };
 
     const result = applySynergyBonuses(metrics, allocations, synergies);
-    
+
     expect(result.metrics).toEqual(metrics);
     expect(result.activeSynergies).toHaveLength(0);
   });
@@ -271,7 +267,7 @@ describe('applySynergyBonuses', () => {
     const allocations = { card1: 1, card2: 1, card3: 1, card4: 1 };
 
     const result = applySynergyBonuses(metrics, allocations, synergies);
-    
+
     // Both synergies trigger
     expect(result.metrics.visibility_insight).toBe(30); // 25 + (1 * 5)
     expect(result.metrics.efficiency_throughput).toBe(33); // 30 + (1 * 3)
@@ -293,7 +289,7 @@ describe('applySynergyBonuses', () => {
     const allocations = { security: 2, digitalTwin: 2 };
 
     const result = applySynergyBonuses(metrics, allocations, synergiesWithNegative);
-    
+
     // min(2,2) * -3 = -6 to complexity
     expect(result.metrics.complexity_risk).toBe(14); // 20 - 6
     expect(result.activeSynergies[0].scaledBonus).toBe(-6);
@@ -320,7 +316,7 @@ describe('applyDisasterPenalties', () => {
     const metrics = createMockMetrics({ complexity_risk: 85 });
 
     const result = applyDisasterPenalties(metrics, 3, {}, disasters);
-    
+
     expect(result.metrics.efficiency_throughput).toBe(10); // 30 - 20
     expect(result.metrics.complexity_risk).toBe(90); // 85 + 5
     expect(result.triggeredDisasters).toHaveLength(1);
@@ -331,7 +327,7 @@ describe('applyDisasterPenalties', () => {
     const metrics = createMockMetrics({ complexity_risk: 75 });
 
     const result = applyDisasterPenalties(metrics, 3, {}, disasters);
-    
+
     expect(result.metrics).toEqual(metrics);
     expect(result.triggeredDisasters).toHaveLength(0);
   });
@@ -340,7 +336,7 @@ describe('applyDisasterPenalties', () => {
     const metrics = createMockMetrics({ complexity_risk: 85 });
 
     const result = applyDisasterPenalties(metrics, 2, {}, disasters); // Round 2, not 3
-    
+
     expect(result.metrics).toEqual(metrics);
     expect(result.triggeredDisasters).toHaveLength(0);
   });
@@ -350,7 +346,7 @@ describe('applyDisasterPenalties', () => {
     const allocations = { securityHardening: 1 };
 
     const result = applyDisasterPenalties(metrics, 3, allocations, disasters);
-    
+
     expect(result.metrics).toEqual(metrics); // No penalty applied
     expect(result.triggeredDisasters).toHaveLength(0);
   });
@@ -359,7 +355,7 @@ describe('applyDisasterPenalties', () => {
     const metrics = createMockMetrics({ complexity_risk: 85 });
 
     const result = applyDisasterPenalties(metrics, 3, {}, disasters, 0.5);
-    
+
     expect(result.metrics.efficiency_throughput).toBe(20); // 30 - (20 * 0.5)
     expect(result.metrics.complexity_risk).toBe(87.5); // 85 + (5 * 0.5)
   });
@@ -368,7 +364,7 @@ describe('applyDisasterPenalties', () => {
     const metrics = createMockMetrics({ complexity_risk: 80 }); // Exactly at threshold
 
     const result = applyDisasterPenalties(metrics, 3, {}, disasters);
-    
+
     expect(result.triggeredDisasters).toHaveLength(1);
   });
 });
@@ -476,7 +472,11 @@ describe('calculateRoundEffects (integration)', () => {
   const cards = [
     createMockCard('digitalTwin', { visibility_insight: 8, complexity_risk: 3 }),
     createMockCard('predictiveMaintenance', { early_warning_prevention: 6, complexity_risk: 2 }),
-    createMockCard('gridSensors', { visibility_insight: 4, early_warning_prevention: 5, complexity_risk: 2 }),
+    createMockCard('gridSensors', {
+      visibility_insight: 4,
+      early_warning_prevention: 5,
+      complexity_risk: 2,
+    }),
   ];
 
   const synergies: SynergyConfig[] = [
@@ -511,14 +511,7 @@ describe('calculateRoundEffects (integration)', () => {
     const metrics = createMockMetrics();
     const allocations = { digitalTwin: 1, predictiveMaintenance: 1, gridSensors: 1 };
 
-    const result = calculateRoundEffects(
-      metrics,
-      allocations,
-      cards,
-      config,
-      synergies,
-      1
-    );
+    const result = calculateRoundEffects(metrics, allocations, cards, config, synergies, 1);
 
     // Base effects: visibility +12, early_warning +11, complexity +7
     // Synergy: min(1,1,1) * 2 = +2 early_warning
@@ -532,14 +525,7 @@ describe('calculateRoundEffects (integration)', () => {
     const metrics = createMockMetrics({ visibility_insight: 95 });
     const allocations = { digitalTwin: 3 }; // +24 visibility (with diminishing)
 
-    const result = calculateRoundEffects(
-      metrics,
-      allocations,
-      cards,
-      config,
-      synergies,
-      1
-    );
+    const result = calculateRoundEffects(metrics, allocations, cards, config, synergies, 1);
 
     expect(result.metricsAfter.visibility_insight).toBe(100); // Clamped
   });

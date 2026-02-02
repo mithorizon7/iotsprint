@@ -20,20 +20,30 @@
     "whatYouDo": "What You'll Do",
     "whatYouDoDesc": "Over 3 years, you'll allocate IoT tokens to different initiatives. Watch how your choices affect key metrics and learn the tradeoffs involved in IoT strategy.",
     "startButton": "Start Year 1",
-    "startWithTutorial": "Start with Tutorial"
+    "startWithTutorial": "Start with Tutorial",
+    "resumeNotice": "You have a saved game from Round {{round}}.",
+    "continueButton": "Continue Game",
+    "startNewButton": "Start New Game"
   },
   "dashboard": {
     "roundTitle": "Year {{round}}",
     "initiativesTitle": "IoT Initiatives",
     "tokensAvailable": "{{count}} token remaining",
     "tokensAvailable_other": "{{count}} tokens remaining",
-    "instructions": "Allocate your tokens to IoT initiatives. Each card can receive 0-3 tokens.",
+    "instructions": "Allocate your tokens to IoT initiatives. Each card can receive 0-{{max}} tokens.",
     "runPlanButton": "Run My Plan",
     "nextRoundButton": "Continue to Year {{round}}",
     "viewSummaryButton": "View Final Results",
     "metricsTitle": "Organization Metrics",
     "tokenBreakdown": "{{carryover}} reallocatable + {{newTokens}} new = {{total}} total",
-    "reallocationAlert": "You can reallocate 50% of your previous tokens (rounded down). You also receive {{newTokens}} new tokens. Adjust your strategy based on your results."
+    "reallocationAlert": "You can reallocate 50% of your previous tokens (rounded down). You also receive {{newTokens}} new tokens. Adjust your strategy based on your results.",
+    "resetRound": "Reset Allocations",
+    "iotLoopTitle": "IoT Process Coverage",
+    "investedCards": "Contributing initiatives",
+    "investedTokens": "{{count}} token invested",
+    "investedTokens_other": "{{count}} tokens invested",
+    "noInvestment": "No investment yet",
+    "investedShort": "{{count}} inv."
   },
   "metrics": {
     "visibility": {
@@ -55,6 +65,16 @@
     "complexity": {
       "label": "Complexity & Security Risk",
       "tooltip": "Operational complexity and cybersecurity vulnerabilities from IoT sprawl (lower is better)"
+    },
+    "higherIsBetter": "Higher is better",
+    "lowerIsBetter": "Lower is better",
+    "riskLevel": {
+      "low": "Low Risk",
+      "moderate": "Moderate Risk",
+      "high": "High Risk",
+      "critical": "Critical Risk",
+      "safe": "Safe",
+      "danger": "Danger Zone"
     }
   },
   "cards": {
@@ -117,7 +137,8 @@
       "title": "Health & Safety Monitoring",
       "shortDescription": "Wearable or handheld sensors track health signals (like glucose levels or pressure) and alert staff early so they can intervene. Based on continuous health monitoring devices.",
       "whenToUse": "Use when worker safety or health monitoring is a priority."
-    }
+    },
+    "synergyWith": "Works well with"
   },
   "feedback": {
     "highVisibility": "Your IoT investments gave you much better visibility into operations, similar to {{example}}. You can now see what's happening in real time.",
@@ -204,7 +225,16 @@
     "yourStrategy": "Your IoT Strategy",
     "similarToApproach": "Similar to {{company}}'s approach",
     "tokensLabel": "{{count}} token",
-    "tokensLabel_other": "{{count}} tokens"
+    "tokensLabel_other": "{{count}} tokens",
+    "journeyTitle": "Your IoT Journey",
+    "keyInvestments": "Key Investments",
+    "finalState": "Final Organizational State",
+    "disasterOccurred": "Disaster Event",
+    "premortemTitle": "Pre-Mortem Reflection",
+    "premortemYourChoice": "Your pre-mortem: {{choice}}",
+    "premortemObserved": "What we observed: {{observed}}",
+    "premortemMatch": "Your prediction aligned with the main risk in your results.",
+    "premortemMismatch": "Your prediction did not match the main risk in your results."
   },
   "common": {
     "loading": "Loading...",
@@ -261,7 +291,13 @@
     "moreInfoAbout": "More info about {{title}}",
     "removeTokenFrom": "Remove token from {{title}}",
     "addTokenTo": "Add token to {{title}}",
-    "metricInfo": "Information about {{label}}"
+    "metricInfo": "Information about {{label}}",
+    "pagination": "Pagination",
+    "goToPreviousPage": "Go to previous page",
+    "goToNextPage": "Go to next page",
+    "breadcrumb": "Breadcrumb",
+    "carousel": "Carousel",
+    "slide": "Slide"
   },
   "iotProcess": {
     "sense": {
@@ -283,11 +319,19 @@
     "howThisWorks": "How This IoT Initiative Works",
     "cardFitsIn": "See where {{cardTitle}} fits in the IoT process loop",
     "highlightedStages": "Highlighted stages show which parts of the IoT process this initiative uses",
-    "dialogDescription": "Understanding how IoT initiatives map to the fundamental sense-share-process-act loop helps you see the bigger picture."
+    "dialogDescription": "See how this initiative maps to the Sense-Share-Process-Act loop."
   },
   "disasters": {
     "criticalEvent": "Critical Event!",
-    "ransomwareAttack": "Your IoT network was hit by a ransomware attack. Inadequate security hardening left devices vulnerable. Operations were disrupted for days, costing significant efficiency and increasing complexity as you scramble to patch systems."
+    "ransomwareAttack": "Your IoT network was hit by a ransomware attack. Inadequate security hardening left devices vulnerable. Operations were disrupted for days, costing significant efficiency and increasing complexity as you scramble to patch systems.",
+    "supplyChainDisruption": {
+      "name": "Supply Chain Disruption",
+      "description": "Lack of visibility into your supply chain left you unprepared for a major disruption."
+    },
+    "energyCrisis": {
+      "name": "Energy Crisis",
+      "description": "Without proper energy monitoring, your facilities were caught off-guard by power instability."
+    }
   },
   "premortem": {
     "title": "Pre-Mortem Reflection",
@@ -307,6 +351,226 @@
         "description": "I didn't invest enough in sustainability, leaving us exposed to regulations and fines."
       }
     },
-    "continue": "Continue to Results"
+    "submitButton": "Continue to Results",
+    "selectPrompt": "Select an option above to continue"
+  },
+  "progress": {
+    "round": "Year {{number}}"
+  },
+  "share": {
+    "button": "Share Results",
+    "text": "I just completed IoT Strategy Sprint! My archetype: {{archetype}}. Visibility: {{visibility}}%, Efficiency: {{efficiency}}%, Sustainability: {{sustainability}}%.",
+    "twitter": "Share on Twitter",
+    "linkedin": "Share on LinkedIn",
+    "copyLink": "Copy Link",
+    "copied": "Copied!"
+  },
+  "tutorial": {
+    "helpButton": "How to Play",
+    "skip": "Skip Tutorial",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Start Playing",
+    "step": "Step {{current}} of {{total}}",
+    "welcome": {
+      "title": "Welcome to IoT Strategy Sprint!",
+      "description": "In this game, you'll learn IoT fundamentals by making strategic investment decisions. Let's walk through how it works."
+    },
+    "metrics": {
+      "title": "Understanding Metrics",
+      "description": "These five metrics track your organization's performance. Your goal is to improve visibility, efficiency, sustainability, and early warning while keeping complexity low."
+    },
+    "tokens": {
+      "title": "Token System",
+      "description": "Each year you receive tokens to invest. Allocate them wisely across different IoT initiatives to improve your metrics."
+    },
+    "cards": {
+      "title": "Initiative Cards",
+      "description": "Each card represents a real-world IoT solution. Click the info button to see how it affects the IoT process loop (Sense, Share, Process, Act)."
+    },
+    "allocation": {
+      "title": "Allocating Tokens",
+      "description": "Use the +/- buttons or arrow keys to add tokens to each card. You can allocate up to 3 tokens per initiative. More tokens = stronger effect, but watch for diminishing returns."
+    },
+    "glossary": {
+      "title": "IoT Glossary",
+      "description": "Not sure what a term means? Click the book icon in the top bar to open the IoT Glossary. It explains key concepts like Digital Twin, Edge Computing, and more with real-world examples."
+    },
+    "ready": {
+      "title": "You're Ready!",
+      "description": "Make strategic choices, learn from feedback, and see how your IoT strategy shapes the organization. Good luck!"
+    }
+  },
+  "hints": {
+    "highComplexity": "Your complexity is getting high. Consider investing in Security Hardening to reduce vulnerabilities.",
+    "lowVisibility": "Low visibility limits your ability to make informed decisions. Consider tracking or monitoring solutions.",
+    "lowEfficiency": "Efficiency is lagging. Smart tools or process optimization could help.",
+    "lowSustainability": "Your sustainability score is low. Energy monitoring and green initiatives could improve this.",
+    "lowEarlyWarning": "Limited early warning capability leaves you vulnerable to surprises. Consider predictive maintenance.",
+    "noAllocation": "Start by allocating tokens to initiatives that align with your strategic priorities.",
+    "tooSpread": "You're spreading tokens across many initiatives. Focusing on fewer may yield better results."
+  },
+  "export": {
+    "title": "IoT Strategy Sprint Results",
+    "generatedOn": "Generated on {{date}}",
+    "yourArchetype": "Your Strategy Archetype",
+    "finalMetrics": "Final Metrics",
+    "topInvestments": "Top Investments",
+    "roundByRound": "Round-by-Round Progress",
+    "learnMore": "Learn more about IoT fundamentals",
+    "print": "Print",
+    "download": "Download"
+  },
+  "achievements": {
+    "title": "Achievements",
+    "unlocked": "unlocked",
+    "securityChampion": {
+      "title": "Security Champion",
+      "description": "Keep complexity low while maintaining strong early warning"
+    },
+    "greenPioneer": {
+      "title": "Green Pioneer",
+      "description": "Achieve 70%+ sustainability score"
+    },
+    "efficiencyExpert": {
+      "title": "Efficiency Expert",
+      "description": "Achieve 70%+ efficiency score"
+    },
+    "visibilityMaster": {
+      "title": "Visibility Master",
+      "description": "Achieve 70%+ visibility score"
+    },
+    "balancedStrategist": {
+      "title": "Balanced Strategist",
+      "description": "Score 40%+ in all positive metrics with low complexity"
+    },
+    "focusedInvestor": {
+      "title": "Focused Investor",
+      "description": "Use 20+ tokens across 4 or fewer initiatives"
+    },
+    "completionist": {
+      "title": "Completionist",
+      "description": "Complete the game investing in 6+ different initiatives"
+    },
+    "perfectScore": {
+      "title": "Perfect Score",
+      "description": "Achieve 60%+ in all positive metrics with complexity under 40%"
+    }
+  },
+  "comparison": {
+    "title": "How You Compare",
+    "description": "See how your strategy compares to the average player.",
+    "yourScore": "You",
+    "average": "Avg",
+    "percentile": "Rank",
+    "top": "Top {{percent}}%"
+  },
+  "glossary": {
+    "title": "IoT Glossary",
+    "description": "Key terms and concepts to help you understand IoT strategy",
+    "searchPlaceholder": "Search terms...",
+    "openGlossary": "Open IoT glossary",
+    "example": "Example",
+    "relatedTerms": "Related terms",
+    "noResults": "No matching terms found",
+    "digitalTwin": {
+      "term": "Digital Twin",
+      "definition": "A virtual replica of a physical asset, process, or system that receives real-time data from sensors. It allows you to monitor, analyze, and simulate the physical counterpart without touching it.",
+      "example": "A factory creates a digital twin of its production line. Engineers can test changes virtually before implementing them, reducing downtime and risk."
+    },
+    "predictiveMaintenance": {
+      "term": "Predictive Maintenance",
+      "definition": "Using sensor data and analytics to predict when equipment will fail, allowing maintenance before breakdowns occur. This reduces unplanned downtime and extends equipment life.",
+      "example": "Sensors on a conveyor belt motor detect increasing vibration patterns. The system alerts maintenance to replace bearings before the motor fails."
+    },
+    "sensor": {
+      "term": "Sensor",
+      "definition": "A device that detects physical properties (temperature, motion, light, pressure) and converts them into signals that can be read by systems. Sensors are the 'eyes and ears' of IoT.",
+      "example": "Temperature sensors in a warehouse track cold storage conditions, alerting staff if temperatures rise above safe levels."
+    },
+    "edgeComputing": {
+      "term": "Edge Computing",
+      "definition": "Processing data near where it's collected (at the 'edge' of the network) rather than sending everything to a central server. This reduces latency and bandwidth usage.",
+      "example": "A security camera analyzes video locally to detect motion, only sending alerts rather than streaming all footage continuously."
+    },
+    "iotDevice": {
+      "term": "IoT Device",
+      "definition": "Any physical object embedded with sensors, software, and connectivity that allows it to collect and exchange data over the internet. From smart thermostats to industrial machines.",
+      "example": "Smart light bulbs that can be controlled remotely and report energy usage are IoT devices."
+    },
+    "realTimeData": {
+      "term": "Real-Time Data",
+      "definition": "Information that is collected, processed, and delivered immediately as events occur. This enables instant visibility and rapid response to changing conditions.",
+      "example": "A fleet management system shows the exact location of every delivery truck at this moment, not where they were an hour ago."
+    },
+    "connectivity": {
+      "term": "Connectivity",
+      "definition": "The ability of devices to connect to networks and communicate data. This includes Wi-Fi, cellular, Bluetooth, and specialized industrial protocols.",
+      "example": "Sensors in a remote oil field use cellular connectivity to send data back to headquarters hundreds of miles away."
+    },
+    "machineLearning": {
+      "term": "Machine Learning",
+      "definition": "AI techniques that allow systems to learn patterns from data and make predictions or decisions without explicit programming. Used in IoT for anomaly detection and prediction.",
+      "example": "An ML model learns normal vibration patterns of a pump and can detect when vibrations indicate an upcoming failure."
+    },
+    "automation": {
+      "term": "Automation",
+      "definition": "Using technology to perform tasks with minimal human intervention. In IoT, this often means systems that respond automatically to sensor data.",
+      "example": "When motion sensors detect no one in a room for 10 minutes, lights automatically turn off to save energy."
+    },
+    "iotSprawl": {
+      "term": "IoT Sprawl",
+      "definition": "The uncontrolled growth of IoT devices across an organization, leading to management complexity, security vulnerabilities, and difficulty maintaining oversight.",
+      "example": "A company finds it has 500+ connected devices from 20 different vendors, many running outdated firmware with unknown security status."
+    },
+    "networkSegmentation": {
+      "term": "Network Segmentation",
+      "definition": "Dividing a network into isolated segments to limit the spread of security breaches. Critical for IoT security to prevent compromised devices from accessing sensitive systems.",
+      "example": "Factory floor sensors are on a separate network from office computers, so a hacked sensor can't access financial data."
+    },
+    "latency": {
+      "term": "Latency",
+      "definition": "The delay between when data is sent and when it arrives. Low latency is critical for real-time applications where quick response is essential.",
+      "example": "In autonomous vehicles, sensor data must have extremely low latency—even a 100ms delay could cause an accident."
+    }
+  },
+  "synergies": {
+    "visibilityMaintenance": {
+      "name": "Visibility-Driven Maintenance",
+      "description": "Digital twins and sensors provide the data foundation for effective predictive maintenance."
+    },
+    "sustainabilityFleet": {
+      "name": "Green Operations Bundle",
+      "description": "Energy monitoring combined with fleet optimization delivers compounding sustainability benefits."
+    },
+    "warehouseEfficiency": {
+      "name": "Smart Warehouse Suite",
+      "description": "Tracking, smart tools, and building automation create an integrated efficient environment."
+    },
+    "infrastructureSafety": {
+      "name": "Infrastructure Safety Net",
+      "description": "Comprehensive monitoring of water, power, and health creates early warning across critical systems."
+    },
+    "securityVisibility": {
+      "name": "Secure Visibility",
+      "description": "Security hardening protects your digital twin investment from cyber threats."
+    },
+    "activated": "Synergy Activated!",
+    "bonus": "+{{bonus}} {{metric}} bonus"
+  },
+  "difficulty": {
+    "selectTitle": "Select Difficulty",
+    "easy": {
+      "name": "Relaxed",
+      "description": "More tokens (12/7/7), reduced penalties, fewer disasters. Perfect for learning IoT concepts."
+    },
+    "normal": {
+      "name": "Standard",
+      "description": "Balanced tokens (10/5/5), standard penalties. The intended experience for strategic thinking."
+    },
+    "hard": {
+      "name": "Expert",
+      "description": "Fewer tokens (8/4/4), increased penalties, additional disasters. For those who want a real challenge."
+    }
   }
 }

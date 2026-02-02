@@ -31,12 +31,16 @@ export function ComparisonStats({ metrics }: ComparisonStatsProps) {
   const { t } = useTranslation();
 
   const comparisons = useMemo((): MetricComparison[] => {
-    const calculatePercentile = (value: number, average: number, isPositiveWhenHigher: boolean): number => {
+    const calculatePercentile = (
+      value: number,
+      average: number,
+      isPositiveWhenHigher: boolean,
+    ): number => {
       const deviation = average * 0.2;
       const normalizedDiff = (value - average) / deviation;
-      const percentile = 50 + (normalizedDiff * 15);
+      const percentile = 50 + normalizedDiff * 15;
       const clampedPercentile = Math.max(5, Math.min(95, percentile));
-      return isPositiveWhenHigher ? clampedPercentile : (100 - clampedPercentile);
+      return isPositiveWhenHigher ? clampedPercentile : 100 - clampedPercentile;
     };
 
     return [
@@ -46,7 +50,11 @@ export function ComparisonStats({ metrics }: ComparisonStatsProps) {
         value: metrics.visibility_insight,
         average: AVERAGE_METRICS.visibility_insight,
         difference: metrics.visibility_insight - AVERAGE_METRICS.visibility_insight,
-        percentile: calculatePercentile(metrics.visibility_insight, AVERAGE_METRICS.visibility_insight, true),
+        percentile: calculatePercentile(
+          metrics.visibility_insight,
+          AVERAGE_METRICS.visibility_insight,
+          true,
+        ),
         isPositiveWhenHigher: true,
       },
       {
@@ -55,7 +63,11 @@ export function ComparisonStats({ metrics }: ComparisonStatsProps) {
         value: metrics.efficiency_throughput,
         average: AVERAGE_METRICS.efficiency_throughput,
         difference: metrics.efficiency_throughput - AVERAGE_METRICS.efficiency_throughput,
-        percentile: calculatePercentile(metrics.efficiency_throughput, AVERAGE_METRICS.efficiency_throughput, true),
+        percentile: calculatePercentile(
+          metrics.efficiency_throughput,
+          AVERAGE_METRICS.efficiency_throughput,
+          true,
+        ),
         isPositiveWhenHigher: true,
       },
       {
@@ -64,7 +76,11 @@ export function ComparisonStats({ metrics }: ComparisonStatsProps) {
         value: metrics.sustainability_emissions,
         average: AVERAGE_METRICS.sustainability_emissions,
         difference: metrics.sustainability_emissions - AVERAGE_METRICS.sustainability_emissions,
-        percentile: calculatePercentile(metrics.sustainability_emissions, AVERAGE_METRICS.sustainability_emissions, true),
+        percentile: calculatePercentile(
+          metrics.sustainability_emissions,
+          AVERAGE_METRICS.sustainability_emissions,
+          true,
+        ),
         isPositiveWhenHigher: true,
       },
       {
@@ -73,7 +89,11 @@ export function ComparisonStats({ metrics }: ComparisonStatsProps) {
         value: metrics.early_warning_prevention,
         average: AVERAGE_METRICS.early_warning_prevention,
         difference: metrics.early_warning_prevention - AVERAGE_METRICS.early_warning_prevention,
-        percentile: calculatePercentile(metrics.early_warning_prevention, AVERAGE_METRICS.early_warning_prevention, true),
+        percentile: calculatePercentile(
+          metrics.early_warning_prevention,
+          AVERAGE_METRICS.early_warning_prevention,
+          true,
+        ),
         isPositiveWhenHigher: true,
       },
       {
@@ -82,7 +102,11 @@ export function ComparisonStats({ metrics }: ComparisonStatsProps) {
         value: metrics.complexity_risk,
         average: AVERAGE_METRICS.complexity_risk,
         difference: metrics.complexity_risk - AVERAGE_METRICS.complexity_risk,
-        percentile: calculatePercentile(metrics.complexity_risk, AVERAGE_METRICS.complexity_risk, false),
+        percentile: calculatePercentile(
+          metrics.complexity_risk,
+          AVERAGE_METRICS.complexity_risk,
+          false,
+        ),
         isPositiveWhenHigher: false,
       },
     ];
@@ -94,7 +118,7 @@ export function ComparisonStats({ metrics }: ComparisonStatsProps) {
     return isGood ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
   };
 
-  const getComparisonIcon = (difference: number, isPositiveWhenHigher: boolean) => {
+  const getComparisonIcon = (difference: number) => {
     if (Math.abs(difference) < 3) return <Minus className="w-4 h-4" />;
     const isUp = difference > 0;
     if (isUp) return <ArrowUp className="w-4 h-4" />;
@@ -108,9 +132,7 @@ export function ComparisonStats({ metrics }: ComparisonStatsProps) {
         <h3 className="font-semibold">{t('comparison.title')}</h3>
       </div>
 
-      <p className="text-sm text-muted-foreground mb-4">
-        {t('comparison.description')}
-      </p>
+      <p className="text-sm text-muted-foreground mb-4">{t('comparison.description')}</p>
 
       <div className="space-y-3">
         {comparisons.map((comparison, index) => (
@@ -135,10 +157,13 @@ export function ComparisonStats({ metrics }: ComparisonStatsProps) {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className={`flex items-center gap-1 ${getComparisonColor(comparison.difference, comparison.isPositiveWhenHigher)}`}>
-                {getComparisonIcon(comparison.difference, comparison.isPositiveWhenHigher)}
+              <div
+                className={`flex items-center gap-1 ${getComparisonColor(comparison.difference, comparison.isPositiveWhenHigher)}`}
+              >
+                {getComparisonIcon(comparison.difference)}
                 <span className="text-sm font-medium">
-                  {comparison.difference > 0 ? '+' : ''}{comparison.difference}%
+                  {comparison.difference > 0 ? '+' : ''}
+                  {comparison.difference}%
                 </span>
               </div>
 

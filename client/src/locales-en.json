@@ -20,17 +20,20 @@
     "whatYouDo": "What You'll Do",
     "whatYouDoDesc": "Over 3 years, you'll allocate IoT tokens to different initiatives. Watch how your choices affect key metrics and learn the tradeoffs involved in IoT strategy.",
     "startButton": "Start Year 1",
-    "startWithTutorial": "Start with Tutorial"
+    "startWithTutorial": "Start with Tutorial",
+    "resumeNotice": "You have a saved game from Round {{round}}.",
+    "continueButton": "Continue Game",
+    "startNewButton": "Start New Game"
   },
   "dashboard": {
     "roundTitle": "Year {{round}}",
     "initiativesTitle": "IoT Initiatives",
     "tokensAvailable": "{{count}} token remaining",
     "tokensAvailable_other": "{{count}} tokens remaining",
-    "instructions": "Allocate your tokens to IoT initiatives. Each card can receive 0-3 tokens.",
+    "instructions": "Allocate your tokens to IoT initiatives. Each card can receive 0-{{max}} tokens.",
     "runPlanButton": "Run My Plan",
     "nextRoundButton": "Continue to Year {{round}}",
-    "viewSummaryButton": "Continue to Wrap-Up",
+    "viewSummaryButton": "View Final Results",
     "metricsTitle": "Organization Metrics",
     "tokenBreakdown": "{{carryover}} reallocatable + {{newTokens}} new = {{total}} total",
     "reallocationAlert": "You can reallocate 50% of your previous tokens (rounded down). You also receive {{newTokens}} new tokens. Adjust your strategy based on your results.",
@@ -39,7 +42,8 @@
     "investedCards": "Contributing initiatives",
     "investedTokens": "{{count}} token invested",
     "investedTokens_other": "{{count}} tokens invested",
-    "noInvestment": "No investment yet"
+    "noInvestment": "No investment yet",
+    "investedShort": "{{count}} inv."
   },
   "metrics": {
     "visibility": {
@@ -188,10 +192,10 @@
       "description": "You prioritized energy efficiency and emissions reductions, even if it meant slower gains in other areas. Your environmental footprint is significantly reduced.",
       "suggestions": "Consider how visibility and early warning systems could help you optimize further. Efficiency and sustainability often reinforce each other."
     },
-    "BALANCED_ARCHITECT": {
-      "title": "Balanced IoT Architect",
-      "description": "You took a measured approach, improving multiple dimensions without over-investing in any single area. Your strategy is sustainable and well-rounded.",
-      "suggestions": "You demonstrated strong strategic thinking. Try pushing one dimension to excellence to see the full potential."
+    "RESILIENT_OPERATOR": {
+      "title": "Resilient Operator",
+      "description": "You managed trade-offs skillfully, improving multiple dimensions without creating dangerous complexity. Your approach demonstrates the balance needed for long-term IoT success.",
+      "suggestions": "You showed excellent judgment in managing competing priorities. Consider how focused investment in one area might accelerate specific business goals."
     },
     "OVER_CONNECTED_RISK_TAKER": {
       "title": "Over-Connected Risk-Taker",
@@ -225,7 +229,12 @@
     "journeyTitle": "Your IoT Journey",
     "keyInvestments": "Key Investments",
     "finalState": "Final Organizational State",
-    "disasterOccurred": "Disaster Event"
+    "disasterOccurred": "Disaster Event",
+    "premortemTitle": "Pre-Mortem Reflection",
+    "premortemYourChoice": "Your pre-mortem: {{choice}}",
+    "premortemObserved": "What we observed: {{observed}}",
+    "premortemMatch": "Your prediction aligned with the main risk in your results.",
+    "premortemMismatch": "Your prediction did not match the main risk in your results."
   },
   "common": {
     "loading": "Loading...",
@@ -243,6 +252,13 @@
       "sustainability": "Sustainability",
       "early_warning": "Early Warning",
       "security": "Security"
+    },
+    "metrics": {
+      "visibility_insight": "Visibility",
+      "efficiency_throughput": "Efficiency",
+      "sustainability_emissions": "Sustainability",
+      "early_warning_prevention": "Early Warning",
+      "complexity_risk": "Complexity"
     }
   },
   "roundFeedback": {
@@ -275,7 +291,68 @@
     "moreInfoAbout": "More info about {{title}}",
     "removeTokenFrom": "Remove token from {{title}}",
     "addTokenTo": "Add token to {{title}}",
-    "metricInfo": "Information about {{label}}"
+    "metricInfo": "Information about {{label}}",
+    "pagination": "Pagination",
+    "goToPreviousPage": "Go to previous page",
+    "goToNextPage": "Go to next page",
+    "breadcrumb": "Breadcrumb",
+    "carousel": "Carousel",
+    "slide": "Slide"
+  },
+  "iotProcess": {
+    "sense": {
+      "title": "Sense",
+      "description": "Devices collect data from the environment"
+    },
+    "share": {
+      "title": "Share",
+      "description": "Data is transmitted across networks"
+    },
+    "process": {
+      "title": "Process",
+      "description": "Information is analyzed and interpreted"
+    },
+    "act": {
+      "title": "Act",
+      "description": "Systems respond based on insights"
+    },
+    "howThisWorks": "How This IoT Initiative Works",
+    "cardFitsIn": "See where {{cardTitle}} fits in the IoT process loop",
+    "highlightedStages": "Highlighted stages show which parts of the IoT process this initiative uses",
+    "dialogDescription": "See how this initiative maps to the Sense-Share-Process-Act loop."
+  },
+  "disasters": {
+    "criticalEvent": "Critical Event!",
+    "ransomwareAttack": "Your IoT network was hit by a ransomware attack. Inadequate security hardening left devices vulnerable. Operations were disrupted for days, costing significant efficiency and increasing complexity as you scramble to patch systems.",
+    "supplyChainDisruption": {
+      "name": "Supply Chain Disruption",
+      "description": "Lack of visibility into your supply chain left you unprepared for a major disruption."
+    },
+    "energyCrisis": {
+      "name": "Energy Crisis",
+      "description": "Without proper energy monitoring, your facilities were caught off-guard by power instability."
+    }
+  },
+  "premortem": {
+    "title": "Pre-Mortem Reflection",
+    "description": "Before seeing your final results, take a moment to think critically about your strategy.",
+    "prompt": "Looking back at your 3-year IoT journey, what do you think was your biggest risk or vulnerability?",
+    "choices": {
+      "securityRisk": {
+        "label": "Security & Complexity Risk",
+        "description": "I may have deployed too many IoT devices without adequate security measures, creating vulnerabilities."
+      },
+      "inefficiency": {
+        "label": "Inefficiency & Missed Opportunities",
+        "description": "I focused too much on one area and missed opportunities to improve throughput and operations."
+      },
+      "environmentalFine": {
+        "label": "Environmental Compliance Risk",
+        "description": "I didn't invest enough in sustainability, leaving us exposed to regulations and fines."
+      }
+    },
+    "submitButton": "Continue to Results",
+    "selectPrompt": "Select an option above to continue"
   },
   "progress": {
     "round": "Year {{number}}"
@@ -388,30 +465,6 @@
     "percentile": "Rank",
     "top": "Top {{percent}}%"
   },
-  "premortem": {
-    "title": "Strategic Reflection",
-    "description": "Before seeing your final results, take a moment to reflect on potential risks.",
-    "prompt": "If your IoT strategy were to fail in the next year, what would be the most likely cause?",
-    "choices": {
-      "securityRisk": {
-        "label": "Security Breach",
-        "description": "Our IoT network could be compromised due to inadequate security measures."
-      },
-      "inefficiency": {
-        "label": "Operational Inefficiency",
-        "description": "We might not see the efficiency gains we expected from our investments."
-      },
-      "environmentalFine": {
-        "label": "Environmental Compliance",
-        "description": "We could face fines or penalties for not meeting sustainability targets."
-      }
-    },
-    "submitButton": "Continue to Results",
-    "selectPrompt": "Select an option above to continue"
-  },
-  "iotProcess": {
-    "dialogDescription": "See how this initiative maps to the IoT process loop."
-  },
   "glossary": {
     "title": "IoT Glossary",
     "description": "Key terms and concepts to help you understand IoT strategy",
@@ -518,20 +571,6 @@
     "hard": {
       "name": "Expert",
       "description": "Fewer tokens (8/4/4), increased penalties, additional disasters. For those who want a real challenge."
-    }
-  },
-  "disasters": {
-    "ransomwareAttack": {
-      "name": "Ransomware Attack",
-      "description": "Your unprotected IoT network was breached. Operations halted while systems are restored."
-    },
-    "supplyChainDisruption": {
-      "name": "Supply Chain Disruption",
-      "description": "Lack of visibility into your supply chain left you unprepared for a major disruption."
-    },
-    "energyCrisis": {
-      "name": "Energy Crisis",
-      "description": "Without proper energy monitoring, your facilities were caught off-guard by power instability."
     }
   }
 }

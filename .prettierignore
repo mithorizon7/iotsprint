@@ -1,0 +1,5 @@
+dist
+node_modules
+coverage
+client/public/locales/**
+client/public/config/**

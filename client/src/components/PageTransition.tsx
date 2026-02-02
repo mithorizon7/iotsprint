@@ -60,7 +60,15 @@ export function FadeIn({ children, delay = 0 }: { children: ReactNode; delay?: n
   );
 }
 
-export function SlideIn({ children, direction = 'left', delay = 0 }: { children: ReactNode; direction?: 'left' | 'right' | 'up' | 'down'; delay?: number }) {
+export function SlideIn({
+  children,
+  direction = 'left',
+  delay = 0,
+}: {
+  children: ReactNode;
+  direction?: 'left' | 'right' | 'up' | 'down';
+  delay?: number;
+}) {
   const directionMap = {
     left: { x: -30, y: 0 },
     right: { x: 30, y: 0 },
@@ -91,7 +99,13 @@ export function ScaleIn({ children, delay = 0 }: { children: ReactNode; delay?: 
   );
 }
 
-export function StaggerContainer({ children, staggerDelay = 0.1 }: { children: ReactNode; staggerDelay?: number }) {
+export function StaggerContainer({
+  children,
+  staggerDelay = 0.1,
+}: {
+  children: ReactNode;
+  staggerDelay?: number;
+}) {
   return (
     <motion.div
       initial="hidden"

@@ -9,7 +9,7 @@ interface IotProcessDiagramProps {
 
 export function IotProcessDiagram({ highlightedStages, cardTitle }: IotProcessDiagramProps) {
   const { t } = useTranslation();
-  
+
   const stages = [
     {
       id: 'sense' as IotProcessStage,
@@ -51,24 +51,23 @@ export function IotProcessDiagram({ highlightedStages, cardTitle }: IotProcessDi
         <h3 className="text-lg font-semibold" data-testid="text-iot-process-title">
           {t('iotProcess.howThisWorks')}
         </h3>
-        <p className="text-sm text-muted-foreground">
-          {t('iotProcess.cardFitsIn', { cardTitle })}
-        </p>
+        <p className="text-sm text-muted-foreground">{t('iotProcess.cardFitsIn', { cardTitle })}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
         {stages.map((stage, index) => {
           const Icon = stage.icon;
           const isHighlighted = highlightedStages.includes(stage.id);
-          
+
           return (
             <div key={stage.id} className="relative flex flex-col items-center">
               <div
                 className={`
                   relative w-full rounded-lg p-4 border-2 transition-all duration-300
-                  ${isHighlighted 
-                    ? `bg-gradient-to-br ${stage.highlightColor} border-white/30 shadow-lg scale-105` 
-                    : `bg-gradient-to-br ${stage.color} border-white/10 opacity-40`
+                  ${
+                    isHighlighted
+                      ? `bg-gradient-to-br ${stage.highlightColor} border-white/30 shadow-lg scale-105`
+                      : `bg-gradient-to-br ${stage.color} border-white/10 opacity-40`
                   }
                 `}
                 data-testid={`iot-stage-${stage.id}`}
@@ -77,14 +76,10 @@ export function IotProcessDiagram({ highlightedStages, cardTitle }: IotProcessDi
                   <div className="p-2 rounded-full bg-white/20">
                     <Icon className="w-6 h-6" data-testid={`icon-${stage.id}`} />
                   </div>
-                  <div className="text-sm font-bold">
-                    {t(stage.titleKey)}
-                  </div>
-                  <div className="text-xs text-center opacity-90">
-                    {t(stage.descKey)}
-                  </div>
+                  <div className="text-sm font-bold">{t(stage.titleKey)}</div>
+                  <div className="text-xs text-center opacity-90">{t(stage.descKey)}</div>
                 </div>
-                
+
                 {isHighlighted && (
                   <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-white flex items-center justify-center">
                     <div className="w-3 h-3 rounded-full bg-gradient-to-br from-green-500 to-emerald-500" />
@@ -94,8 +89,8 @@ export function IotProcessDiagram({ highlightedStages, cardTitle }: IotProcessDi
 
               {index < stages.length - 1 && (
                 <div className="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                  <ArrowRight 
-                    className={`w-6 h-6 ${isHighlighted && highlightedStages.includes(stages[index + 1].id) ? 'text-white' : 'text-muted-foreground/30'}`} 
+                  <ArrowRight
+                    className={`w-6 h-6 ${isHighlighted && highlightedStages.includes(stages[index + 1].id) ? 'text-white' : 'text-muted-foreground/30'}`}
                     data-testid={`arrow-${stage.id}`}
                   />
                 </div>
@@ -106,9 +101,7 @@ export function IotProcessDiagram({ highlightedStages, cardTitle }: IotProcessDi
       </div>
 
       <div className="text-center">
-        <p className="text-xs text-muted-foreground italic">
-          {t('iotProcess.highlightedStages')}
-        </p>
+        <p className="text-xs text-muted-foreground italic">{t('iotProcess.highlightedStages')}</p>
       </div>
     </div>
   );

@@ -11,7 +11,6 @@ import {
 
 interface SocialShareProps {
   archetypeTitle: string;
-  archetypeId: string;
   metrics: {
     visibility_insight: number;
     efficiency_throughput: number;
@@ -21,11 +20,11 @@ interface SocialShareProps {
   };
 }
 
-export function SocialShare({ archetypeTitle, archetypeId, metrics }: SocialShareProps) {
+export function SocialShare({ archetypeTitle, metrics }: SocialShareProps) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
-  const shareText = t('share.text', { 
+  const shareText = t('share.text', {
     archetype: archetypeTitle,
     visibility: metrics.visibility_insight,
     efficiency: metrics.efficiency_throughput,

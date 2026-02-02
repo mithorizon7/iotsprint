@@ -102,7 +102,9 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <TutorialContext.Provider value={{ showTutorial, startTutorial, endTutorial, hasCompletedTutorial }}>
+    <TutorialContext.Provider
+      value={{ showTutorial, startTutorial, endTutorial, hasCompletedTutorial }}
+    >
       {children}
       <TutorialOverlay />
     </TutorialContext.Provider>
@@ -183,7 +185,10 @@ function TutorialOverlay() {
               </Button>
             </div>
 
-            <p className="text-sm text-muted-foreground leading-relaxed" data-testid="tutorial-description">
+            <p
+              className="text-sm text-muted-foreground leading-relaxed"
+              data-testid="tutorial-description"
+            >
               {t(step.descriptionKey)}
             </p>
 
@@ -201,7 +206,12 @@ function TutorialOverlay() {
 
               <div className="flex gap-2">
                 {!isFirst && (
-                  <Button variant="outline" size="sm" onClick={handlePrev} data-testid="button-tutorial-prev">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handlePrev}
+                    data-testid="button-tutorial-prev"
+                  >
                     <ChevronLeft className="w-4 h-4 mr-1" />
                     {t('tutorial.back')}
                   </Button>

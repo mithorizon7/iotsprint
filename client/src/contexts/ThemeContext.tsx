@@ -14,7 +14,7 @@ const STORAGE_KEY = 'iot-game-theme';
 
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'light';
-  
+
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === 'dark' || stored === 'light') {
@@ -23,11 +23,11 @@ function getInitialTheme(): Theme {
   } catch (e) {
     console.warn('Failed to read theme from localStorage:', e);
   }
-  
+
   if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     return 'dark';
   }
-  
+
   return 'light';
 }
 
@@ -40,13 +40,13 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   useEffect(() => {
     const root = document.documentElement;
-    
+
     if (theme === 'dark') {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
-    
+
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch (e) {
@@ -56,20 +56,20 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
+
     const handleChange = (e: MediaQueryListEvent) => {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
         setThemeState(e.matches ? 'dark' : 'light');
       }
     };
-    
+
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   const toggleTheme = () => {
-    setThemeState(prev => prev === 'dark' ? 'light' : 'dark');
+    setThemeState((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const setTheme = (newTheme: Theme) => {

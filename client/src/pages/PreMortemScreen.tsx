@@ -5,7 +5,6 @@ import { PreMortemChoice } from '@shared/schema';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
 import { AlertTriangle, TrendingDown, TreeDeciduous } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -19,7 +18,12 @@ export default function PreMortemScreen({ onComplete }: PreMortemScreenProps) {
   const { setPreMortemAnswer } = useGame();
   const [selectedChoice, setSelectedChoice] = useState<PreMortemChoice | null>(null);
 
-  const choices: { id: PreMortemChoice; icon: typeof AlertTriangle; labelKey: string; descKey: string }[] = [
+  const choices: {
+    id: PreMortemChoice;
+    icon: typeof AlertTriangle;
+    labelKey: string;
+    descKey: string;
+  }[] = [
     {
       id: 'security_risk',
       icon: AlertTriangle,
@@ -62,12 +66,10 @@ export default function PreMortemScreen({ onComplete }: PreMortemScreenProps) {
             {t('premortem.description')}
           </CardDescription>
         </CardHeader>
-        
+
         <CardContent className="space-y-6">
           <div className="bg-muted p-4 rounded-md">
-            <p className="text-sm text-muted-foreground italic">
-              {t('premortem.prompt')}
-            </p>
+            <p className="text-sm text-muted-foreground italic">{t('premortem.prompt')}</p>
           </div>
 
           <RadioGroup
@@ -78,31 +80,32 @@ export default function PreMortemScreen({ onComplete }: PreMortemScreenProps) {
               {choices.map((choice) => {
                 const Icon = choice.icon;
                 const isSelected = selectedChoice === choice.id;
-                
+
                 return (
-                  <div
+                  <label
                     key={choice.id}
+                    htmlFor={choice.id}
                     className={`
-                      relative flex items-start space-x-4 p-4 rounded-lg border-2 transition-all
-                      ${isSelected 
-                        ? 'border-primary bg-primary/5' 
-                        : 'border-border hover-elevate active-elevate-2 cursor-pointer'
+                      relative block p-4 rounded-lg border-2 transition-all cursor-pointer
+                      ${
+                        isSelected
+                          ? 'border-primary bg-primary/5'
+                          : 'border-border hover-elevate active-elevate-2'
                       }
                     `}
-                    onClick={() => setSelectedChoice(choice.id)}
                     data-testid={`choice-${choice.id}`}
                   >
-                    <RadioGroupItem value={choice.id} id={choice.id} className="mt-1" />
-                    <div className="flex-1">
-                      <Label htmlFor={choice.id} className="flex items-center gap-2 cursor-pointer">
-                        <Icon className="w-5 h-5" />
-                        <span className="font-semibold">{t(choice.labelKey)}</span>
-                      </Label>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {t(choice.descKey)}
-                      </p>
+                    <div className="flex items-start space-x-4">
+                      <RadioGroupItem value={choice.id} id={choice.id} className="mt-1" />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <Icon className="w-5 h-5" />
+                          <span className="font-semibold">{t(choice.labelKey)}</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">{t(choice.descKey)}</p>
+                      </div>
                     </div>
-                  </div>
+                  </label>
                 );
               })}
             </div>
@@ -110,9 +113,7 @@ export default function PreMortemScreen({ onComplete }: PreMortemScreenProps) {
 
           <div className="flex flex-col items-center gap-2 pt-4">
             {!selectedChoice && (
-              <p className="text-sm text-muted-foreground">
-                {t('premortem.selectPrompt')}
-              </p>
+              <p className="text-sm text-muted-foreground">{t('premortem.selectPrompt')}</p>
             )}
             <Button
               onClick={handleSubmit}

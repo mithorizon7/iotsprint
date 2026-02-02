@@ -1,11 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { GameMetrics } from '@shared/schema';
 import { Info, TrendingDown, TrendingUp, AlertTriangle } from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useState, useEffect } from 'react';
 
 interface MetricsPanelProps {
@@ -61,7 +57,7 @@ export function MetricsPanel({ metrics, previousMetrics, animate = false }: Metr
       {metricConfigs.map((config) => {
         const value = metrics[config.key as keyof GameMetrics];
         const previousValue = previousMetrics?.[config.key as keyof GameMetrics] ?? value;
-        
+
         return (
           <MetricBar
             key={config.key}
@@ -138,19 +134,28 @@ function MetricBar({
   };
 
   const getRiskStatus = (val: number) => {
-    if (val <= 30) return { text: t('metrics.riskLevel.low'), colorClass: 'text-green-600 dark:text-green-400' };
-    if (val <= 50) return { text: t('metrics.riskLevel.moderate'), colorClass: 'text-yellow-600 dark:text-yellow-400' };
-    if (val <= 70) return { text: t('metrics.riskLevel.high'), colorClass: 'text-orange-600 dark:text-orange-400' };
+    if (val <= 30)
+      return { text: t('metrics.riskLevel.low'), colorClass: 'text-green-600 dark:text-green-400' };
+    if (val <= 50)
+      return {
+        text: t('metrics.riskLevel.moderate'),
+        colorClass: 'text-yellow-600 dark:text-yellow-400',
+      };
+    if (val <= 70)
+      return {
+        text: t('metrics.riskLevel.high'),
+        colorClass: 'text-orange-600 dark:text-orange-400',
+      };
     return { text: t('metrics.riskLevel.critical'), colorClass: 'text-red-600 dark:text-red-400' };
   };
 
   if (inverse) {
     const riskStatus = getRiskStatus(percentage);
     const riskColor = getRiskColor(percentage);
-    
+
     return (
-      <div 
-        className="space-y-2 p-3 -mx-3 rounded-lg bg-muted/30 border border-dashed border-muted-foreground/20" 
+      <div
+        className="space-y-2 p-3 -mx-3 rounded-lg bg-muted/30 border border-dashed border-muted-foreground/20"
         data-testid={`metric-${testId}`}
       >
         <div className="flex items-center justify-between gap-4">
@@ -185,7 +190,9 @@ function MetricBar({
             {animate && delta !== 0 && (
               <span
                 className={`text-sm font-medium ${
-                  delta < 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                  delta < 0
+                    ? 'text-green-600 dark:text-green-400'
+                    : 'text-red-600 dark:text-red-400'
                 }`}
                 data-testid={`text-delta-${testId}`}
               >
@@ -195,15 +202,16 @@ function MetricBar({
             )}
           </div>
         </div>
-        
+
         <div className="flex items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-1">
-            <TrendingDown className="w-3 h-3 text-green-600 dark:text-green-400" aria-hidden="true" />
+            <TrendingDown
+              className="w-3 h-3 text-green-600 dark:text-green-400"
+              aria-hidden="true"
+            />
             <span className="text-muted-foreground">{t('metrics.lowerIsBetter')}</span>
           </div>
-          <span className={`font-medium ${riskStatus.colorClass}`}>
-            {riskStatus.text}
-          </span>
+          <span className={`font-medium ${riskStatus.colorClass}`}>{riskStatus.text}</span>
         </div>
 
         <div className="relative h-2 rounded-full overflow-hidden bg-gradient-to-r from-green-500/20 via-yellow-500/20 via-orange-500/20 to-red-500/20">
@@ -217,23 +225,23 @@ function MetricBar({
             }}
             data-testid={`bar-${testId}`}
           />
-          <div 
+          <div
             className="absolute inset-y-0 w-0.5 bg-foreground/50"
             style={{ left: '30%' }}
             aria-hidden="true"
           />
-          <div 
+          <div
             className="absolute inset-y-0 w-0.5 bg-foreground/30"
             style={{ left: '50%' }}
             aria-hidden="true"
           />
-          <div 
+          <div
             className="absolute inset-y-0 w-0.5 bg-foreground/30"
             style={{ left: '70%' }}
             aria-hidden="true"
           />
         </div>
-        
+
         <div className="flex justify-between text-[10px] text-muted-foreground px-0.5">
           <span>{t('metrics.riskLevel.safe')}</span>
           <span>{t('metrics.riskLevel.danger')}</span>
@@ -265,10 +273,7 @@ function MetricBar({
           </Tooltip>
         </div>
         <div className="flex items-center gap-2">
-          <span
-            className="text-lg font-bold font-mono"
-            data-testid={`text-value-${testId}`}
-          >
+          <span className="text-lg font-bold font-mono" data-testid={`text-value-${testId}`}>
             {percentage}
           </span>
           {animate && delta !== 0 && (

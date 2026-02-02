@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 // Game State Types
 export interface GameMetrics {
   visibility_insight: number;
@@ -86,7 +84,7 @@ export interface GameState {
   difficulty: DifficultyMode; // Selected difficulty level
 }
 
-export type ArchetypeId = 
+export type ArchetypeId =
   | 'EFFICIENCY_FIRST'
   | 'SUSTAINABILITY_CHAMPION'
   | 'RESILIENT_OPERATOR'
@@ -160,6 +158,7 @@ export interface GameConfig {
     iotSprawlThreshold: number;
     iotSprawlPenaltyPerToken: number;
   };
+  maxTokensPerCard?: number;
   unlockConditions: {
     complexityHighThreshold: number;
   };
@@ -181,7 +180,7 @@ export function evaluateUnlockCondition(
   condition: UnlockCondition,
   metrics: GameMetrics,
   allocations: Record<string, number>,
-  config?: GameConfig
+  config?: GameConfig,
 ): boolean {
   if (condition === null) {
     return true; // No unlock condition, always available

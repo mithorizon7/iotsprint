@@ -35,16 +35,16 @@ export function GlossaryPanel({ variant = 'button' }: GlossaryPanelProps) {
 
   useEffect(() => {
     fetch('/config/glossary.json')
-      .then(res => res.json())
-      .then(data => setTerms(data.terms))
-      .catch(err => console.error('Failed to load glossary:', err));
+      .then((res) => res.json())
+      .then((data) => setTerms(data.terms))
+      .catch((err) => console.error('Failed to load glossary:', err));
   }, []);
 
   const filteredTerms = useMemo(() => {
     const currentLanguage = i18n.language;
-    return terms.filter(term => {
-      const termText = t(term.termKey).toLowerCase();
-      const definitionText = t(term.definitionKey).toLowerCase();
+    return terms.filter((term) => {
+      const termText = t(term.termKey, { lng: currentLanguage }).toLowerCase();
+      const definitionText = t(term.definitionKey, { lng: currentLanguage }).toLowerCase();
       const query = searchQuery.toLowerCase();
       return termText.includes(query) || definitionText.includes(query);
     });
@@ -55,7 +55,7 @@ export function GlossaryPanel({ variant = 'button' }: GlossaryPanelProps) {
   };
 
   const findRelatedTerm = (id: string) => {
-    return terms.find(term => term.id === id);
+    return terms.find((term) => term.id === id);
   };
 
   return (
@@ -71,12 +71,7 @@ export function GlossaryPanel({ variant = 'button' }: GlossaryPanelProps) {
             <Book className="h-5 w-5 md:h-4 md:w-4" aria-hidden="true" />
           </Button>
         ) : (
-          <Button
-            size="sm"
-            variant="ghost"
-            className="gap-2"
-            data-testid="button-glossary"
-          >
+          <Button size="sm" variant="ghost" className="gap-2" data-testid="button-glossary">
             <Book className="h-5 w-5 md:h-4 md:w-4" aria-hidden="true" />
             <span className="hidden sm:inline">{t('glossary.title')}</span>
           </Button>
@@ -95,7 +90,10 @@ export function GlossaryPanel({ variant = 'button' }: GlossaryPanelProps) {
 
         <div className="mt-4 space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
+              aria-hidden="true"
+            />
             <Input
               placeholder={t('glossary.searchPlaceholder')}
               value={searchQuery}
@@ -124,9 +122,10 @@ export function GlossaryPanel({ variant = 'button' }: GlossaryPanelProps) {
                       className={`
                         w-full text-left p-3 rounded-lg border transition-all
                         focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
-                        ${selectedTerm?.id === term.id 
-                          ? 'border-primary bg-primary/5' 
-                          : 'border-border hover-elevate'
+                        ${
+                          selectedTerm?.id === term.id
+                            ? 'border-primary bg-primary/5'
+                            : 'border-border hover-elevate'
                         }
                       `}
                       aria-expanded={selectedTerm?.id === term.id}
@@ -134,7 +133,7 @@ export function GlossaryPanel({ variant = 'button' }: GlossaryPanelProps) {
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-medium">{t(term.termKey)}</span>
-                        <ChevronRight 
+                        <ChevronRight
                           className={`w-4 h-4 text-muted-foreground transition-transform ${
                             selectedTerm?.id === term.id ? 'rotate-90' : ''
                           }`}
@@ -151,14 +150,20 @@ export function GlossaryPanel({ variant = 'button' }: GlossaryPanelProps) {
                             className="overflow-hidden"
                           >
                             <div className="pt-3 mt-3 border-t border-border space-y-3">
-                              <p className="text-sm text-muted-foreground" data-testid={`text-definition-${term.id}`}>
+                              <p
+                                className="text-sm text-muted-foreground"
+                                data-testid={`text-definition-${term.id}`}
+                              >
                                 {t(term.definitionKey)}
                               </p>
                               <div className="bg-muted/50 rounded p-2">
                                 <p className="text-xs font-medium text-muted-foreground mb-1">
                                   {t('glossary.example')}:
                                 </p>
-                                <p className="text-sm italic" data-testid={`text-example-${term.id}`}>
+                                <p
+                                  className="text-sm italic"
+                                  data-testid={`text-example-${term.id}`}
+                                >
                                   {t(term.exampleKey)}
                                 </p>
                               </div>
@@ -167,8 +172,12 @@ export function GlossaryPanel({ variant = 'button' }: GlossaryPanelProps) {
                                   <p className="text-xs font-medium text-muted-foreground mb-1">
                                     {t('glossary.relatedTerms')}:
                                   </p>
-                                  <div className="flex flex-wrap gap-1" role="list" aria-label={t('glossary.relatedTerms')}>
-                                    {term.relatedTerms.map(relatedId => {
+                                  <div
+                                    className="flex flex-wrap gap-1"
+                                    role="list"
+                                    aria-label={t('glossary.relatedTerms')}
+                                  >
+                                    {term.relatedTerms.map((relatedId) => {
                                       const related = findRelatedTerm(relatedId);
                                       return related ? (
                                         <button
@@ -198,7 +207,10 @@ export function GlossaryPanel({ variant = 'button' }: GlossaryPanelProps) {
               </AnimatePresence>
 
               {filteredTerms.length === 0 && (
-                <div className="text-center py-8 text-muted-foreground" data-testid="text-no-results">
+                <div
+                  className="text-center py-8 text-muted-foreground"
+                  data-testid="text-no-results"
+                >
                   <p>{t('glossary.noResults')}</p>
                 </div>
               )}

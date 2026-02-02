@@ -7,6 +7,7 @@ This guide helps professional translators localize the IoT Strategy Sprint educa
 ## Translation Files
 
 ### File Locations
+
 - **English (source)**: `client/public/locales/en/translation.json`
 - **Russian (to translate)**: `client/public/locales/ru/translation.json`
 - **Latvian (to translate)**: `client/public/locales/lv/translation.json`
@@ -40,12 +41,14 @@ Variables enclosed in double curly braces must be kept exactly as written:
 ```
 
 **Correct Russian translation**:
+
 ```json
 "roundTitle": "Год {{round}}"
 "tokensAvailable": "Осталось токенов: {{count}}"
 ```
 
 **Incorrect** (placeholder changed):
+
 ```json
 "roundTitle": "Год {{год}}"  ❌ Don't translate placeholder names
 ```
@@ -65,31 +68,34 @@ Variables enclosed in double curly braces must be kept exactly as written:
 
 **Consistent terminology** for IoT concepts:
 
-| English | Russian | Latvian |
-|---------|---------|---------|
-| IoT (Internet of Things) | IoT (Интернет вещей) | IoT (lietu internets) |
-| Sensor | Датчик | Sensors |
-| Visibility | Видимость | Redzamība |
-| Early Warning | Раннее предупреждение | Agrīna brīdināšana |
-| Predictive Maintenance | Предиктивное обслуживание | Proaktīvā apkope |
-| Digital Twin | Цифровой двойник | Digitālais dvīnis |
-| Emissions | Выбросы | Emisijas |
+| English                  | Russian                   | Latvian               |
+| ------------------------ | ------------------------- | --------------------- |
+| IoT (Internet of Things) | IoT (Интернет вещей)      | IoT (lietu internets) |
+| Sensor                   | Датчик                    | Sensors               |
+| Visibility               | Видимость                 | Redzamība             |
+| Early Warning            | Раннее предупреждение     | Agrīna brīdināšana    |
+| Predictive Maintenance   | Предиктивное обслуживание | Proaktīvā apkope      |
+| Digital Twin             | Цифровой двойник          | Digitālais dvīnis     |
+| Emissions                | Выбросы                   | Emisijas              |
 
 ### 4. **Context-Aware Descriptors**
 
 While company names stay in English, surrounding descriptive text should be translated for grammatical correctness:
 
 **English**:
+
 ```json
 "feedback.airbus": "Airbus smart tools"
 ```
 
 **Russian** (adjective must agree with noun gender):
+
 ```json
 "feedback.airbus": "умные инструменты Airbus"
 ```
 
 **Latvian** (similar grammatical considerations):
+
 ```json
 "feedback.airbus": "Airbus viedo rīku"
 ```
@@ -103,6 +109,7 @@ While company names stay in English, surrounding descriptive text should be tran
 - Headings: Maintain impact while being clear
 
 **Example**:
+
 - English: "Run My Plan" (11 chars)
 - Russian: "Запустить план" (14 chars) ✓
 - Avoid: "Запустить выполнение моего плана" (33 chars) ❌ Too long for button
@@ -110,17 +117,21 @@ While company names stay in English, surrounding descriptive text should be tran
 ### 6. **Tone and Voice**
 
 Maintain a **professional yet accessible** tone:
+
 - **Informative**, not academic
-- **Encouraging**, not patronizing  
+- **Encouraging**, not patronizing
 - **Clear**, not overly technical
 
 **Example - English**:
+
 > "You are the Director of IoT Strategy for BrightWorks Operations."
 
 **Good Russian translation**:
+
 > "Вы — директор по стратегии IoT в BrightWorks Operations."
 
 **Avoid overly formal**:
+
 > "Вы занимаете должность директора по стратегии интернета вещей..." ❌
 
 ### 7. **Pluralization**
@@ -128,21 +139,24 @@ Maintain a **professional yet accessible** tone:
 React-i18next handles plurals automatically. Use the `_other` suffix for plural forms:
 
 **English**:
+
 ```json
 "tokensAvailable": "{{count}} token remaining",
 "tokensAvailable_other": "{{count}} tokens remaining"
 ```
 
 **Russian** (requires singular, few, many forms):
+
 ```json
 "tokensAvailable_one": "{{count}} токен",
-"tokensAvailable_few": "{{count}} токена",  
+"tokensAvailable_few": "{{count}} токена",
 "tokensAvailable_many": "{{count}} токенов"
 ```
 
 ### 8. **Educational Content**
 
 The game teaches IoT concepts. Ensure translations:
+
 - **Preserve technical accuracy**
 - **Maintain learning objectives**
 - **Use terminology consistently** across all content
@@ -152,12 +166,14 @@ The game teaches IoT concepts. Ensure translations:
 **Initiative Cards**: Describe real-world IoT implementations. Keep company attributions clear:
 
 **English**:
+
 ```json
 "title": "Warehouse Flow Tracking",
 "description": "Install tags on pallets, forklifts, and vehicles..."
 ```
 
 **Russian**:
+
 ```json
 "title": "Отслеживание потоков на складе",
 "description": "Установите метки на поддоны, погрузчики и транспортные средства..."
@@ -165,10 +181,10 @@ The game teaches IoT concepts. Ensure translations:
 
 **Metrics**: Use standard business terminology:
 
-| English | Russian | Latvian |
-|---------|---------|---------|
-| Efficiency | Эффективность | Efektivitāte |
-| Sustainability | Устойчивость | Ilgtspēja |
+| English         | Russian        | Latvian            |
+| --------------- | -------------- | ------------------ |
+| Efficiency      | Эффективность  | Efektivitāte       |
+| Sustainability  | Устойчивость   | Ilgtspēja          |
 | Complexity Risk | Риск сложности | Sarežģītības risks |
 
 ## Translation Workflow
@@ -198,12 +214,14 @@ Before submitting translations, verify:
 ## Testing Your Translation
 
 Use the **pseudo-locale** (`en-ps`) as a reference for text expansion:
+
 - It shows how much longer text can be (~40% expansion)
 - Helps identify UI layout issues before translation
 
 ## Questions?
 
 For clarification on:
+
 - **Technical terms**: Check IoT industry standards in your language
 - **Company examples**: Keep original English names
 - **Context**: Review the English game to understand use cases
@@ -219,6 +237,7 @@ For clarification on:
 ## Example Translation Comparison
 
 ### English Original
+
 ```json
 {
   "cards": {
@@ -232,6 +251,7 @@ For clarification on:
 ```
 
 ### Russian Translation
+
 ```json
 {
   "cards": {
@@ -245,6 +265,7 @@ For clarification on:
 ```
 
 ### Latvian Translation
+
 ```json
 {
   "cards": {

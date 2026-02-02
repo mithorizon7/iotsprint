@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
+import { Card, CardContent } from '@/components/ui/card';
+import { AlertCircle } from 'lucide-react';
 
 export default function NotFound() {
   const { t } = useTranslation();
-  
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-background">
       <Card className="w-full max-w-md mx-4">
@@ -14,9 +14,7 @@ export default function NotFound() {
             <h1 className="text-2xl font-bold text-foreground">{t('notFound.title')}</h1>
           </div>
 
-          <p className="mt-4 text-sm text-muted-foreground">
-            {t('notFound.message')}
-          </p>
+          <p className="mt-4 text-sm text-muted-foreground">{t('notFound.message')}</p>
         </CardContent>
       </Card>
     </div>

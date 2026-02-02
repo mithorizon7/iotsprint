@@ -16,6 +16,7 @@
     "iotSprawlThreshold": 12,
     "iotSprawlPenaltyPerToken": 2
   },
+  "maxTokensPerCard": 5,
   "unlockConditions": {
     "complexityHighThreshold": 40
   },

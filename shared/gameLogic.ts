@@ -1,10 +1,4 @@
-import { 
-  GameMetrics, 
-  CardConfig, 
-  GameConfig,
-  DisasterConfig,
-  DisasterEvent,
-} from './schema';
+import { GameMetrics, CardConfig, GameConfig, DisasterConfig, DisasterEvent } from './schema';
 
 export interface SynergyConfig {
   id: string;
@@ -55,7 +49,7 @@ export function applyAllocationEffects(
   baseMetrics: GameMetrics,
   allocations: Record<string, number>,
   cards: CardConfig[],
-  tokenMechanics: TokenMechanics
+  tokenMechanics: TokenMechanics,
 ): GameMetrics {
   const updated = { ...baseMetrics };
   const totalTokensUsed = Object.values(allocations).reduce((sum, t) => sum + t, 0);
@@ -67,20 +61,25 @@ export function applyAllocationEffects(
     if (!card) return;
 
     for (let i = 0; i < tokens; i++) {
-      const multiplier = i >= tokenMechanics.diminishingReturnsThreshold 
-        ? tokenMechanics.diminishingReturnsMultiplier 
-        : 1;
+      const multiplier =
+        i >= tokenMechanics.diminishingReturnsThreshold
+          ? tokenMechanics.diminishingReturnsMultiplier
+          : 1;
 
       updated.visibility_insight += card.perTokenEffects.visibility_insight * multiplier;
       updated.efficiency_throughput += card.perTokenEffects.efficiency_throughput * multiplier;
-      updated.sustainability_emissions += card.perTokenEffects.sustainability_emissions * multiplier;
-      updated.early_warning_prevention += card.perTokenEffects.early_warning_prevention * multiplier;
+      updated.sustainability_emissions +=
+        card.perTokenEffects.sustainability_emissions * multiplier;
+      updated.early_warning_prevention +=
+        card.perTokenEffects.early_warning_prevention * multiplier;
       updated.complexity_risk += card.perTokenEffects.complexity_risk * multiplier;
     }
   });
 
   if (totalTokensUsed > tokenMechanics.iotSprawlThreshold) {
-    updated.complexity_risk += (totalTokensUsed - tokenMechanics.iotSprawlThreshold) * tokenMechanics.iotSprawlPenaltyPerToken;
+    updated.complexity_risk +=
+      (totalTokensUsed - tokenMechanics.iotSprawlThreshold) *
+      tokenMechanics.iotSprawlPenaltyPerToken;
   }
 
   return updated;
@@ -89,23 +88,19 @@ export function applyAllocationEffects(
 export function applySynergyBonuses(
   baseMetrics: GameMetrics,
   allocations: Record<string, number>,
-  synergies: SynergyConfig[]
+  synergies: SynergyConfig[],
 ): { metrics: GameMetrics; activeSynergies: ActiveSynergy[] } {
   const updated = { ...baseMetrics };
   const activeSynergies: ActiveSynergy[] = [];
 
   synergies.forEach((synergy) => {
-    const participatingCards = synergy.cards.filter(
-      (cardId) => (allocations[cardId] || 0) >= 1
-    );
+    const participatingCards = synergy.cards.filter((cardId) => (allocations[cardId] || 0) >= 1);
 
     if (participatingCards.length === synergy.cards.length) {
-      const minTokens = Math.min(
-        ...synergy.cards.map((cardId) => allocations[cardId] || 0)
-      );
-      
+      const minTokens = Math.min(...synergy.cards.map((cardId) => allocations[cardId] || 0));
+
       const scaledBonus = synergy.bonusAmount * minTokens;
-      
+
       updated[synergy.bonusEffect] += scaledBonus;
 
       activeSynergies.push({
@@ -127,7 +122,7 @@ export function applyDisasterPenalties(
   currentRound: number,
   allocations: Record<string, number>,
   disasters: DisasterConfig[],
-  penaltyScale: number = 1
+  penaltyScale: number = 1,
 ): { metrics: GameMetrics; triggeredDisasters: DisasterEvent[] } {
   let metrics = { ...baseMetrics };
   const triggeredDisasters: DisasterEvent[] = [];
@@ -138,7 +133,7 @@ export function applyDisasterPenalties(
     const metricValue = metrics[disasterConfig.triggerMetric];
     if (metricValue >= disasterConfig.threshold) {
       const isMitigated = disasterConfig.mitigatedBy?.some(
-        (cardId) => (allocations[cardId] || 0) > 0
+        (cardId) => (allocations[cardId] || 0) > 0,
       );
 
       if (!isMitigated) {
@@ -173,18 +168,13 @@ export function calculateRoundEffects(
   config: GameConfig,
   synergies: SynergyConfig[],
   currentRound: number,
-  penaltyScale: number = 1
+  penaltyScale: number = 1,
 ): {
   metricsAfter: GameMetrics;
   activeSynergies: ActiveSynergy[];
   triggeredDisasters: DisasterEvent[];
 } {
-  let metrics = applyAllocationEffects(
-    metricsBefore,
-    allocations,
-    cards,
-    config.tokenMechanics
-  );
+  let metrics = applyAllocationEffects(metricsBefore, allocations, cards, config.tokenMechanics);
 
   const synergyResult = applySynergyBonuses(metrics, allocations, synergies);
   metrics = synergyResult.metrics;
@@ -196,7 +186,7 @@ export function calculateRoundEffects(
     currentRound,
     allocations,
     config.disasters,
-    penaltyScale
+    penaltyScale,
   );
   metrics = disasterResult.metrics;
 
@@ -291,10 +281,10 @@ export const DIFFICULTY_PRESETS: Record<DifficultyMode, DifficultyConfig> = {
 
 export function getConfigForDifficulty(
   baseConfig: GameConfig,
-  difficulty: DifficultyMode
+  difficulty: DifficultyMode,
 ): GameConfig {
   const preset = DIFFICULTY_PRESETS[difficulty];
-  
+
   let disasters = [...baseConfig.disasters];
   if (preset.additionalDisasters) {
     disasters = [...disasters, ...preset.additionalDisasters];

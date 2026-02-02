@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useGame } from '@/contexts/GameContext';
+import { getTokensPerRound } from '@shared/gameLogic';
 import iotLogo from '@assets/internet-of-things_1764882370466.png';
 import { MetricsPanel } from '@/components/MetricsPanel';
 import { InitiativeCard } from '@/components/InitiativeCard';
@@ -20,7 +21,11 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface GameDashboardProps {
-  onComplete: (metrics: GameMetrics, roundHistory: RoundHistoryEntry[], finalAllocations: Record<string, number>) => void;
+  onComplete: (
+    metrics: GameMetrics,
+    roundHistory: RoundHistoryEntry[],
+    finalAllocations: Record<string, number>,
+  ) => void;
 }
 
 interface SynergyConfig {
@@ -29,29 +34,43 @@ interface SynergyConfig {
 
 export function GameDashboard({ onComplete }: GameDashboardProps) {
   const { t } = useTranslation();
-  const { gameState, availableCards, allCards, allocateTokens, runPlan, nextRound, canRunPlan, resetRound } = useGame();
+  const {
+    gameState,
+    availableCards,
+    allCards,
+    allocateTokens,
+    runPlan,
+    nextRound,
+    canRunPlan,
+    resetRound,
+    difficulty,
+    maxTokensPerCard,
+  } = useGame();
   const [showFeedback, setShowFeedback] = useState(false);
   const [previousMetrics, setPreviousMetrics] = useState(gameState.metrics);
   const [synergies, setSynergies] = useState<SynergyConfig>({ cardSynergies: {} });
 
   useEffect(() => {
     fetch('/config/synergies.json')
-      .then(res => res.json())
-      .then(data => setSynergies(data))
-      .catch(err => console.error('Failed to load synergies:', err));
+      .then((res) => res.json())
+      .then((data) => setSynergies(data))
+      .catch((err) => console.error('Failed to load synergies:', err));
   }, []);
 
   const tokensUsed = Object.values(gameState.allocations).reduce((sum, t) => sum + t, 0);
-  const tokensRemaining = gameState.tokensAvailable - tokensUsed;
+  const tokensRemaining = Math.max(0, gameState.tokensAvailable - tokensUsed);
 
-  const previousRoundAllocations = gameState.roundHistory.length > 0
-    ? gameState.roundHistory[gameState.roundHistory.length - 1].allocations
-    : {};
-  const carryoverTokens = gameState.currentRound > 1
-    ? Object.values(previousRoundAllocations).reduce((sum, t) => sum + Math.floor(t * 0.5), 0)
-    : 0;
-  
-  const baseTokens = gameState.currentRound === 1 ? 10 : 5;
+  const previousRoundAllocations =
+    gameState.roundHistory.length > 0
+      ? gameState.roundHistory[gameState.roundHistory.length - 1].allocations
+      : {};
+  const carryoverTokens =
+    gameState.currentRound > 1
+      ? Object.values(previousRoundAllocations).reduce((sum, t) => sum + Math.floor(t * 0.5), 0)
+      : 0;
+
+  const tokensPerRound = getTokensPerRound(difficulty);
+  const baseTokens = tokensPerRound[gameState.currentRound - 1] ?? 0;
   const newTokensThisRound = gameState.currentRound > 1 ? baseTokens : 0;
 
   const handleRunPlan = () => {
@@ -62,7 +81,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
 
   const handleNextRound = () => {
     setShowFeedback(false);
-    
+
     if (gameState.isGameComplete) {
       onComplete(gameState.metrics, gameState.roundHistory, gameState.allocations);
     } else {
@@ -105,17 +124,17 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
       }
       const totalTokens = gameState.roundHistory.reduce(
         (sum, round) => sum + Object.values(round.allocations).reduce((s, t) => s + t, 0),
-        0
+        0,
       );
       if (totalTokens > 15) {
         return t('events.round3.overIoT');
       }
-      const avgScore = (
-        metrics.visibility_insight +
-        metrics.efficiency_throughput +
-        metrics.sustainability_emissions +
-        metrics.early_warning_prevention
-      ) / 4;
+      const avgScore =
+        (metrics.visibility_insight +
+          metrics.efficiency_throughput +
+          metrics.sustainability_emissions +
+          metrics.early_warning_prevention) /
+        4;
       if (avgScore > 55) {
         return t('events.round3.nearTarget');
       }
@@ -145,9 +164,9 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-2 sm:gap-4 flex-wrap">
             <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-              <img 
-                src={iotLogo} 
-                alt="IoT Strategy Sprint" 
+              <img
+                src={iotLogo}
+                alt={t('game.title')}
                 className="w-8 h-8 sm:w-10 sm:h-10"
                 data-testid="img-logo"
               />
@@ -192,10 +211,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
               <MetricsPanel metrics={gameState.metrics} />
             </div>
 
-            <IoTLoopDashboard 
-              allocations={gameState.allocations} 
-              cards={allCards} 
-            />
+            <IoTLoopDashboard allocations={gameState.allocations} cards={allCards} />
           </div>
 
           <div className="space-y-6">
@@ -205,7 +221,7 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
                   {t('dashboard.initiativesTitle')}
                 </h3>
                 <p className="text-sm text-muted-foreground" data-testid="text-instructions">
-                  {t('dashboard.instructions')}
+                  {t('dashboard.instructions', { max: maxTokensPerCard })}
                 </p>
               </div>
               {tokensUsed > 0 && (
@@ -231,10 +247,10 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
               </Alert>
             )}
 
-            <StrategyHints 
-              metrics={gameState.metrics} 
-              allocations={gameState.allocations} 
-              currentRound={gameState.currentRound} 
+            <StrategyHints
+              metrics={gameState.metrics}
+              allocations={gameState.allocations}
+              currentRound={gameState.currentRound}
             />
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
@@ -249,12 +265,10 @@ export function GameDashboard({ onComplete }: GameDashboardProps) {
                     card={card}
                     allocation={gameState.allocations[card.id] || 0}
                     onAllocate={(tokens) => allocateTokens(card.id, tokens)}
-                    disabled={
-                      tokensRemaining === 0 &&
-                      (gameState.allocations[card.id] || 0) === 0
-                    }
+                    disabled={tokensRemaining === 0 && (gameState.allocations[card.id] || 0) === 0}
                     synergies={synergies.cardSynergies[card.id] || []}
                     allCards={allCards}
+                    maxTokensPerCard={maxTokensPerCard}
                   />
                 </motion.div>
               ))}
